@@ -1,0 +1,79 @@
+{
+  "connectorName": "CSV",
+  "operationName": "CsvToJson",
+  "title": "CSV to Json",
+  "help": "<h1>CSV to JSON</h1> <b>Convert a CSV payload to JSON</b>",
+  "elements": [
+    {
+      "type": "attributeGroup",
+      "value": {
+        "groupName": "General",
+        "elements": [
+          {
+            "type": "attribute",
+            "value": {
+              "name": "description",
+              "displayName": "Description",
+              "inputType": "string",
+              "defaultValue": "",
+              "required": "false",
+              "helpTip": "Component description"
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Basic",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "useHeaderAsKeys",
+                    "displayName": "CSV header as JSON keys",
+                    "inputType": "booleanOrExpression",
+                    "defaultValue": "true",
+                    "required": "false",
+                    "helpTip": "Use CSV header as keys of the resulting JSON object"
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "header",
+                    "displayName": "Custom Json Keys",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "If CSV header is not using as JSON object keys, define comma separated strings to use as keys"
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "emptyValueAsNull",
+                    "displayName": "Empty value as null",
+                    "inputType": "booleanOrExpression",
+                    "defaultValue": "false",
+                    "required": "false",
+                    "helpTip": "Treat empty cell values in CSV payload as null json primitives"
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "dataTypes",
+                    "displayName": "Data types",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Specify data types for Json object as comma separated strings. (integer, number, boolean, string)"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

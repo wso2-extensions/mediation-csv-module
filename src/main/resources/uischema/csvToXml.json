@@ -1,0 +1,109 @@
+{
+  "connectorName": "CSV",
+  "operationName": "CsvToXml",
+  "title": "CSV to XML",
+  "help": "<h1>CSV to XML</h1> <b>Convert a CSV payload to XML</b>",
+  "elements": [
+    {
+      "type": "attributeGroup",
+      "value": {
+        "groupName": "General",
+        "elements": [
+          {
+            "type": "attribute",
+            "value": {
+              "name": "description",
+              "displayName": "Description",
+              "inputType": "string",
+              "defaultValue": "",
+              "required": "false",
+              "helpTip": "Component description"
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Basic",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "rootElementName",
+                    "displayName": "Root element tag name",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "Name of the root XML element"
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "childElementName",
+                    "displayName": "Child elements tag name",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "Name of the child XML elements"
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "useHeaderAsKeys",
+                    "displayName": "CSV header as tag names",
+                    "inputType": "booleanOrExpression",
+                    "defaultValue": "true",
+                    "required": "false",
+                    "helpTip": "Use CSV header as tags of XML payload"
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "header",
+                    "displayName": "Custom XML tags",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "If CSV header is not using as Tag names, define comma separated strings to use as tags"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Advance",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "rootElementNamespaceURI",
+                    "displayName": "Root Namespace URI",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Root XML element namespace URI"
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "rootElementNamespace",
+                    "displayName": "Root Namespace prefix",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Root XML element namespace prefix"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

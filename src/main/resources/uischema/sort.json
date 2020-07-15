@@ -1,0 +1,68 @@
+{
+  "connectorName": "CSV",
+  "operationName": "Sort",
+  "title": "Sort csv content",
+  "help": "<h1>Sort</h1> <b>Sort a CSV payload by giving the column index</b>",
+  "elements": [
+    {
+      "type": "attributeGroup",
+      "value": {
+        "groupName": "General",
+        "elements": [
+          {
+            "type": "attribute",
+            "value": {
+              "name": "description",
+              "displayName": "Description",
+              "inputType": "string",
+              "defaultValue": "",
+              "required": "false",
+              "helpTip": "Component description"
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Basic",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "sortBy",
+                    "displayName": "Sort by column",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "Index of the column to sort the CSV"
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "inverseSort",
+                    "displayName": "Sort inverse",
+                    "inputType": "booleanOrExpression",
+                    "defaultValue": "false",
+                    "required": "false",
+                    "helpTip": "Sort inverse. (Default is false)"
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "linesToSkip",
+                    "displayName": "Lines to skip",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Number of lines to skip"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
