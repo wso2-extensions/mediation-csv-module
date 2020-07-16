@@ -26,22 +26,18 @@ public class ConstantExpressionNode implements ExpressionNode {
     private final int value;
 
     public ConstantExpressionNode(int value) {
-
         this.value = value;
     }
 
     public ConstantExpressionNode(String value) {
-
         this.value = Integer.valueOf(value);
     }
 
     public List<Integer> getValue() {
-
         return Collections.singletonList(value);
     }
 
     public int getType() {
-
         return CONSTANT_NODE;
     }
 }

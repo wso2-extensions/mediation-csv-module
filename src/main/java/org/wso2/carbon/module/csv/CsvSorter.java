@@ -30,7 +30,6 @@ public class CsvSorter extends SimpleMediator {
 
     @Override
     public void mediate(SimpleMessageContext mc) {
-
         int linesToSkip = getNumberOfLinesToSkip(mc);
         int sortByColumnIndex = getSortByColumnIndex(mc);
         boolean inverseSort = getInverse(mc);
@@ -49,7 +48,6 @@ public class CsvSorter extends SimpleMediator {
     }
 
     private String getRowValue(String[] row, int index) {
-
         final int rowLength = row.length;
         if (index >= rowLength) {
             return "";
@@ -59,7 +57,6 @@ public class CsvSorter extends SimpleMediator {
     }
 
     private boolean getInverse(SimpleMessageContext mc) {
-
         String inverseSortString = (String) mc.lookupTemplateParameter(ParameterKey.INVERSE_SORT);
         if (StringUtils.isNotBlank(inverseSortString)) {
             return Boolean.parseBoolean(inverseSortString.trim());
@@ -69,7 +66,6 @@ public class CsvSorter extends SimpleMediator {
     }
 
     private int getSortByColumnIndex(SimpleMessageContext mc) {
-
         String headerToAppend = (String) mc.lookupTemplateParameter(ParameterKey.SORT_BY);
         try {
             int index = Integer.parseInt(headerToAppend.trim()) - 1;

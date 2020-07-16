@@ -28,7 +28,6 @@ public class HeaderRemover extends SimpleMediator {
 
     @Override
     public void mediate(SimpleMessageContext mc) {
-
         int linesToSkip = PropertyReader.getNumberOfLinesToSkip(mc, 1);
         mc.setCsvPayload(mc.getCsvPayload(linesToSkip));
 

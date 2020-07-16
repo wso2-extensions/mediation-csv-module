@@ -30,7 +30,6 @@ public class HeaderAppender extends SimpleMediator {
 
     @Override
     public void mediate(SimpleMessageContext mc) {
-
         List<String[]> csvPayload = mc.getCsvPayload(0);
         String[] headerToAppend = getHeaderToAppend(mc);
         csvPayload.add(0, headerToAppend);
@@ -38,7 +37,6 @@ public class HeaderAppender extends SimpleMediator {
     }
 
     private String[] getHeaderToAppend(SimpleMessageContext mc) {
-
         String[] header;
 
         String headerToAppend = (String) mc.lookupTemplateParameter(ParameterKey.HEADER_TO_APPEND);

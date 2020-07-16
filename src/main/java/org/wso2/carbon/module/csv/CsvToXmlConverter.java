@@ -37,7 +37,6 @@ public class CsvToXmlConverter extends SimpleMediator {
 
     @Override
     public void mediate(SimpleMessageContext mc) {
-
         int linesToSkip = getLinesToSkip(mc);
         String[] header = generateXmlTagNames(mc);
         String rootElementName = getRootElementName(mc);

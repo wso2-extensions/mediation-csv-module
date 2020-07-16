@@ -41,7 +41,6 @@ public class Tokenizer {
     }
 
     private void initTokens() {
-
         addTokenInfo("\\(", Token.OPEN_BRACKET);
         addTokenInfo("\\)", Token.CLOSE_BRACKET);
         addTokenInfo("\\,", Token.COMA);
@@ -52,14 +51,12 @@ public class Tokenizer {
     }
 
     public void addTokenInfo(String regex, int token) {
-
         tokenInfos.add(
                 new TokenInfo(
                         Pattern.compile("^(" + regex + ")"), token));
     }
 
     public void tokenize(String str) {
-
         String s = str.trim();
         tokens.clear();
 
@@ -86,7 +83,6 @@ public class Tokenizer {
     }
 
     public List<Token> getTokens() {
-
         return tokens;
     }
 

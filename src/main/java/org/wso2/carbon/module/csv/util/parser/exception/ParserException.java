@@ -21,7 +21,6 @@ package org.wso2.carbon.module.csv.util.parser.exception;
 public class ParserException extends RuntimeException {
 
     public ParserException(String syntaxError) {
-
         super("Invalid syntax : " + syntaxError);
     }
 }

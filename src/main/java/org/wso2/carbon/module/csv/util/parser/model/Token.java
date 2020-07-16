@@ -33,7 +33,6 @@ public class Token {
     public final String sequence;
 
     public Token(int tokenType, String sequence) {
-
         super();
         this.tokenType = tokenType;
         this.sequence = sequence;

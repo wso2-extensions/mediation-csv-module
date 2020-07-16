@@ -28,20 +28,17 @@ public class WildcardRangeExpression implements ExpressionNode {
     private final int maxValue;
 
     public WildcardRangeExpression(ExpressionNode firstValue, int maxValue) {
-
         this.firstValue = firstValue;
         this.maxValue = maxValue;
     }
 
     @Override
     public int getType() {
-
         return WILDCARD_RANGE_NODE;
     }
 
     @Override
     public List<Integer> getValue() {
-
         return IntStream.rangeClosed(firstValue.getValue().get(0), maxValue).boxed().collect(Collectors.toList());
     }
 }

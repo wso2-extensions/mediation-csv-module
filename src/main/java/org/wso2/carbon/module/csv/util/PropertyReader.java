@@ -32,7 +32,6 @@ public class PropertyReader {
     }
 
     public static int getNumberOfLinesToSkip(SimpleMessageContext mc, int defaultValue) {
-
         int linesToSkip = defaultValue;
 
         String linesToSkipString = (String) mc.lookupTemplateParameter(ParameterKey.LINES_TO_SKIP);
@@ -48,7 +47,6 @@ public class PropertyReader {
     }
 
     public static int getNumberOfLinesToSkip(SimpleMessageContext mc) {
-
         return getNumberOfLinesToSkip(mc, 0);
     }
 

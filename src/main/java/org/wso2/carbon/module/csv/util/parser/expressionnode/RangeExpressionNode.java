@@ -28,39 +28,32 @@ public class RangeExpressionNode implements ExpressionNode {
     private ExpressionNode secondValue;
 
     public RangeExpressionNode(ExpressionNode firstValue) {
-
         this.firstValue = firstValue;
     }
 
     public RangeExpressionNode(ExpressionNode firstValue,
                                ExpressionNode secondValue) {
-
         this.firstValue = firstValue;
         this.secondValue = secondValue;
     }
 
     public void setFirstValue(ExpressionNode firstValue) {
-
         this.firstValue = firstValue;
     }
 
     public void setSecondValue(ExpressionNode secondValue) {
-
         this.secondValue = secondValue;
     }
 
     @Override
     public int getType() {
-
         return RANGE_NODE;
     }
 
     @Override
     public List<Integer> getValue() {
-
         int val1 = firstValue.getValue().get(0);
         int val2 = secondValue.getValue().get(0);
-
         return IntStream.rangeClosed(val1, val2).boxed().collect(Collectors.toList());
     }
 

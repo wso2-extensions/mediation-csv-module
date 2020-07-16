@@ -34,7 +34,6 @@ public class CsvColumnSkipper extends SimpleMediator {
 
     @Override
     public void mediate(SimpleMessageContext mc) {
-
         int[] skippingColumns = getSkippingColumns(mc, mc.getCsvPayload().get(0).length);
 
         mc.getCsvArrayStream()
@@ -64,8 +63,7 @@ public class CsvColumnSkipper extends SimpleMediator {
     }
 
     private int[] getSkippingColumns(SimpleMessageContext mc, int columnCount) {
-
-        int[] skippingColumns = null;
+        int[] skippingColumns;
 
         String skippingColumnString = (String) mc.lookupTemplateParameter(ParameterKey.COLUMNS_TO_SKIP);
         if (StringUtils.isNotBlank(skippingColumnString)) {
@@ -85,7 +83,6 @@ public class CsvColumnSkipper extends SimpleMediator {
     }
 
     private int[] parseExpression(String skippingColumnsString, int columnCount) {
-
         Tokenizer tokenizer = new Tokenizer();
         Parser parser = new Parser();
 

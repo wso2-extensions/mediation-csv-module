@@ -39,7 +39,6 @@ public class Parser {
     private int maxValue;
 
     public List<Integer> parseAndGetValues(List<Token> tokens, int maxValue) {
-
         ExpressionNode expressionNode = parse(tokens, maxValue);
         List<Integer> values = expressionNode.getValue();
 
@@ -66,7 +65,6 @@ public class Parser {
     }
 
     private ExpressionNode parse(List<Token> tokens, int maxValue) {
-
         this.tokens = new LinkedList<>(tokens);
         this.maxValue = maxValue;
 
@@ -83,7 +81,6 @@ public class Parser {
     }
 
     private ExpressionNode expression() {
-
         ExpressionNode operation;
         if (lookahead.tokenType == Token.NUMBER) {
             operation = value();
@@ -96,7 +93,6 @@ public class Parser {
     }
 
     private ExpressionNode value() {
-
         if (lookahead.tokenType == Token.NUMBER) {
             ConstantExpressionNode constantExpressionNode = new ConstantExpressionNode(lookahead.sequence);
             nextToken();
@@ -104,11 +100,9 @@ public class Parser {
         } else {
             throw new ParserException(lookahead.sequence);
         }
-
     }
 
     private ExpressionNode negation() {
-
         nextToken();
         ExpressionNode value;
         if (lookahead.tokenType == Token.NUMBER) {
@@ -120,7 +114,6 @@ public class Parser {
     }
 
     private ExpressionNode statement() {
-
         if (lookahead.tokenType == Token.OPEN_BRACKET) {
             ExpressionNode resultNode;
             nextToken();
@@ -140,7 +133,6 @@ public class Parser {
     }
 
     private ExpressionNode rangeOrExpression(ExpressionNode value) {
-
         ExpressionNode resultNode;
         if (lookahead.tokenType == Token.COLON) {
             nextToken();
@@ -153,7 +145,6 @@ public class Parser {
     }
 
     private ExpressionNode expressionNotRange(ExpressionNode value) {
-
         ExpressionNode resultNode;
         if (lookahead.tokenType == Token.COMA) {
             nextToken();
@@ -170,7 +161,6 @@ public class Parser {
     }
 
     private ExpressionNode range(ExpressionNode firstValue) {
-
         ExpressionNode rangeExpression;
         if (lookahead.tokenType == Token.NUMBER) {
             ExpressionNode secondValue = value();
@@ -187,7 +177,6 @@ public class Parser {
     }
 
     private void nextToken() {
-
         tokens.pop();
         if (tokens.isEmpty())
             lookahead = new Token(Token.EPSILON, "");

@@ -26,19 +26,16 @@ public class NegationExpressionNode implements ExpressionNode {
     private final ExpressionNode value;
 
     public NegationExpressionNode(ExpressionNode value) {
-
         this.value = value;
     }
 
     @Override
     public int getType() {
-
         return NEGATION_NODE;
     }
 
     @Override
     public List<Integer> getValue() {
-
         return value.getValue().stream().map(i -> -i).collect(Collectors.toList());
     }
 

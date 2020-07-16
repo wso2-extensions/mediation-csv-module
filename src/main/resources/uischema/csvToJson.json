@@ -44,7 +44,8 @@
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
                     "required": "false",
-                    "helpTip": "If CSV header is not using as JSON object keys, define comma separated strings to use as keys"
+                    "helpTip": "If CSV header is not using as JSON object keys, define comma separated strings to use as keys",
+                    "enableCondition": [{"useHeaderAsKeys": false}]
                   }
                 },
                 {

@@ -23,13 +23,11 @@ public class Term {
     private final ExpressionNode expression;
 
     public Term(ExpressionNode expression) {
-
         super();
         this.expression = expression;
     }
 
     public ExpressionNode getExpression() {
-
         return expression;
     }
 }
