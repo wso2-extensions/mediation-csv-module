@@ -66,7 +66,7 @@ public class CsvSorter extends SimpleMediator {
     }
 
     private int getSortByColumnIndex(SimpleMessageContext mc) {
-        String headerToAppend = (String) mc.lookupTemplateParameter(ParameterKey.SORT_BY);
+        String headerToAppend = (String) mc.lookupTemplateParameter(ParameterKey.SORT_COLUMNS_BY);
         try {
             int index = Integer.parseInt(headerToAppend.trim()) - 1;
             if (index < 0) {

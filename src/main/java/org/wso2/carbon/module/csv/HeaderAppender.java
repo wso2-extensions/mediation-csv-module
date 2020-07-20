@@ -39,11 +39,11 @@ public class HeaderAppender extends SimpleMediator {
     private String[] getHeaderToAppend(SimpleMessageContext mc) {
         String[] header;
 
-        String headerToAppend = (String) mc.lookupTemplateParameter(ParameterKey.HEADER_TO_APPEND);
+        String headerToAppend = (String) mc.lookupTemplateParameter(ParameterKey.CUSTOM_HEADER);
         if (!StringUtils.isBlank(headerToAppend)) {
             header = headerToAppend.split(",");
         } else {
-            throw new SimpleMessageContextException("parameter : " + ParameterKey.HEADER_TO_APPEND + " is required");
+            throw new SimpleMessageContextException("parameter : " + ParameterKey.CUSTOM_HEADER + " is required");
         }
 
         return header;

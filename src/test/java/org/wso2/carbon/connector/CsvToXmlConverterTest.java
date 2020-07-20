@@ -75,7 +75,7 @@ class CsvToXmlConverterTest {
         final String childElementNames = "child";
 
         lenient().when(mc.lookupTemplateParameter(ParameterKey.USE_HEADER_AS_KEYS)).thenReturn("false");
-        lenient().when(mc.lookupTemplateParameter(ParameterKey.HEADER_TO_APPEND)).thenReturn("a,b,c");
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.CUSTOM_HEADER)).thenReturn("a,b,c");
         lenient().when(mc.lookupTemplateParameter(ParameterKey.ROOT_ELEMENT_NAME)).thenReturn(rootElementName);
         lenient().when(mc.lookupTemplateParameter(ParameterKey.CHILD_ELEMENT_NAME)).thenReturn(childElementNames);
         lenient().when(mc.lookupTemplateParameter(ParameterKey.LINES_TO_SKIP)).thenReturn("1");

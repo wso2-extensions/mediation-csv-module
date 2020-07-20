@@ -41,7 +41,7 @@ class CsvToJsonConverterTest {
 
         final JsonArrayCollector jsonArrayCollector = new JsonArrayCollector(mc, null);
 
-        lenient().when(mc.lookupTemplateParameter(ParameterKey.HEADER_TO_APPEND)).thenReturn("");
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.CUSTOM_HEADER)).thenReturn("");
         lenient().when(mc.lookupTemplateParameter(ParameterKey.USE_HEADER_AS_KEYS)).thenReturn("true");
         lenient().when(mc.lookupTemplateParameter(ParameterKey.EMPTY_VALUE_AS_NULL)).thenReturn("false");
         when(mc.getCsvPayload(0)).thenReturn(csvPayload);
@@ -80,7 +80,7 @@ class CsvToJsonConverterTest {
 
         final JsonArrayCollector jsonArrayCollector = new JsonArrayCollector(mc, null);
 
-        lenient().when(mc.lookupTemplateParameter(ParameterKey.HEADER_TO_APPEND)).thenReturn("");
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.CUSTOM_HEADER)).thenReturn("");
         lenient().when(mc.lookupTemplateParameter(ParameterKey.USE_HEADER_AS_KEYS)).thenReturn("true");
         lenient().when(mc.lookupTemplateParameter(ParameterKey.EMPTY_VALUE_AS_NULL)).thenReturn("true");
         when(mc.getCsvPayload(0)).thenReturn(csvPayload);
@@ -119,7 +119,7 @@ class CsvToJsonConverterTest {
 
         final JsonArrayCollector jsonArrayCollector = new JsonArrayCollector(mc, null);
 
-        lenient().when(mc.lookupTemplateParameter(ParameterKey.HEADER_TO_APPEND)).thenReturn("");
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.CUSTOM_HEADER)).thenReturn("");
         lenient().when(mc.lookupTemplateParameter(ParameterKey.USE_HEADER_AS_KEYS)).thenReturn("true");
         lenient().when(mc.lookupTemplateParameter(ParameterKey.EMPTY_VALUE_AS_NULL)).thenReturn("true");
         lenient().when(mc.lookupTemplateParameter(ParameterKey.DATA_TYPES)).thenReturn("integer,nUmber,boolean");
@@ -153,9 +153,9 @@ class CsvToJsonConverterTest {
 
         final JsonArrayCollector jsonArrayCollector = new JsonArrayCollector(mc, null);
 
-        lenient().when(mc.lookupTemplateParameter(ParameterKey.HEADER_TO_APPEND)).thenReturn("");
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.CUSTOM_HEADER)).thenReturn("");
         lenient().when(mc.lookupTemplateParameter(ParameterKey.USE_HEADER_AS_KEYS)).thenReturn("false");
-        lenient().when(mc.lookupTemplateParameter(ParameterKey.HEADER_TO_APPEND)).thenReturn("p,q,r");
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.CUSTOM_HEADER)).thenReturn("p,q,r");
         lenient().when(mc.lookupTemplateParameter(ParameterKey.EMPTY_VALUE_AS_NULL)).thenReturn("true");
         lenient().when(mc.lookupTemplateParameter(ParameterKey.DATA_TYPES)).thenReturn("integer,nUmber,boolean");
         when(mc.getCsvArrayStream(linesToSkip)).thenReturn(csvPayload.stream());
@@ -186,7 +186,7 @@ class CsvToJsonConverterTest {
 
         final JsonArrayCollector jsonArrayCollector = new JsonArrayCollector(mc, null);
 
-        lenient().when(mc.lookupTemplateParameter(ParameterKey.HEADER_TO_APPEND)).thenReturn("");
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.CUSTOM_HEADER)).thenReturn("");
         lenient().when(mc.lookupTemplateParameter(ParameterKey.USE_HEADER_AS_KEYS)).thenReturn("false");
         lenient().when(mc.lookupTemplateParameter(ParameterKey.EMPTY_VALUE_AS_NULL)).thenReturn("true");
         lenient().when(mc.lookupTemplateParameter(ParameterKey.DATA_TYPES)).thenReturn("integer,nUmber,boolean");

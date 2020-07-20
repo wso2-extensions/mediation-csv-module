@@ -18,20 +18,30 @@
 
 package org.wso2.carbon.module.csv.util;
 
+import scala.util.parsing.combinator.testing.Str;
+
 public class ParameterKey {
 
     public static final String LINES_TO_SKIP = "linesToSkip";
-    public static final String HEADER_TO_APPEND = "header";
     public static final String ROOT_ELEMENT_NAME = "rootElementName";
     public static final String CHILD_ELEMENT_NAME = "childElementName";
     public static final String ROOT_ELEMENT_NAMESPACE_PREFIX = "rootElementNamespace";
     public static final String ROOT_ELEMENT_NAMESPACE_URI = "rootElementNamespaceURI";
     public static final String EMPTY_VALUE_AS_NULL = "emptyValueAsNull";
     public static final String DATA_TYPES = "dataTypes";
-    public static final String COLUMNS_TO_SKIP = "columnsToSkip";
-    public static final String SORT_BY = "sortBy";
     public static final String INVERSE_SORT = "inverseSort";
     public static final String USE_HEADER_AS_KEYS = "useHeaderAsKeys";
+
+    public static final String IS_HEADER_PRESENT = "headerPresent";
+    public static final String VALUE_SEPARATOR = "valueSeparator";
+    public static final String CUSTOM_VALUE_SEPARATOR = "customValueSeparator";
+    public static final String SKIP_HEADER = "skipHeader";
+    public static final String DATA_ROWS_TO_SKIP = "dataRowsToSkip";
+    public static final String COLUMNS_TO_SKIP = "columnsToSkip";
+    public static final String CUSTOM_HEADER = "customHeader";
+    public static final String SORT_COLUMNS_BY = "sortColumnsBy";
+    public static final String ORDER_BY_COLUMN = "orderByColumn";
+
 
     private ParameterKey() {
 

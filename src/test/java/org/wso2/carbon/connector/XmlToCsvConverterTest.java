@@ -54,7 +54,7 @@ class XmlToCsvConverterTest {
         Stream<OMElement> childElementStream = StreamSupport.stream(iterable.spliterator(), false);
         final CsvCollector csvCollector = new CsvCollector(mc, null);
 
-        when(mc.lookupTemplateParameter(ParameterKey.HEADER_TO_APPEND)).thenReturn("");
+        when(mc.lookupTemplateParameter(ParameterKey.CUSTOM_HEADER)).thenReturn("");
         when(mc.getRootXmlElement()).thenReturn(xmlPayload.cloneOMElement());
         when(mc.getXmlChildElementsStream()).thenReturn(childElementStream);
         when(mc.collectToCsv(any())).thenReturn(csvCollector);
@@ -105,7 +105,7 @@ class XmlToCsvConverterTest {
         Stream<OMElement> childElementStream = StreamSupport.stream(iterable.spliterator(), false);
         final CsvCollector csvCollector = new CsvCollector(mc, headerArray);
 
-        when(mc.lookupTemplateParameter(ParameterKey.HEADER_TO_APPEND)).thenReturn(header);
+        when(mc.lookupTemplateParameter(ParameterKey.CUSTOM_HEADER)).thenReturn(header);
         when(mc.getXmlChildElementsStream()).thenReturn(childElementStream);
         when(mc.collectToCsv(any())).thenReturn(csvCollector);
 

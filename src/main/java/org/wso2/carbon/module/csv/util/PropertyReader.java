@@ -22,7 +22,9 @@ import org.apache.commons.lang.StringUtils;
 import org.wso2.carbon.module.core.SimpleMessageContext;
 import org.wso2.carbon.module.core.exceptions.SimpleMessageContextException;
 
+import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 public class PropertyReader {
@@ -61,7 +63,7 @@ public class PropertyReader {
                 throw new SimpleMessageContextException("Invalid csv content");
             }
         } else {
-            String headerToAppend = (String) mc.lookupTemplateParameter(ParameterKey.HEADER_TO_APPEND);
+            String headerToAppend = (String) mc.lookupTemplateParameter(ParameterKey.CUSTOM_HEADER);
             if (!StringUtils.isBlank(headerToAppend)) {
                 header = headerToAppend.split(",");
             } else {
@@ -81,12 +83,38 @@ public class PropertyReader {
         return header;
     }
 
+    public static Optional<String> getStringParam(SimpleMessageContext mc, String parameterKey) {
+        String parameter = (String) mc.lookupTemplateParameter(parameterKey);
+        if (StringUtils.isNotBlank(parameter)) {
+            return Optional.of(parameter);
+        }
+
+        return Optional.empty();
+    }
+
+    public static Optional<Character> getCharParam(SimpleMessageContext mc, String parameterKey) {
+        Optional<String> parameterValue = getStringParam(mc, parameterKey);
+        return parameterValue.map(s -> s.charAt(0));
+    }
+
+    public static Optional<Integer> getIntegerParam(SimpleMessageContext mc, String parameterKey) {
+        Optional<String> parameterValue = getStringParam(mc, parameterKey);
+
+        return parameterValue.map(s -> {
+            try {
+                return Integer.parseInt(s);
+            } catch (NumberFormatException e) {
+                return null;
+            }
+        });
+    }
+
     public static boolean getBooleanParam(SimpleMessageContext mc, String parameterKey) {
         boolean skipHeader = false;
 
-        String useHeaderAsKeys = (String) mc.lookupTemplateParameter(parameterKey);
-        if (StringUtils.isNotBlank(useHeaderAsKeys)) {
-            skipHeader = Boolean.parseBoolean(useHeaderAsKeys);
+        String parameter = (String) mc.lookupTemplateParameter(parameterKey);
+        if (StringUtils.isNotBlank(parameter)) {
+            skipHeader = Boolean.parseBoolean(parameter);
         }
         return skipHeader;
     }

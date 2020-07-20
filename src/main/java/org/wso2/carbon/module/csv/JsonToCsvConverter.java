@@ -55,7 +55,7 @@ public class JsonToCsvConverter extends SimpleMediator {
     private String[] getHeader(SimpleMessageContext mc) {
         String[] header = null;
 
-        String headerToAppend = (String) mc.lookupTemplateParameter(ParameterKey.HEADER_TO_APPEND);
+        String headerToAppend = (String) mc.lookupTemplateParameter(ParameterKey.CUSTOM_HEADER);
         if (!StringUtils.isBlank(headerToAppend)) {
             header = headerToAppend.split(",");
         } else {

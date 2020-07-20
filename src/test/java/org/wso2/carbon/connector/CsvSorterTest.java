@@ -36,7 +36,7 @@ class CsvSorterTest {
         final String sortBy = "2";
 
         lenient().when(mc.lookupTemplateParameter(ParameterKey.LINES_TO_SKIP)).thenReturn("");
-        lenient().when(mc.lookupTemplateParameter(ParameterKey.SORT_BY)).thenReturn(sortBy);
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.SORT_COLUMNS_BY)).thenReturn(sortBy);
         when(mc.getCsvArrayStream(0)).thenReturn(csvPayload.stream());
         when(mc.collectToCsv()).thenReturn(csvCollector);
 
@@ -68,7 +68,7 @@ class CsvSorterTest {
         final String inverseSort = "true";
 
         lenient().when(mc.lookupTemplateParameter(ParameterKey.LINES_TO_SKIP)).thenReturn("");
-        lenient().when(mc.lookupTemplateParameter(ParameterKey.SORT_BY)).thenReturn(sortBy);
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.SORT_COLUMNS_BY)).thenReturn(sortBy);
         lenient().when(mc.lookupTemplateParameter(ParameterKey.INVERSE_SORT)).thenReturn(inverseSort);
         when(mc.getCsvArrayStream(0)).thenReturn(csvPayload.stream());
         when(mc.collectToCsv()).thenReturn(csvCollector);
@@ -101,7 +101,7 @@ class CsvSorterTest {
         final String linesToSkip = "1";
 
         lenient().when(mc.lookupTemplateParameter(ParameterKey.LINES_TO_SKIP)).thenReturn("1");
-        lenient().when(mc.lookupTemplateParameter(ParameterKey.SORT_BY)).thenReturn(sortBy);
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.SORT_COLUMNS_BY)).thenReturn(sortBy);
         when(mc.getCsvArrayStream(1)).thenReturn(csvPayloadWithoutHeader.stream());
         when(mc.collectToCsv()).thenReturn(csvCollector);
 

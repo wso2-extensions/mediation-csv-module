@@ -31,7 +31,7 @@ class HeaderAppenderTest {
 
         final String appendingHeader = "a,b,c";
 
-        when(mc.lookupTemplateParameter(ParameterKey.HEADER_TO_APPEND)).thenReturn(appendingHeader);
+        when(mc.lookupTemplateParameter(ParameterKey.CUSTOM_HEADER)).thenReturn(appendingHeader);
         when(mc.getCsvPayload(0)).thenReturn(csvPayload);
 
         ArgumentCaptor<List<String[]>> resultPayloadCaptor = ArgumentCaptor.forClass(List.class);
