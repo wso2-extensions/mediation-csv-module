@@ -20,9 +20,9 @@
     <parameter name="valueSeparator" description="Specify a value separator for CSV. Default is comma ( , )"/>
     <parameter name="skipHeader" description="Should the header row be skipped from the content ? Default if false"/>
     <parameter name="dataRowsToSkip" description="Number of data rows to skip. Default is 0"/>
+    <parameter name="orderByColumn" description="Order the CSV content by the values of the given column"/>
     <parameter name="columnsToSkip" description="Comma separated string of column indexes to skip. Leave blank to skip no columns"/>
     <parameter name="customHeader" description="Comma separated string of header to set as CSV payload header"/>
-    <parameter name="orderByColumn" description="Order the CSV content by the values of the given column"/>
     <parameter name="customValueSeparator" description="Specify a value separator for CSV output. Default is comma ( , )"/>
     <sequence>
 

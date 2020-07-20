@@ -18,14 +18,11 @@
   -->
 <connector>
     <component name="CSV" package="org.wso2.carbon.module.csv" type="Module">
-        <dependency component="removeHeader"/>
-        <dependency component="appendHeader"/>
+        <dependency component="csvToCsv"/>
         <dependency component="csvToJson"/>
         <dependency component="csvToXml"/>
         <dependency component="jsonToCsv"/>
         <dependency component="xmlToCsv"/>
-        <dependency component="skipColumns"/>
-        <dependency component="sort"/>
         <description>WSO2 CSV Module</description>
     </component>
     <icon>icon/icon-small.gif</icon>
