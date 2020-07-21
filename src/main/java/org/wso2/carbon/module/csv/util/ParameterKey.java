@@ -18,8 +18,6 @@
 
 package org.wso2.carbon.module.csv.util;
 
-import scala.util.parsing.combinator.testing.Str;
-
 public class ParameterKey {
 
     public static final String LINES_TO_SKIP = "linesToSkip";
@@ -40,6 +38,7 @@ public class ParameterKey {
     public static final String COLUMNS_TO_SKIP = "columnsToSkip";
     public static final String CUSTOM_HEADER = "customHeader";
     public static final String SORT_COLUMNS_BY = "sortColumnsBy";
+    public static final String SORT_COLUMNS_BY_ORDERING = "columnOrdering";
     public static final String ORDER_BY_COLUMN = "orderByColumn";
 
 

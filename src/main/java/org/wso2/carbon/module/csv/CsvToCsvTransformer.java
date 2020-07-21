@@ -5,6 +5,8 @@ import org.apache.synapse.SynapseException;
 import org.wso2.carbon.module.core.SimpleMediator;
 import org.wso2.carbon.module.core.SimpleMessageContext;
 import org.wso2.carbon.module.core.exceptions.SimpleMessageContextException;
+import org.wso2.carbon.module.csv.enums.HeaderAvailability;
+import org.wso2.carbon.module.csv.enums.OrderingType;
 import org.wso2.carbon.module.csv.util.Constants;
 import org.wso2.carbon.module.csv.util.ParameterKey;
 import org.wso2.carbon.module.csv.util.parser.Parser;
@@ -24,22 +26,23 @@ public class CsvToCsvTransformer extends SimpleMediator {
     @Override
     public void mediate(SimpleMessageContext mc) {
 
-        final boolean isHeaderPresent = getBooleanParam(mc, ParameterKey.IS_HEADER_PRESENT); //todo:: change this to present/absent instead of boolean
+        final Optional<HeaderAvailability> headerAvailability = getEnumParam(mc, ParameterKey.IS_HEADER_PRESENT, HeaderAvailability.class);
         final Optional<Character> valueSeparator = getCharParam(mc, ParameterKey.VALUE_SEPARATOR);
         final boolean skipHeader = getBooleanParam(mc, ParameterKey.SKIP_HEADER);
         final Optional<Integer> dataRowsToSkip = getIntegerParam(mc, ParameterKey.DATA_ROWS_TO_SKIP);
         final Optional<String> columnsToSkip = getStringParam(mc, ParameterKey.COLUMNS_TO_SKIP);
         final Optional<Integer> orderByColumn = getIntegerParam(mc, ParameterKey.ORDER_BY_COLUMN); // todo :: add support for column names
+        final Optional<OrderingType> columnOrdering = getEnumParam(mc, ParameterKey.SORT_COLUMNS_BY_ORDERING, OrderingType.class);
         final Optional<String> customHeader = getStringParam(mc, ParameterKey.CUSTOM_HEADER);
         final Optional<Character> customValueSeparator = getCharParam(mc, ParameterKey.CUSTOM_VALUE_SEPARATOR);
 
-        String[] header = getHeader(mc, isHeaderPresent, valueSeparator.orElse(Constants.DEFAULT_CSV_SEPARATOR));
-        int linesToSkip = getLinesToSkip(isHeaderPresent, skipHeader, dataRowsToSkip.orElse(0));
+        String[] header = getHeader(mc, headerAvailability.orElse(HeaderAvailability.ABSENT), valueSeparator.orElse(Constants.DEFAULT_CSV_SEPARATOR));
+        int linesToSkip = getLinesToSkip(headerAvailability.orElse(HeaderAvailability.ABSENT), skipHeader, dataRowsToSkip.orElse(0));
 
         Stream<String[]> csvArrayStream = mc.getCsvArrayStream(linesToSkip, valueSeparator.orElse(Constants.DEFAULT_CSV_SEPARATOR));
 
         if (orderByColumn.isPresent()) {
-            csvArrayStream = reorder(orderByColumn.get(), csvArrayStream);
+            csvArrayStream = reorder(orderByColumn.get(), csvArrayStream, columnOrdering.orElse(OrderingType.ASCENDING));
         }
         if (columnsToSkip.isPresent()) {
             csvArrayStream = skipColumns(mc, columnsToSkip.get(), csvArrayStream);
@@ -85,25 +88,24 @@ public class CsvToCsvTransformer extends SimpleMediator {
         return csvArrayStream;
     }
 
-    private Stream<String[]> reorder(int orderByColumn, Stream<String[]> csvArrayStream) {
+    private Stream<String[]> reorder(int orderByColumn, Stream<String[]> csvArrayStream, OrderingType orderingType) {
         int sortByColumnIndex = getOrderByColumnIndex(orderByColumn);
         csvArrayStream = csvArrayStream.sorted((row1, row2) -> {
             String val1 = getRowValue(row1, sortByColumnIndex);
             String val2 = getRowValue(row2, sortByColumnIndex);
             int comparisonResult = val1.compareTo(val2);
-            // fixme
-    /*        if (inverseSort) {
+            if (orderingType == OrderingType.DESCENDING) {
                 comparisonResult = -comparisonResult;
-            }*/
+            }
             return comparisonResult;
         });
         return csvArrayStream;
     }
 
-    private String[] getHeader(SimpleMessageContext mc, boolean isHeaderPresent, char valueSeparator) {
+    private String[] getHeader(SimpleMessageContext mc, HeaderAvailability headerAvailability, char valueSeparator) {
         String[] header = null;
 
-        if (isHeaderPresent) {
+        if (headerAvailability == HeaderAvailability.PRESENT) {
             List<String[]> csvPayload = mc.getCsvPayload(0, valueSeparator);
             if (!csvPayload.isEmpty()) {
                 header = csvPayload.get(0);
@@ -115,9 +117,9 @@ public class CsvToCsvTransformer extends SimpleMediator {
         return header;
     }
 
-    private int getLinesToSkip(boolean isHeaderPresent, boolean skipHeader, int dateRowsToSkip) {
+    private int getLinesToSkip(HeaderAvailability headerAvailability, boolean skipHeader, int dateRowsToSkip) {
         int linesToSkip = dateRowsToSkip;
-        if (isHeaderPresent && skipHeader) {
+        if (headerAvailability == HeaderAvailability.PRESENT && skipHeader) {
             linesToSkip++;
         }
 

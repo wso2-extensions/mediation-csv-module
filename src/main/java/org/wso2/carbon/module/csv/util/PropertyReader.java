@@ -22,7 +22,6 @@ import org.apache.commons.lang.StringUtils;
 import org.wso2.carbon.module.core.SimpleMessageContext;
 import org.wso2.carbon.module.core.exceptions.SimpleMessageContextException;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
@@ -118,4 +117,18 @@ public class PropertyReader {
         }
         return skipHeader;
     }
+
+    public static <E extends Enum<E>> Optional<E> getEnumParam(SimpleMessageContext mc, String parameterKey, Class<E> enumType) {
+        Optional<String> parameterValue = getStringParam(mc, parameterKey);
+        if (parameterValue.isPresent()) {
+            try {
+                return Optional.of(Enum.valueOf(enumType, parameterValue.get().toUpperCase()));
+            } catch (Exception e) {
+                throw new SimpleMessageContextException(String.format("Invalid parameter value for %s : %s", parameterKey, parameterValue.get()));
+            }
+        } else {
+            return Optional.empty();
+        }
+    }
+
 }
