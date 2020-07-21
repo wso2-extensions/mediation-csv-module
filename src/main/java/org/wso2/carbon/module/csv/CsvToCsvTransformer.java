@@ -1,21 +1,14 @@
 package org.wso2.carbon.module.csv;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.synapse.SynapseException;
 import org.wso2.carbon.module.core.SimpleMediator;
 import org.wso2.carbon.module.core.SimpleMessageContext;
-import org.wso2.carbon.module.core.exceptions.SimpleMessageContextException;
 import org.wso2.carbon.module.csv.enums.HeaderAvailability;
 import org.wso2.carbon.module.csv.enums.OrderingType;
 import org.wso2.carbon.module.csv.util.Constants;
+import org.wso2.carbon.module.csv.util.CsvTransformer;
 import org.wso2.carbon.module.csv.util.ParameterKey;
-import org.wso2.carbon.module.csv.util.parser.Parser;
-import org.wso2.carbon.module.csv.util.parser.Tokenizer;
-import org.wso2.carbon.module.csv.util.parser.model.Token;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -36,16 +29,17 @@ public class CsvToCsvTransformer extends SimpleMediator {
         final Optional<String> customHeader = getStringParam(mc, ParameterKey.CUSTOM_HEADER);
         final Optional<Character> customValueSeparator = getCharParam(mc, ParameterKey.CUSTOM_VALUE_SEPARATOR);
 
-        String[] header = getHeader(mc, headerAvailability.orElse(HeaderAvailability.ABSENT), valueSeparator.orElse(Constants.DEFAULT_CSV_SEPARATOR));
-        int linesToSkip = getLinesToSkip(headerAvailability.orElse(HeaderAvailability.ABSENT), skipHeader, dataRowsToSkip.orElse(0));
+        String[] header = CsvTransformer.getHeader(mc, headerAvailability.orElse(HeaderAvailability.ABSENT), valueSeparator.orElse(Constants.DEFAULT_CSV_SEPARATOR));
+        int linesToSkip = CsvTransformer.getLinesToSkip(headerAvailability.orElse(HeaderAvailability.ABSENT), skipHeader, dataRowsToSkip.orElse(0));
 
         Stream<String[]> csvArrayStream = mc.getCsvArrayStream(linesToSkip, valueSeparator.orElse(Constants.DEFAULT_CSV_SEPARATOR));
 
         if (orderByColumn.isPresent()) {
             csvArrayStream = reorder(orderByColumn.get(), csvArrayStream, columnOrdering.orElse(OrderingType.ASCENDING));
         }
+
         if (columnsToSkip.isPresent()) {
-            csvArrayStream = skipColumns(mc, columnsToSkip.get(), csvArrayStream);
+            csvArrayStream = CsvTransformer.skipColumns(mc, columnsToSkip.get(), csvArrayStream);
         }
 
         String[] resultHeader;
@@ -56,36 +50,6 @@ public class CsvToCsvTransformer extends SimpleMediator {
         }
         csvArrayStream.collect(mc.collectToCsv(resultHeader, customValueSeparator.orElse(Constants.DEFAULT_CSV_SEPARATOR)));
 
-    }
-
-    private Stream<String[]> skipColumns(SimpleMessageContext mc, String columnsToSkip, Stream<String[]> csvArrayStream) {
-        Optional<int[]> skippingColumns = getSkippingColumns(mc, columnsToSkip);
-        if (skippingColumns.isPresent()) {
-            csvArrayStream = csvArrayStream
-                    .map(Arrays::asList)
-                    .map(LinkedList::new)
-                    .map(row -> {
-
-                        int[] currentSkippingColumns = skippingColumns.get().clone();
-
-                        for (int i = 0; i < currentSkippingColumns.length; i++) {
-
-                            for (int j = i; j < currentSkippingColumns.length; j++) {
-                                currentSkippingColumns[j]--;
-                            }
-
-                            int currentIndex = currentSkippingColumns[i];
-                            if (currentIndex >= 0 && currentIndex < row.size()) {
-                                row.remove(currentIndex);
-                            } else {
-                                log.debug("Invalid index to remove");
-                            }
-                        }
-
-                        return row.toArray(new String[]{});
-                    });
-        }
-        return csvArrayStream;
     }
 
     private Stream<String[]> reorder(int orderByColumn, Stream<String[]> csvArrayStream, OrderingType orderingType) {
@@ -102,59 +66,6 @@ public class CsvToCsvTransformer extends SimpleMediator {
         return csvArrayStream;
     }
 
-    private String[] getHeader(SimpleMessageContext mc, HeaderAvailability headerAvailability, char valueSeparator) {
-        String[] header = null;
-
-        if (headerAvailability == HeaderAvailability.PRESENT) {
-            List<String[]> csvPayload = mc.getCsvPayload(0, valueSeparator);
-            if (!csvPayload.isEmpty()) {
-                header = csvPayload.get(0);
-            } else {
-                throw new SimpleMessageContextException("Invalid csv content");
-            }
-        }
-
-        return header;
-    }
-
-    private int getLinesToSkip(HeaderAvailability headerAvailability, boolean skipHeader, int dateRowsToSkip) {
-        int linesToSkip = dateRowsToSkip;
-        if (headerAvailability == HeaderAvailability.PRESENT && skipHeader) {
-            linesToSkip++;
-        }
-
-        return linesToSkip;
-    }
-
-
-    private Optional<int[]> getSkippingColumns(SimpleMessageContext mc, String columnsToSkip) {
-        int columnCount = mc.getCsvPayload().get(0).length;
-        Optional<int[]> skippingColumns;
-
-        if (StringUtils.isNotBlank(columnsToSkip)) {
-            try {
-                skippingColumns = Optional.of(parseExpression(columnsToSkip, columnCount));
-            } catch (Exception e) {
-                log.debug("Invalid Skipping Columns query", e);
-                skippingColumns = Optional.empty();
-            }
-        } else {
-            skippingColumns = Optional.empty();
-        }
-
-        return skippingColumns;
-
-    }
-
-    private int[] parseExpression(String skippingColumnsString, int columnCount) {
-        Tokenizer tokenizer = new Tokenizer();
-        Parser parser = new Parser();
-
-        tokenizer.tokenize(skippingColumnsString.trim());
-        LinkedList<Token> tokens = new LinkedList<>(tokenizer.getTokens());
-
-        return parser.parseAndGetValues(tokens, columnCount).stream().mapToInt(Integer::intValue).toArray();
-    }
 
     private int getOrderByColumnIndex(int orderByColumn) {
         int index = orderByColumn - 1;

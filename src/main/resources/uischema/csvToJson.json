@@ -1,6 +1,6 @@
 {
   "connectorName": "CSV",
-  "operationName": "CsvToJson",
+  "operationName": "csvToJson",
   "title": "CSV to Json",
   "help": "<h1>CSV to JSON</h1> <b>Convert a CSV payload to JSON</b>",
   "elements": [
@@ -23,51 +23,129 @@
           {
             "type": "attributeGroup",
             "value": {
-              "groupName": "Basic",
+              "groupName": "CSV Input",
               "elements": [
                 {
                   "type": "attribute",
                   "value": {
-                    "name": "useHeaderAsKeys",
-                    "displayName": "CSV header as JSON keys",
-                    "inputType": "booleanOrExpression",
-                    "defaultValue": "true",
+                    "name": "headerPresent",
+                    "displayName": "Header",
+                    "inputType": "comboOrExpression",
+                    "defaultValue": "Absent",
                     "required": "false",
-                    "helpTip": "Use CSV header as keys of the resulting JSON object"
+                    "comboValues": [
+                      "Present",
+                      "Absent"
+                    ],
+                    "helpTip": "Is there a header in the CSV payload ? Default is Absent"
                   }
                 },
                 {
                   "type": "attribute",
                   "value": {
-                    "name": "header",
-                    "displayName": "Custom Json Keys",
+                    "name": "valueSeparator",
+                    "displayName": "Separator",
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
                     "required": "false",
-                    "helpTip": "If CSV header is not using as JSON object keys, define comma separated strings to use as keys",
-                    "enableCondition": [{"useHeaderAsKeys": false}]
+                    "helpTip": "Specify a value separator for CSV. Default is comma ( , )"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "CSV Transformation",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "skipHeader",
+                    "displayName": "Skip headers",
+                    "inputType": "booleanOrExpression",
+                    "defaultValue": false,
+                    "required": "false",
+                    "helpTip": "Should the header row be skipped from the content ? Default if false"
                   }
                 },
                 {
                   "type": "attribute",
                   "value": {
-                    "name": "emptyValueAsNull",
-                    "displayName": "Empty value as null",
-                    "inputType": "booleanOrExpression",
-                    "defaultValue": "false",
+                    "name": "columnsToSkip",
+                    "displayName": "Skip Columns",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
                     "required": "false",
-                    "helpTip": "Treat empty cell values in CSV payload as null json primitives"
+                    "helpTip": "Comma separated string of column indexes to skip. Leave blank to skip no columns"
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "dataRowsToSkip",
+                    "displayName": "Skip Data Rows",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Number of data rows to skip. Default is 0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "JSON Output",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "csvEmptyValues",
+                    "displayName": "Empty Values",
+                    "inputType": "comboOrExpression",
+                    "defaultValue": "Null",
+                    "required": "false",
+                    "comboValues": [
+                      "Null",
+                      "Empty"
+                    ],
+                    "helpTip": "Treat empty CSV values as null or empty strings. Default is to consider as null"
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "jsonKeys",
+                    "displayName": "JSON keys",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Comma separated keys to generated JSON object. Using the CSV header or auto generated keys if not specified"
                   }
                 },
                 {
                   "type": "attribute",
                   "value": {
                     "name": "dataTypes",
-                    "displayName": "Data types",
+                    "displayName": "Data Types",
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
                     "required": "false",
-                    "helpTip": "Specify data types for Json object as comma separated strings. (integer, number, boolean, string)"
+                    "helpTip": "Specify data types as comma separated values. Supporting: string,integer,number,boolean"
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "rootJsonKey",
+                    "displayName": "Root JSON Key",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Specify data types as comma separated values. Supporting: string,integer,number,boolean"
                   }
                 }
               ]

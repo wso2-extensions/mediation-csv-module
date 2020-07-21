@@ -25,7 +25,6 @@ public class ParameterKey {
     public static final String CHILD_ELEMENT_NAME = "childElementName";
     public static final String ROOT_ELEMENT_NAMESPACE_PREFIX = "rootElementNamespace";
     public static final String ROOT_ELEMENT_NAMESPACE_URI = "rootElementNamespaceURI";
-    public static final String EMPTY_VALUE_AS_NULL = "emptyValueAsNull";
     public static final String DATA_TYPES = "dataTypes";
     public static final String INVERSE_SORT = "inverseSort";
     public static final String USE_HEADER_AS_KEYS = "useHeaderAsKeys";
@@ -40,7 +39,9 @@ public class ParameterKey {
     public static final String SORT_COLUMNS_BY = "sortColumnsBy";
     public static final String SORT_COLUMNS_BY_ORDERING = "columnOrdering";
     public static final String ORDER_BY_COLUMN = "orderByColumn";
-
+    public static final String CSV_EMPTY_VALUES = "csvEmptyValues";
+    public static final String JSON_KEYS = "jsonKeys";
+    public static final String ROOT_JSON_KEY = "rootJsonKey";
 
     private ParameterKey() {
 

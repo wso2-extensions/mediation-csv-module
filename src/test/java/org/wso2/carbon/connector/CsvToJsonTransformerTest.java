@@ -1,3 +1,4 @@
+/*
 package org.wso2.carbon.connector;
 
 import com.google.gson.JsonElement;
@@ -9,7 +10,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.wso2.carbon.module.core.SimpleMessageContext;
 import org.wso2.carbon.module.core.collectors.JsonArrayCollector;
-import org.wso2.carbon.module.csv.CsvToJsonConverter;
+import org.wso2.carbon.module.csv.CsvToJsonTransformer;
 import org.wso2.carbon.module.csv.util.ParameterKey;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class CsvToJsonConverterTest {
+class CsvToJsonTransformerTest {
 
     @Mock
     private SimpleMessageContext mc;
@@ -43,15 +44,15 @@ class CsvToJsonConverterTest {
 
         lenient().when(mc.lookupTemplateParameter(ParameterKey.CUSTOM_HEADER)).thenReturn("");
         lenient().when(mc.lookupTemplateParameter(ParameterKey.USE_HEADER_AS_KEYS)).thenReturn("true");
-        lenient().when(mc.lookupTemplateParameter(ParameterKey.EMPTY_VALUE_AS_NULL)).thenReturn("false");
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.CSV_EMPTY_VALUES)).thenReturn("false");
         when(mc.getCsvPayload(0)).thenReturn(csvPayload);
         when(mc.getCsvArrayStream(linesToSkip)).thenReturn(csvPayloadWithoutHeader.stream());
         when(mc.collectToJsonArray()).thenReturn(jsonArrayCollector);
 
         ArgumentCaptor<JsonElement> payloadSetArgumentCaptor = ArgumentCaptor.forClass(JsonElement.class);
 
-        CsvToJsonConverter csvToJsonConverter = new CsvToJsonConverter();
-        csvToJsonConverter.mediate(mc);
+        CsvToJsonTransformer csvToJsonTransformer = new CsvToJsonTransformer();
+        csvToJsonTransformer.mediate(mc);
 
         verify(mc).setJsonPayload(payloadSetArgumentCaptor.capture());
         JsonElement jsonElement = payloadSetArgumentCaptor.getValue();
@@ -82,15 +83,15 @@ class CsvToJsonConverterTest {
 
         lenient().when(mc.lookupTemplateParameter(ParameterKey.CUSTOM_HEADER)).thenReturn("");
         lenient().when(mc.lookupTemplateParameter(ParameterKey.USE_HEADER_AS_KEYS)).thenReturn("true");
-        lenient().when(mc.lookupTemplateParameter(ParameterKey.EMPTY_VALUE_AS_NULL)).thenReturn("true");
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.CSV_EMPTY_VALUES)).thenReturn("true");
         when(mc.getCsvPayload(0)).thenReturn(csvPayload);
         when(mc.getCsvArrayStream(linesToSkip)).thenReturn(csvPayloadWithoutHeader.stream());
         when(mc.collectToJsonArray()).thenReturn(jsonArrayCollector);
 
         ArgumentCaptor<JsonElement> payloadSetArgumentCaptor = ArgumentCaptor.forClass(JsonElement.class);
 
-        CsvToJsonConverter csvToJsonConverter = new CsvToJsonConverter();
-        csvToJsonConverter.mediate(mc);
+        CsvToJsonTransformer csvToJsonTransformer = new CsvToJsonTransformer();
+        csvToJsonTransformer.mediate(mc);
 
         verify(mc).setJsonPayload(payloadSetArgumentCaptor.capture());
         JsonElement jsonElement = payloadSetArgumentCaptor.getValue();
@@ -121,7 +122,7 @@ class CsvToJsonConverterTest {
 
         lenient().when(mc.lookupTemplateParameter(ParameterKey.CUSTOM_HEADER)).thenReturn("");
         lenient().when(mc.lookupTemplateParameter(ParameterKey.USE_HEADER_AS_KEYS)).thenReturn("true");
-        lenient().when(mc.lookupTemplateParameter(ParameterKey.EMPTY_VALUE_AS_NULL)).thenReturn("true");
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.CSV_EMPTY_VALUES)).thenReturn("true");
         lenient().when(mc.lookupTemplateParameter(ParameterKey.DATA_TYPES)).thenReturn("integer,nUmber,boolean");
         when(mc.getCsvPayload(0)).thenReturn(csvPayload);
         when(mc.getCsvArrayStream(linesToSkip)).thenReturn(csvPayloadWithoutHeader.stream());
@@ -129,8 +130,8 @@ class CsvToJsonConverterTest {
 
         ArgumentCaptor<JsonElement> payloadSetArgumentCaptor = ArgumentCaptor.forClass(JsonElement.class);
 
-        CsvToJsonConverter csvToJsonConverter = new CsvToJsonConverter();
-        csvToJsonConverter.mediate(mc);
+        CsvToJsonTransformer csvToJsonTransformer = new CsvToJsonTransformer();
+        csvToJsonTransformer.mediate(mc);
 
         verify(mc).setJsonPayload(payloadSetArgumentCaptor.capture());
         JsonElement jsonElement = payloadSetArgumentCaptor.getValue();
@@ -156,15 +157,15 @@ class CsvToJsonConverterTest {
         lenient().when(mc.lookupTemplateParameter(ParameterKey.CUSTOM_HEADER)).thenReturn("");
         lenient().when(mc.lookupTemplateParameter(ParameterKey.USE_HEADER_AS_KEYS)).thenReturn("false");
         lenient().when(mc.lookupTemplateParameter(ParameterKey.CUSTOM_HEADER)).thenReturn("p,q,r");
-        lenient().when(mc.lookupTemplateParameter(ParameterKey.EMPTY_VALUE_AS_NULL)).thenReturn("true");
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.CSV_EMPTY_VALUES)).thenReturn("true");
         lenient().when(mc.lookupTemplateParameter(ParameterKey.DATA_TYPES)).thenReturn("integer,nUmber,boolean");
         when(mc.getCsvArrayStream(linesToSkip)).thenReturn(csvPayload.stream());
         when(mc.collectToJsonArray()).thenReturn(jsonArrayCollector);
 
         ArgumentCaptor<JsonElement> payloadSetArgumentCaptor = ArgumentCaptor.forClass(JsonElement.class);
 
-        CsvToJsonConverter csvToJsonConverter = new CsvToJsonConverter();
-        csvToJsonConverter.mediate(mc);
+        CsvToJsonTransformer csvToJsonTransformer = new CsvToJsonTransformer();
+        csvToJsonTransformer.mediate(mc);
 
         verify(mc).setJsonPayload(payloadSetArgumentCaptor.capture());
         JsonElement jsonElement = payloadSetArgumentCaptor.getValue();
@@ -188,7 +189,7 @@ class CsvToJsonConverterTest {
 
         lenient().when(mc.lookupTemplateParameter(ParameterKey.CUSTOM_HEADER)).thenReturn("");
         lenient().when(mc.lookupTemplateParameter(ParameterKey.USE_HEADER_AS_KEYS)).thenReturn("false");
-        lenient().when(mc.lookupTemplateParameter(ParameterKey.EMPTY_VALUE_AS_NULL)).thenReturn("true");
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.CSV_EMPTY_VALUES)).thenReturn("true");
         lenient().when(mc.lookupTemplateParameter(ParameterKey.DATA_TYPES)).thenReturn("integer,nUmber,boolean");
         when(mc.getCsvPayload(linesToSkip)).thenReturn(csvPayload);
         when(mc.getCsvArrayStream(linesToSkip)).thenReturn(csvPayload.stream());
@@ -196,8 +197,8 @@ class CsvToJsonConverterTest {
 
         ArgumentCaptor<JsonElement> payloadSetArgumentCaptor = ArgumentCaptor.forClass(JsonElement.class);
 
-        CsvToJsonConverter csvToJsonConverter = new CsvToJsonConverter();
-        csvToJsonConverter.mediate(mc);
+        CsvToJsonTransformer csvToJsonTransformer = new CsvToJsonTransformer();
+        csvToJsonTransformer.mediate(mc);
 
         verify(mc).setJsonPayload(payloadSetArgumentCaptor.capture());
         JsonElement jsonElement = payloadSetArgumentCaptor.getValue();
@@ -210,4 +211,4 @@ class CsvToJsonConverterTest {
         Assertions.assertEquals(expected, resultJson);
     }
 
-}
+}*/

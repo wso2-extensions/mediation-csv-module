@@ -1,6 +1,6 @@
 {
   "connectorName": "CSV",
-  "operationName": "CsvToCsv",
+  "operationName": "csvToCsv",
   "title": "Remove CSV Header",
   "help": "<h1>Remove CSV Header</h1> <b>Remove headers form a CSV payload</b>",
   "elements": [

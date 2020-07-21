@@ -15,16 +15,18 @@
   ~ specific language governing permissions and limitations
   ~ under the License.
   -->
-<template xmlns="http://ws.apache.org/ns/synapse" name="CsvToCsv">
-    <parameter name="headerPresent" description="Is there a header in the CSV payload ? Default if false"/>
+<template xmlns="http://ws.apache.org/ns/synapse" name="csvToCsv">
+    <parameter name="headerPresent" description="Is there a header in the CSV payload ? Default is Absent"/>
     <parameter name="valueSeparator" description="Specify a value separator for CSV. Default is comma ( , )"/>
     <parameter name="skipHeader" description="Should the header row be skipped from the content ? Default if false"/>
     <parameter name="dataRowsToSkip" description="Number of data rows to skip. Default is 0"/>
     <parameter name="orderByColumn" description="Order the CSV content by the values of the given column"/>
     <parameter name="columnOrdering" description="Order columns ascending or descending. Default is ascending"/>
-    <parameter name="columnsToSkip" description="Comma separated string of column indexes to skip. Leave blank to skip no columns"/>
+    <parameter name="columnsToSkip"
+               description="Comma separated string of column indexes to skip. Leave blank to skip no columns"/>
     <parameter name="customHeader" description="Comma separated string of header to set as CSV payload header"/>
-    <parameter name="customValueSeparator" description="Specify a value separator for CSV output. Default is comma ( , )"/>
+    <parameter name="customValueSeparator"
+               description="Specify a value separator for CSV output. Default is comma ( , )"/>
     <sequence>
 
         <property name="headerPresent"  expression="$func:headerPresent"/>

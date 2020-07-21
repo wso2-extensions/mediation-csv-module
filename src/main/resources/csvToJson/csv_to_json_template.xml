@@ -15,16 +15,31 @@
   ~ specific language governing permissions and limitations
   ~ under the License.
   -->
-<template xmlns="http://ws.apache.org/ns/synapse" name="CsvToJson">
-    <parameter name="useHeaderAsKeys" description="Use CSV header as Json Keys"/>
-    <parameter name="header" description="Comma separated string of header for Json Object keys"/>
-    <parameter name="emptyValueAsNull" description="Treat empty cell value as a null json primitive"/>
-    <parameter name="dataTypes" description="Specify data String data types as comma separated values"/>
+<template xmlns="http://ws.apache.org/ns/synapse" name="csvToJson">
+    <parameter name="headerPresent" description="Is there a header in the CSV payload ? Default is Absent"/>
+    <parameter name="valueSeparator" description="Specify a value separator for CSV. Default is comma ( , )"/>
+    <parameter name="skipHeader" description="Should the header row be skipped from the content ? Default if false"/>
+    <parameter name="columnsToSkip"
+               description="Comma separated string of column indexes to skip. Leave blank to skip no columns"/>
+    <parameter name="dataRowsToSkip" description="Number of data rows to skip. Default is 0"/>
+    <parameter name="csvEmptyValues" description="How to treat empty CSV values ? Default is to consider as null"/>
+    <parameter name="jsonKeys"
+               description="Comma separated keys to generated JSON object. Using the CSV header or auto generated keys if not specified"/>
+    <parameter name="dataTypes"
+               description="Specify data types as comma separated values. Supporting: string,integer,number,boolean"/>
+    <parameter name="rootJsonKey"
+               description="Specify data types as comma separated values. Supporting: string,integer,number,boolean"/>
+
     <sequence>
-        <property name="useHeaderAsKeys" expression="$func:useHeaderAsKeys"/>
-        <property name="header" expression="$func:header"/>
-        <property name="emptyValueAsNull" expression="$func:emptyValueAsNull"/>
+        <property name="headerPresent" expression="$func:headerPresent"/>
+        <property name="valueSeparator" expression="$func:valueSeparator"/>
+        <property name="skipHeader" expression="$func:skipHeader"/>
+        <property name="columnsToSkip" expression="$func:columnsToSkip"/>
+        <property name="dataRowsToSkip" expression="$func:dataRowsToSkip"/>
+        <property name="csvEmptyValues" expression="$func:csvEmptyValues"/>
+        <property name="jsonKeys" expression="$func:jsonKeys"/>
         <property name="dataTypes" expression="$func:dataTypes"/>
-        <class name="org.wso2.carbon.module.csv.CsvToJsonConverter"/>
+        <property name="rootJsonKey" expression="$func:rootJsonKey"/>
+        <class name="org.wso2.carbon.module.csv.CsvToJsonTransformer"/>
     </sequence>
 </template>
