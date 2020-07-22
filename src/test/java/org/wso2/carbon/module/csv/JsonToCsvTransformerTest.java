@@ -1,4 +1,4 @@
-package org.wso2.carbon.connector;
+package org.wso2.carbon.module.csv;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -10,8 +10,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.wso2.carbon.module.core.SimpleMessageContext;
 import org.wso2.carbon.module.core.collectors.CsvCollector;
-import org.wso2.carbon.module.csv.JsonToCsvConverter;
-import org.wso2.carbon.module.csv.util.ParameterKey;
+import org.wso2.carbon.module.csv.constants.ParameterKey;
 
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -21,7 +20,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class JsonToCsvConverterTest {
+class JsonToCsvTransformerTest {
 
     @Mock
     private SimpleMessageContext mc;
@@ -60,8 +59,8 @@ class JsonToCsvConverterTest {
 
         ArgumentCaptor<String> payloadSetArgumentCaptor = ArgumentCaptor.forClass(String.class);
 
-        JsonToCsvConverter jsonToCsvConverter = new JsonToCsvConverter();
-        jsonToCsvConverter.mediate(mc);
+        JsonToCsvTransformer jsonToCsvTransformer = new JsonToCsvTransformer();
+        jsonToCsvTransformer.mediate(mc);
 
         verify(mc).setTextPayload(payloadSetArgumentCaptor.capture());
         String setPayload = payloadSetArgumentCaptor.getValue();
@@ -110,8 +109,8 @@ class JsonToCsvConverterTest {
 
         ArgumentCaptor<String> payloadSetArgumentCaptor = ArgumentCaptor.forClass(String.class);
 
-        JsonToCsvConverter jsonToCsvConverter = new JsonToCsvConverter();
-        jsonToCsvConverter.mediate(mc);
+        JsonToCsvTransformer jsonToCsvTransformer = new JsonToCsvTransformer();
+        jsonToCsvTransformer.mediate(mc);
 
         verify(mc).setTextPayload(payloadSetArgumentCaptor.capture());
         String setPayload = payloadSetArgumentCaptor.getValue();

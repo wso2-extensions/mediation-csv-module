@@ -15,20 +15,34 @@
   ~ specific language governing permissions and limitations
   ~ under the License.
   -->
-<template xmlns="http://ws.apache.org/ns/synapse" name="CsvToXml">
-    <parameter name="useHeaderAsKeys" description="Use CSV header as XML tag names"/>
-    <parameter name="header" description="Comma separated string of header for XML tag names"/>
-    <parameter name="rootElementName" description="Name of the root xml element"/>
-    <parameter name="rootElementNamespaceURI" description="Namespace prefix for root element"/>
-    <parameter name="rootElementNamespace" description="Namespace URI for root element"/>
-    <parameter name="childElementName" description="Name of the children xml elements"/>
+<template xmlns="http://ws.apache.org/ns/synapse" name="csvToXml">
+    <parameter name="headerPresent" description="Is there a header in the CSV payload ? Default is Absent"/>
+    <parameter name="valueSeparator" description="Specify a value separator for CSV. Default is comma ( , )"/>
+    <parameter name="skipHeader" description="Should the header row be skipped from the content ? Default if false"/>
+    <parameter name="columnsToSkip"
+               description="Comma separated string of column indexes to skip. Leave blank to skip no columns"/>
+    <parameter name="dataRowsToSkip" description="Number of data rows to skip. Default is 0"/>
+
+    <parameter name="tagNames" description="Custom tag names to result tags. Use comma separated strings"/>
+    <parameter name="rootElementTag" description="Tag name of the root XML element"/>
+    <parameter name="rootElementNamespace" description="Namespace URI for root XML element"/>
+    <parameter name="rootElementNamespaceURI" description="Namespace prefix for root XML element"/>
+    <parameter name="groupElementName" description="Name of the group xml elements"/>
+    <parameter name="groupElementNamespace" description="Namespace URI for group XML element"/>
+    <parameter name="groupElementNamespaceURI" description="Namespace prefix group root XML element"/>
     <sequence>
-        <property name="header" expression="$func:header"/>
-        <property name="linesToSkip" expression="$func:linesToSkip"/>
-        <property name="rootElementName" expression="$func:rootElementName"/>
-        <property name="rootElementNamespaceURI" expression="$func:rootElementNamespaceURI"/>
+        <property name="headerPresent" expression="$func:headerPresent"/>
+        <property name="valueSeparator" expression="$func:valueSeparator"/>
+        <property name="skipHeader" expression="$func:skipHeader"/>
+        <property name="columnsToSkip" expression="$func:columnsToSkip"/>
+        <property name="dataRowsToSkip" expression="$func:dataRowsToSkip"/>
+        <property name="tagNames" expression="$func:tagNames"/>
+        <property name="rootElementTag" expression="$func:rootElementTag"/>
         <property name="rootElementNamespace" expression="$func:rootElementNamespace"/>
-        <property name="childElementName" expression="$func:childElementName"/>
-        <class name="org.wso2.carbon.module.csv.CsvToXmlConverter"/>
+        <property name="rootElementNamespaceURI" expression="$func:rootElementNamespaceURI"/>
+        <property name="groupElementName" expression="$func:groupElementName"/>
+        <property name="groupElementNamespace" expression="$func:groupElementNamespace"/>
+        <property name="groupElementNamespaceURI" expression="$func:groupElementNamespaceURI"/>
+        <class name="org.wso2.carbon.module.csv.CsvToXmlTransformer"/>
     </sequence>
 </template>

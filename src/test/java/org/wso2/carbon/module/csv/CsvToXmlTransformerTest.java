@@ -1,4 +1,4 @@
-package org.wso2.carbon.connector;
+package org.wso2.carbon.module.csv;
 
 import org.apache.axiom.om.OMElement;
 import org.junit.jupiter.api.Assertions;
@@ -9,19 +9,16 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.wso2.carbon.module.core.SimpleMessageContext;
-import org.wso2.carbon.module.csv.CsvToXmlConverter;
-import org.wso2.carbon.module.csv.util.ParameterKey;
+import org.wso2.carbon.module.csv.constants.ParameterKey;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.Mockito.lenient;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExtendWith(MockitoExtension.class)
-class CsvToXmlConverterTest {
+class CsvToXmlTransformerTest {
 
     @Mock
     private SimpleMessageContext mc;
@@ -50,8 +47,8 @@ class CsvToXmlConverterTest {
 
         ArgumentCaptor<OMElement> resultPayloadCaptor = ArgumentCaptor.forClass(OMElement.class);
 
-        CsvToXmlConverter csvToXmlConverter = new CsvToXmlConverter();
-        csvToXmlConverter.mediate(mc);
+        CsvToXmlTransformer csvToXmlTransformer = new CsvToXmlTransformer();
+        csvToXmlTransformer.mediate(mc);
 
         verify(mc).replaceRootXmlElement(resultPayloadCaptor.capture());
         OMElement resultPayload = resultPayloadCaptor.getValue();
@@ -83,8 +80,8 @@ class CsvToXmlConverterTest {
 
         ArgumentCaptor<OMElement> resultPayloadCaptor = ArgumentCaptor.forClass(OMElement.class);
 
-        CsvToXmlConverter csvToXmlConverter = new CsvToXmlConverter();
-        csvToXmlConverter.mediate(mc);
+        CsvToXmlTransformer csvToXmlTransformer = new CsvToXmlTransformer();
+        csvToXmlTransformer.mediate(mc);
 
         verify(mc).replaceRootXmlElement(resultPayloadCaptor.capture());
         OMElement resultPayload = resultPayloadCaptor.getValue();
@@ -127,8 +124,8 @@ class CsvToXmlConverterTest {
 
         ArgumentCaptor<OMElement> resultPayloadCaptor = ArgumentCaptor.forClass(OMElement.class);
 
-        CsvToXmlConverter csvToXmlConverter = new CsvToXmlConverter();
-        csvToXmlConverter.mediate(mc);
+        CsvToXmlTransformer csvToXmlTransformer = new CsvToXmlTransformer();
+        csvToXmlTransformer.mediate(mc);
 
         verify(mc).replaceRootXmlElement(resultPayloadCaptor.capture());
         OMElement resultPayload = resultPayloadCaptor.getValue();

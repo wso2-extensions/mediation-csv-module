@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.wso2.carbon.module.csv.util;
+package org.wso2.carbon.module.csv.constants;
 
 public class ParameterKey {
 
@@ -24,9 +24,7 @@ public class ParameterKey {
     public static final String ROOT_ELEMENT_NAME = "rootElementName";
     public static final String CHILD_ELEMENT_NAME = "childElementName";
     public static final String ROOT_ELEMENT_NAMESPACE_PREFIX = "rootElementNamespace";
-    public static final String ROOT_ELEMENT_NAMESPACE_URI = "rootElementNamespaceURI";
     public static final String DATA_TYPES = "dataTypes";
-    public static final String INVERSE_SORT = "inverseSort";
     public static final String USE_HEADER_AS_KEYS = "useHeaderAsKeys";
 
     public static final String IS_HEADER_PRESENT = "headerPresent";
@@ -42,6 +40,13 @@ public class ParameterKey {
     public static final String CSV_EMPTY_VALUES = "csvEmptyValues";
     public static final String JSON_KEYS = "jsonKeys";
     public static final String ROOT_JSON_KEY = "rootJsonKey";
+    public static final String XML_TAG_NAMES = "tagNames";
+    public static final String ROOT_ELEMENT_TAG_NAME = "rootElementTag";
+    public static final String ROOT_ELEMENT_NAMESPACE = "rootElementNamespace";
+    public static final String ROOT_ELEMENT_NAMESPACE_URI = "rootElementNamespaceURI";
+    public static final String GROUP_ELEMENT_TAG_NAME = "groupElementName";
+    public static final String GROUP_ELEMENT_NAMESPACE = "groupElementNamespace";
+    public static final String GROUP_ELEMENT_NAMESPACE_URI = "groupElementNamespaceURI";
 
     private ParameterKey() {
 

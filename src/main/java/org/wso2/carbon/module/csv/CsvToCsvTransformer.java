@@ -4,11 +4,11 @@ import org.apache.synapse.SynapseException;
 import org.wso2.carbon.module.core.SimpleMediator;
 import org.wso2.carbon.module.core.SimpleMessageContext;
 import org.wso2.carbon.module.core.models.CsvPayloadInfo;
+import org.wso2.carbon.module.csv.constants.Constants;
+import org.wso2.carbon.module.csv.constants.ParameterKey;
 import org.wso2.carbon.module.csv.enums.HeaderAvailability;
 import org.wso2.carbon.module.csv.enums.OrderingType;
-import org.wso2.carbon.module.csv.util.Constants;
 import org.wso2.carbon.module.csv.util.CsvTransformer;
-import org.wso2.carbon.module.csv.util.ParameterKey;
 
 import java.util.Optional;
 import java.util.stream.Stream;

@@ -18,7 +18,7 @@
   -->
 <component name="csvToXml" type="synapse/template">
     <subComponents>
-        <component name="CsvToXml">
+        <component name="csvToXml">
             <file>csv_to_ml_template.xml</file>
             <description>Convert CSV to XML</description>
         </component>

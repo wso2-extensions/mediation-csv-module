@@ -1,4 +1,4 @@
-package org.wso2.carbon.connector;
+package org.wso2.carbon.module.csv;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.util.AXIOMUtil;
@@ -10,20 +10,18 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.wso2.carbon.module.core.SimpleMessageContext;
 import org.wso2.carbon.module.core.collectors.CsvCollector;
-import org.wso2.carbon.module.csv.XmlToCsvConverter;
-import org.wso2.carbon.module.csv.util.ParameterKey;
-
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
+import org.wso2.carbon.module.csv.constants.ParameterKey;
 
 import javax.xml.stream.XMLStreamException;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class XmlToCsvConverterTest {
+class XmlToCsvTransformerTest {
 
     @Mock
     private SimpleMessageContext mc;
@@ -61,8 +59,8 @@ class XmlToCsvConverterTest {
 
         ArgumentCaptor<String> payloadSetArgumentCaptor = ArgumentCaptor.forClass(String.class);
 
-        XmlToCsvConverter xmlToCsvConverter = new XmlToCsvConverter();
-        xmlToCsvConverter.mediate(mc);
+        XmlToCsvTransformer xmlToCsvTransformer = new XmlToCsvTransformer();
+        xmlToCsvTransformer.mediate(mc);
 
         verify(mc).setTextPayload(payloadSetArgumentCaptor.capture());
         String setPayload = payloadSetArgumentCaptor.getValue();
@@ -111,8 +109,8 @@ class XmlToCsvConverterTest {
 
         ArgumentCaptor<String> payloadSetArgumentCaptor = ArgumentCaptor.forClass(String.class);
 
-        XmlToCsvConverter xmlToCsvConverter = new XmlToCsvConverter();
-        xmlToCsvConverter.mediate(mc);
+        XmlToCsvTransformer xmlToCsvTransformer = new XmlToCsvTransformer();
+        xmlToCsvTransformer.mediate(mc);
 
         verify(mc).setTextPayload(payloadSetArgumentCaptor.capture());
         String setPayload = payloadSetArgumentCaptor.getValue();

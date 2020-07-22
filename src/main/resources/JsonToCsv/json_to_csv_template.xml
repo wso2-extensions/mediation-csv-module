@@ -15,10 +15,10 @@
   ~ specific language governing permissions and limitations
   ~ under the License.
   -->
-<template xmlns="http://ws.apache.org/ns/synapse" name="JsonToCsv">
-    <parameter name="header" description="Comma separated string of header for Csv payload"/>
+<template xmlns="http://ws.apache.org/ns/synapse" name="jsonToCsv">
+    <parameter name="customHeader" description="Comma separated string of header for Csv payload"/>
     <sequence>
-        <property name="header" expression="$func:header"/>
-        <class name="org.wso2.carbon.module.csv.JsonToCsvConverter"/>
+        <property name="customHeader" expression="$func:customHeader"/>
+        <class name="org.wso2.carbon.module.csv.JsonToCsvTransformer"/>
     </sequence>
 </template>

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.wso2.carbon.module.csv.util;
+package org.wso2.carbon.module.csv.enums;
 
 public enum JsonDataType {
     BOOLEAN,

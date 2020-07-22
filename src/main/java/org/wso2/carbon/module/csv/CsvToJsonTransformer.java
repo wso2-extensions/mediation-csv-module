@@ -21,58 +21,29 @@ package org.wso2.carbon.module.csv;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import org.apache.commons.lang.StringUtils;
-import org.wso2.carbon.module.core.SimpleMediator;
 import org.wso2.carbon.module.core.SimpleMessageContext;
-import org.wso2.carbon.module.core.models.CsvPayloadInfo;
+import org.wso2.carbon.module.csv.constants.Constants;
+import org.wso2.carbon.module.csv.constants.ParameterKey;
 import org.wso2.carbon.module.csv.enums.EmptyCsvValueType;
-import org.wso2.carbon.module.csv.enums.HeaderAvailability;
-import org.wso2.carbon.module.csv.util.Constants;
-import org.wso2.carbon.module.csv.util.CsvTransformer;
-import org.wso2.carbon.module.csv.util.JsonDataType;
-import org.wso2.carbon.module.csv.util.ParameterKey;
+import org.wso2.carbon.module.csv.enums.JsonDataType;
 
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static org.wso2.carbon.module.csv.util.CsvTransformer.skipColumns;
-import static org.wso2.carbon.module.csv.util.CsvTransformer.skipColumnsSingleRow;
-import static org.wso2.carbon.module.csv.util.PropertyReader.*;
+import static org.wso2.carbon.module.csv.util.PropertyReader.getEnumParam;
+import static org.wso2.carbon.module.csv.util.PropertyReader.getStringParam;
 
-public class CsvToJsonTransformer extends SimpleMediator {
+public class CsvToJsonTransformer extends AbstractCsvToAnyTransformer {
 
     @Override
-    public void mediate(SimpleMessageContext mc) {
-
-        final HeaderAvailability headerAvailability = getEnumParam(mc, ParameterKey.IS_HEADER_PRESENT, HeaderAvailability.class, HeaderAvailability.ABSENT);
-        final Optional<Character> valueSeparatorOptional = getCharParam(mc, ParameterKey.VALUE_SEPARATOR);
-        final char valueSeparator = valueSeparatorOptional.orElse(Constants.DEFAULT_CSV_SEPARATOR);
-        final boolean skipHeader = getBooleanParam(mc, ParameterKey.SKIP_HEADER);
-        final Optional<Integer> dataRowsToSkip = getIntegerParam(mc, ParameterKey.DATA_ROWS_TO_SKIP);
-        final Optional<String> columnsToSkip = getStringParam(mc, ParameterKey.COLUMNS_TO_SKIP);
+    void mediate(SimpleMessageContext mc, Stream<String[]> csvArrayStream, String[] header) {
         final EmptyCsvValueType treatEmptyCsvValueAs = getEnumParam(mc, ParameterKey.CSV_EMPTY_VALUES, EmptyCsvValueType.class, EmptyCsvValueType.NULL);
         final Optional<String> jsonKeysQuery = getStringParam(mc, ParameterKey.JSON_KEYS);
         final Optional<String> dataTypesQuery = getStringParam(mc, ParameterKey.DATA_TYPES);
-        final Optional<String> rootJsonKey = getStringParam(mc, ParameterKey.ROOT_JSON_KEY); // todo:: implement this
+        final Optional<String> rootJsonKeyQuery = getStringParam(mc, ParameterKey.ROOT_JSON_KEY); // todo:: implement this
 
-        CsvPayloadInfo csvPayloadInfo = new CsvPayloadInfo();
-        if (headerAvailability == HeaderAvailability.PRESENT) {
-            csvPayloadInfo = mc.getCsvPayloadInfo(valueSeparator);
-        }
-        int linesToSkip = CsvTransformer.getLinesToSkip(headerAvailability, dataRowsToSkip.orElse(0));
 
-        String[] header = CsvTransformer.getHeader(csvPayloadInfo, headerAvailability);
-        Stream<String[]> csvArrayStream = mc.getCsvArrayStream(linesToSkip, valueSeparator);
-        if (columnsToSkip.isPresent()) {
-            csvArrayStream = skipColumns(csvPayloadInfo.getNumberOfColumns(), columnsToSkip.get(), valueSeparator, csvArrayStream);
-            if (headerAvailability == HeaderAvailability.PRESENT) {
-                header = skipColumnsSingleRow(csvPayloadInfo.getNumberOfColumns(), columnsToSkip.get(), valueSeparator, csvPayloadInfo.getFirstRow());
-            }
-        }
-        if (headerAvailability == HeaderAvailability.PRESENT && !skipHeader) {
-            csvArrayStream = Stream.concat(Stream.<String[]>of(header), csvArrayStream);
-        }
-
-        String[] jsonKeys = generateJsonKeys(jsonKeysQuery.orElse(""), header);
+        String[] jsonKeys = generateObjectKeys(jsonKeysQuery.orElse(""), header);
         String[] dataTypes = getDataTypes(dataTypesQuery.orElse(""));
 
         csvArrayStream
@@ -81,35 +52,13 @@ public class CsvToJsonTransformer extends SimpleMediator {
 
                     for (int i = 0; i < row.length; i++) {
                         JsonPrimitive value = getCellValue(row, i, treatEmptyCsvValueAs, dataTypes);
-                        String key = getJsonKey(jsonKeys, i);
+                        String key = getObjectKey(jsonKeys, i);
                         jsonObject.add(key, value);
                     }
 
                     return jsonObject;
                 })
                 .collect(mc.collectToJsonArray());
-    }
-
-    private String[] generateJsonKeys(String jsonKeysQuery, String[] csvHeader) {
-        String[] jsonKeys;
-
-        if (StringUtils.isNotBlank(jsonKeysQuery)) {
-            jsonKeys = jsonKeysQuery.split(Constants.DEFAULT_EXPRESSION_SPLITTER);
-        } else {
-            jsonKeys = csvHeader.clone();
-        }
-
-        return jsonKeys;
-    }
-
-    private String getJsonKey(String[] header, int index) {
-        String headerValue;
-        if (index < header.length) {
-            headerValue = header[index];
-        } else {
-            headerValue = String.format("key-%d", index + 1);
-        }
-        return headerValue;
     }
 
     private JsonPrimitive getCellValue(String[] row, int index, EmptyCsvValueType emptyCsvValueType, String[] dataTypes) {

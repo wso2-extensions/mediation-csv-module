@@ -10,8 +10,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.wso2.carbon.module.core.SimpleMessageContext;
 import org.wso2.carbon.module.core.collectors.JsonArrayCollector;
 import org.wso2.carbon.module.core.models.CsvPayloadInfo;
-import org.wso2.carbon.module.csv.util.Constants;
-import org.wso2.carbon.module.csv.util.ParameterKey;
+import org.wso2.carbon.module.csv.constants.Constants;
+import org.wso2.carbon.module.csv.constants.ParameterKey;
 
 import java.util.ArrayList;
 import java.util.List;

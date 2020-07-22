@@ -24,14 +24,14 @@ import com.google.gson.JsonObject;
 import org.apache.commons.lang.StringUtils;
 import org.wso2.carbon.module.core.SimpleMediator;
 import org.wso2.carbon.module.core.SimpleMessageContext;
-import org.wso2.carbon.module.csv.util.ParameterKey;
+import org.wso2.carbon.module.csv.constants.ParameterKey;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class JsonToCsvConverter extends SimpleMediator {
+public class JsonToCsvTransformer extends SimpleMediator {
 
     @Override
     public void mediate(SimpleMessageContext mc) {
@@ -41,7 +41,6 @@ public class JsonToCsvConverter extends SimpleMediator {
                 .map(JsonElement::getAsJsonObject)
                 .map(obj -> {
                     List<String> csvEntry = new ArrayList<>();
-
                     Set<Map.Entry<String, JsonElement>> entries = obj.entrySet();
                     for (Map.Entry<String, JsonElement> elementEntry : entries) {
                         csvEntry.add(elementEntry.getValue().getAsString());
