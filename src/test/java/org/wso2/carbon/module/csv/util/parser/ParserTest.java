@@ -1,9 +1,7 @@
-package org.wso2.carbon.connector.util.parser;
+package org.wso2.carbon.module.csv.util.parser;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.wso2.carbon.module.csv.util.parser.Parser;
-import org.wso2.carbon.module.csv.util.parser.Tokenizer;
 import org.wso2.carbon.module.csv.util.parser.exception.ParserException;
 import org.wso2.carbon.module.csv.util.parser.model.Token;
 

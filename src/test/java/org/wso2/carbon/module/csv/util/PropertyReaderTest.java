@@ -1,4 +1,4 @@
-package org.wso2.carbon.connector.util;
+package org.wso2.carbon.module.csv.util;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -6,8 +6,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.wso2.carbon.module.core.SimpleMessageContext;
-import org.wso2.carbon.module.csv.util.ParameterKey;
-import org.wso2.carbon.module.csv.util.PropertyReader;
 
 import static org.mockito.Mockito.when;
 

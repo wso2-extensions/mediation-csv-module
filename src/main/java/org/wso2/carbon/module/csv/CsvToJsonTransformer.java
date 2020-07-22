@@ -23,6 +23,7 @@ import com.google.gson.JsonPrimitive;
 import org.apache.commons.lang.StringUtils;
 import org.wso2.carbon.module.core.SimpleMediator;
 import org.wso2.carbon.module.core.SimpleMessageContext;
+import org.wso2.carbon.module.core.models.CsvPayloadInfo;
 import org.wso2.carbon.module.csv.enums.EmptyCsvValueType;
 import org.wso2.carbon.module.csv.enums.HeaderAvailability;
 import org.wso2.carbon.module.csv.util.Constants;
@@ -34,6 +35,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import static org.wso2.carbon.module.csv.util.CsvTransformer.skipColumns;
+import static org.wso2.carbon.module.csv.util.CsvTransformer.skipColumnsSingleRow;
 import static org.wso2.carbon.module.csv.util.PropertyReader.*;
 
 public class CsvToJsonTransformer extends SimpleMediator {
@@ -41,32 +43,44 @@ public class CsvToJsonTransformer extends SimpleMediator {
     @Override
     public void mediate(SimpleMessageContext mc) {
 
-        final Optional<HeaderAvailability> headerAvailability = getEnumParam(mc, ParameterKey.IS_HEADER_PRESENT, HeaderAvailability.class);
-        final Optional<Character> valueSeparator = getCharParam(mc, ParameterKey.VALUE_SEPARATOR);
+        final HeaderAvailability headerAvailability = getEnumParam(mc, ParameterKey.IS_HEADER_PRESENT, HeaderAvailability.class, HeaderAvailability.ABSENT);
+        final Optional<Character> valueSeparatorOptional = getCharParam(mc, ParameterKey.VALUE_SEPARATOR);
+        final char valueSeparator = valueSeparatorOptional.orElse(Constants.DEFAULT_CSV_SEPARATOR);
         final boolean skipHeader = getBooleanParam(mc, ParameterKey.SKIP_HEADER);
         final Optional<Integer> dataRowsToSkip = getIntegerParam(mc, ParameterKey.DATA_ROWS_TO_SKIP);
         final Optional<String> columnsToSkip = getStringParam(mc, ParameterKey.COLUMNS_TO_SKIP);
-        final Optional<EmptyCsvValueType> treatEmptyCsvValueAs = getEnumParam(mc, ParameterKey.CSV_EMPTY_VALUES, EmptyCsvValueType.class);
+        final EmptyCsvValueType treatEmptyCsvValueAs = getEnumParam(mc, ParameterKey.CSV_EMPTY_VALUES, EmptyCsvValueType.class, EmptyCsvValueType.NULL);
         final Optional<String> jsonKeysQuery = getStringParam(mc, ParameterKey.JSON_KEYS);
         final Optional<String> dataTypesQuery = getStringParam(mc, ParameterKey.DATA_TYPES);
         final Optional<String> rootJsonKey = getStringParam(mc, ParameterKey.ROOT_JSON_KEY); // todo:: implement this
 
-        String[] header = CsvTransformer.getHeader(mc, headerAvailability.orElse(HeaderAvailability.ABSENT), valueSeparator.orElse(Constants.DEFAULT_CSV_SEPARATOR));
-        int linesToSkip = CsvTransformer.getLinesToSkip(headerAvailability.orElse(HeaderAvailability.ABSENT), skipHeader, dataRowsToSkip.orElse(0));
+        CsvPayloadInfo csvPayloadInfo = new CsvPayloadInfo();
+        if (headerAvailability == HeaderAvailability.PRESENT) {
+            csvPayloadInfo = mc.getCsvPayloadInfo(valueSeparator);
+        }
+        int linesToSkip = CsvTransformer.getLinesToSkip(headerAvailability, dataRowsToSkip.orElse(0));
+
+        String[] header = CsvTransformer.getHeader(csvPayloadInfo, headerAvailability);
+        Stream<String[]> csvArrayStream = mc.getCsvArrayStream(linesToSkip, valueSeparator);
+        if (columnsToSkip.isPresent()) {
+            csvArrayStream = skipColumns(csvPayloadInfo.getNumberOfColumns(), columnsToSkip.get(), valueSeparator, csvArrayStream);
+            if (headerAvailability == HeaderAvailability.PRESENT) {
+                header = skipColumnsSingleRow(csvPayloadInfo.getNumberOfColumns(), columnsToSkip.get(), valueSeparator, csvPayloadInfo.getFirstRow());
+            }
+        }
+        if (headerAvailability == HeaderAvailability.PRESENT && !skipHeader) {
+            csvArrayStream = Stream.concat(Stream.<String[]>of(header), csvArrayStream);
+        }
+
         String[] jsonKeys = generateJsonKeys(jsonKeysQuery.orElse(""), header);
         String[] dataTypes = getDataTypes(dataTypesQuery.orElse(""));
-
-        Stream<String[]> csvArrayStream = mc.getCsvArrayStream(linesToSkip, valueSeparator.orElse(Constants.DEFAULT_CSV_SEPARATOR));
-        if (columnsToSkip.isPresent()) {
-            csvArrayStream = skipColumns(mc, columnsToSkip.get(), csvArrayStream);
-        }
 
         csvArrayStream
                 .map(row -> {
                     JsonObject jsonObject = new JsonObject();
 
                     for (int i = 0; i < row.length; i++) {
-                        JsonPrimitive value = getCellValue(row, i, treatEmptyCsvValueAs.orElse(EmptyCsvValueType.NULL), dataTypes);
+                        JsonPrimitive value = getCellValue(row, i, treatEmptyCsvValueAs, dataTypes);
                         String key = getJsonKey(jsonKeys, i);
                         jsonObject.add(key, value);
                     }

@@ -3,17 +3,14 @@ package org.wso2.carbon.module.csv.util;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.wso2.carbon.module.core.SimpleMessageContext;
 import org.wso2.carbon.module.core.exceptions.SimpleMessageContextException;
+import org.wso2.carbon.module.core.models.CsvPayloadInfo;
 import org.wso2.carbon.module.csv.enums.HeaderAvailability;
 import org.wso2.carbon.module.csv.util.parser.Parser;
 import org.wso2.carbon.module.csv.util.parser.Tokenizer;
 import org.wso2.carbon.module.csv.util.parser.model.Token;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class CsvTransformer {
@@ -23,13 +20,12 @@ public class CsvTransformer {
     private CsvTransformer() {
     }
 
-    public static String[] getHeader(SimpleMessageContext mc, HeaderAvailability headerAvailability, char valueSeparator) {
+    public static String[] getHeader(CsvPayloadInfo payloadInfo, HeaderAvailability headerAvailability) {
         String[] header = new String[]{};
 
         if (headerAvailability == HeaderAvailability.PRESENT) {
-            List<String[]> csvPayload = mc.getCsvPayload(0, valueSeparator);
-            if (!csvPayload.isEmpty()) {
-                header = csvPayload.get(0);
+            if (payloadInfo.getNumberOfColumns() > 0) {
+                header = payloadInfo.getFirstRow();
             } else {
                 throw new SimpleMessageContextException("Invalid csv content");
             }
@@ -38,47 +34,55 @@ public class CsvTransformer {
         return header;
     }
 
-    public static int getLinesToSkip(HeaderAvailability headerAvailability, boolean skipHeader, int dateRowsToSkip) {
+    public static int getLinesToSkip(HeaderAvailability headerAvailability, int dateRowsToSkip) {
         int linesToSkip = dateRowsToSkip;
-        if (headerAvailability == HeaderAvailability.PRESENT && skipHeader) {
+        if (headerAvailability == HeaderAvailability.PRESENT) {
             linesToSkip++;
         }
 
         return linesToSkip;
     }
 
-    public static Stream<String[]> skipColumns(SimpleMessageContext mc, String columnsToSkip, Stream<String[]> csvArrayStream) {
-        Optional<int[]> skippingColumns = getSkippingColumns(mc, columnsToSkip);
+    public static Stream<String[]> skipColumns(int columnCount, String columnsToSkip, char separator, Stream<String[]> csvArrayStream) {
+        Optional<int[]> skippingColumns = getSkippingColumns(columnCount, columnsToSkip, separator);
         if (skippingColumns.isPresent()) {
             csvArrayStream = csvArrayStream
                     .map(Arrays::asList)
                     .map(LinkedList::new)
                     .map(row -> {
 
-                        int[] currentSkippingColumns = skippingColumns.get().clone();
-
-                        for (int i = 0; i < currentSkippingColumns.length; i++) {
-
-                            for (int j = i; j < currentSkippingColumns.length; j++) {
-                                currentSkippingColumns[j]--;
-                            }
-
-                            int currentIndex = currentSkippingColumns[i];
-                            if (currentIndex >= 0 && currentIndex < row.size()) {
-                                row.remove(currentIndex);
-                            } else {
-                                log.debug("Invalid index to remove");
-                            }
-                        }
-
-                        return row.toArray(new String[]{});
+                        return skipColumns(skippingColumns.get(), row);
                     });
         }
         return csvArrayStream;
     }
 
-    private static Optional<int[]> getSkippingColumns(SimpleMessageContext mc, String columnsToSkip) {
-        int columnCount = mc.getCsvPayload().get(0).length;
+    private static String[] skipColumns(int[] skippingColumns, List<String> row) {
+        int[] currentSkippingColumns = skippingColumns.clone();
+
+        for (int i = 0; i < currentSkippingColumns.length; i++) {
+
+            for (int j = i; j < currentSkippingColumns.length; j++) {
+                currentSkippingColumns[j]--;
+            }
+
+            int currentIndex = currentSkippingColumns[i];
+            if (currentIndex >= 0 && currentIndex < row.size()) {
+                row.remove(currentIndex);
+            } else {
+                log.debug("Invalid index to remove");
+            }
+        }
+
+        return row.toArray(new String[]{});
+    }
+
+    public static String[] skipColumnsSingleRow(int columnCount, String columnsToSkip, char separator, String[] row) {
+        Optional<int[]> skippingColumns = getSkippingColumns(columnCount, columnsToSkip, separator);
+        return skippingColumns.map(ints -> skipColumns(ints, new ArrayList<>(Arrays.asList(row)))).orElse(row);
+    }
+
+    private static Optional<int[]> getSkippingColumns(int columnCount, String columnsToSkip, char separator) {
         Optional<int[]> skippingColumns;
 
         if (StringUtils.isNotBlank(columnsToSkip)) {

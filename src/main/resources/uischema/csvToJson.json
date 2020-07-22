@@ -67,7 +67,7 @@
                     "inputType": "booleanOrExpression",
                     "defaultValue": false,
                     "required": "false",
-                    "helpTip": "Should the header row be skipped from the content ? Default if false"
+                    "helpTip": "Should the header row be skipped from the content ? Default is Absent"
                   }
                 },
                 {

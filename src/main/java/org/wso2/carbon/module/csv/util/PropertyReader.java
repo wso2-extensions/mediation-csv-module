@@ -118,16 +118,16 @@ public class PropertyReader {
         return skipHeader;
     }
 
-    public static <E extends Enum<E>> Optional<E> getEnumParam(SimpleMessageContext mc, String parameterKey, Class<E> enumType) {
+    public static <E extends Enum<E>> E getEnumParam(SimpleMessageContext mc, String parameterKey, Class<E> enumType, E defaultValue) {
         Optional<String> parameterValue = getStringParam(mc, parameterKey);
         if (parameterValue.isPresent()) {
             try {
-                return Optional.of(Enum.valueOf(enumType, parameterValue.get().toUpperCase()));
+                return Enum.valueOf(enumType, parameterValue.get().toUpperCase());
             } catch (Exception e) {
                 throw new SimpleMessageContextException(String.format("Invalid parameter value for %s : %s", parameterKey, parameterValue.get()));
             }
         } else {
-            return Optional.empty();
+            return defaultValue;
         }
     }
 

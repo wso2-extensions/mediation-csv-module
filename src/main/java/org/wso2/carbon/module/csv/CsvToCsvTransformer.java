@@ -3,6 +3,7 @@ package org.wso2.carbon.module.csv;
 import org.apache.synapse.SynapseException;
 import org.wso2.carbon.module.core.SimpleMediator;
 import org.wso2.carbon.module.core.SimpleMessageContext;
+import org.wso2.carbon.module.core.models.CsvPayloadInfo;
 import org.wso2.carbon.module.csv.enums.HeaderAvailability;
 import org.wso2.carbon.module.csv.enums.OrderingType;
 import org.wso2.carbon.module.csv.util.Constants;
@@ -12,6 +13,7 @@ import org.wso2.carbon.module.csv.util.ParameterKey;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import static org.wso2.carbon.module.csv.util.CsvTransformer.skipColumnsSingleRow;
 import static org.wso2.carbon.module.csv.util.PropertyReader.*;
 
 public class CsvToCsvTransformer extends SimpleMediator {
@@ -19,37 +21,53 @@ public class CsvToCsvTransformer extends SimpleMediator {
     @Override
     public void mediate(SimpleMessageContext mc) {
 
-        final Optional<HeaderAvailability> headerAvailability = getEnumParam(mc, ParameterKey.IS_HEADER_PRESENT, HeaderAvailability.class);
-        final Optional<Character> valueSeparator = getCharParam(mc, ParameterKey.VALUE_SEPARATOR);
+        final HeaderAvailability headerAvailability = getEnumParam(mc, ParameterKey.IS_HEADER_PRESENT, HeaderAvailability.class, HeaderAvailability.ABSENT);
+        final Optional<Character> valueSeparatorOptional = getCharParam(mc, ParameterKey.VALUE_SEPARATOR);
+        final char valueSeparator = valueSeparatorOptional.orElse(Constants.DEFAULT_CSV_SEPARATOR);
         final boolean skipHeader = getBooleanParam(mc, ParameterKey.SKIP_HEADER);
         final Optional<Integer> dataRowsToSkip = getIntegerParam(mc, ParameterKey.DATA_ROWS_TO_SKIP);
         final Optional<String> columnsToSkip = getStringParam(mc, ParameterKey.COLUMNS_TO_SKIP);
         final Optional<Integer> orderByColumn = getIntegerParam(mc, ParameterKey.ORDER_BY_COLUMN); // todo :: add support for column names
-        final Optional<OrderingType> columnOrdering = getEnumParam(mc, ParameterKey.SORT_COLUMNS_BY_ORDERING, OrderingType.class);
+        final OrderingType columnOrdering = getEnumParam(mc, ParameterKey.SORT_COLUMNS_BY_ORDERING, OrderingType.class, OrderingType.ASCENDING);
         final Optional<String> customHeader = getStringParam(mc, ParameterKey.CUSTOM_HEADER);
         final Optional<Character> customValueSeparator = getCharParam(mc, ParameterKey.CUSTOM_VALUE_SEPARATOR);
 
-        String[] header = CsvTransformer.getHeader(mc, headerAvailability.orElse(HeaderAvailability.ABSENT), valueSeparator.orElse(Constants.DEFAULT_CSV_SEPARATOR));
-        int linesToSkip = CsvTransformer.getLinesToSkip(headerAvailability.orElse(HeaderAvailability.ABSENT), skipHeader, dataRowsToSkip.orElse(0));
+        CsvPayloadInfo payloadInfo = new CsvPayloadInfo();
+        if (headerAvailability == HeaderAvailability.PRESENT || customHeader.isPresent()) {
+            payloadInfo = mc.getCsvPayloadInfo(valueSeparator);
+        }
+        String[] header = CsvTransformer.getHeader(payloadInfo, headerAvailability);
+        int linesToSkip = CsvTransformer.getLinesToSkip(headerAvailability, dataRowsToSkip.orElse(0));
 
-        Stream<String[]> csvArrayStream = mc.getCsvArrayStream(linesToSkip, valueSeparator.orElse(Constants.DEFAULT_CSV_SEPARATOR));
+        Stream<String[]> csvArrayStream = mc.getCsvArrayStream(linesToSkip, valueSeparator);
 
         if (orderByColumn.isPresent()) {
-            csvArrayStream = reorder(orderByColumn.get(), csvArrayStream, columnOrdering.orElse(OrderingType.ASCENDING));
+            csvArrayStream = reorder(orderByColumn.get(), csvArrayStream, columnOrdering);
         }
-
         if (columnsToSkip.isPresent()) {
-            csvArrayStream = CsvTransformer.skipColumns(mc, columnsToSkip.get(), csvArrayStream);
+            csvArrayStream = CsvTransformer.skipColumns(payloadInfo.getNumberOfColumns(), columnsToSkip.get(), valueSeparator, csvArrayStream);
         }
 
-        String[] resultHeader;
-        if (skipHeader && customHeader.isPresent()) {
-            resultHeader = customHeader.get().split(Constants.DEFAULT_EXPRESSION_SPLITTER);
-        } else {
-            resultHeader = header;
+        String[] resultHeader = null;
+        if (headerAvailability == HeaderAvailability.PRESENT) {
+            if (customHeader.isPresent()) {
+                resultHeader = getCustomHeader(customHeader.get());
+            } else if (!skipHeader) {
+                resultHeader = header;
+            }
+        } else if (customHeader.isPresent()) {
+            resultHeader = getCustomHeader(customHeader.get());
         }
+        if (columnsToSkip.isPresent() && resultHeader != null) {
+            resultHeader = skipColumnsSingleRow(payloadInfo.getNumberOfColumns(), columnsToSkip.get(), valueSeparator, payloadInfo.getFirstRow());
+        }
+
         csvArrayStream.collect(mc.collectToCsv(resultHeader, customValueSeparator.orElse(Constants.DEFAULT_CSV_SEPARATOR)));
 
+    }
+
+    private String[] getCustomHeader(String customHeader) {
+        return customHeader.split(Constants.DEFAULT_EXPRESSION_SPLITTER);
     }
 
     private Stream<String[]> reorder(int orderByColumn, Stream<String[]> csvArrayStream, OrderingType orderingType) {
