@@ -62,7 +62,7 @@ abstract class AbstractCsvToAnyTransformer extends SimpleMediator {
         if (index < header.length) {
             headerValue = header[index];
         } else {
-            headerValue = String.format("key-%d", index + 1);
+            headerValue = String.format("%s-%d", Constants.DEFAULT_OBJECT_KEY_PREFIX, index + 1);
         }
         return headerValue;
     }

@@ -21,11 +21,7 @@ package org.wso2.carbon.module.csv.constants;
 public class ParameterKey {
 
     public static final String LINES_TO_SKIP = "linesToSkip";
-    public static final String ROOT_ELEMENT_NAME = "rootElementName";
-    public static final String CHILD_ELEMENT_NAME = "childElementName";
-    public static final String ROOT_ELEMENT_NAMESPACE_PREFIX = "rootElementNamespace";
     public static final String DATA_TYPES = "dataTypes";
-    public static final String USE_HEADER_AS_KEYS = "useHeaderAsKeys";
 
     public static final String IS_HEADER_PRESENT = "headerPresent";
     public static final String VALUE_SEPARATOR = "valueSeparator";
