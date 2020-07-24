@@ -1,6 +1,5 @@
 package org.wso2.carbon.module.csv;
 
-import org.apache.synapse.SynapseException;
 import org.wso2.carbon.module.core.SimpleMediator;
 import org.wso2.carbon.module.core.SimpleMessageContext;
 import org.wso2.carbon.module.core.models.CsvPayloadInfo;
@@ -13,6 +12,7 @@ import org.wso2.carbon.module.csv.util.CsvTransformer;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import static org.wso2.carbon.module.csv.util.CsvTransformer.resolveColumnIndex;
 import static org.wso2.carbon.module.csv.util.CsvTransformer.skipColumnsSingleRow;
 import static org.wso2.carbon.module.csv.util.PropertyReader.*;
 
@@ -26,8 +26,8 @@ public class CsvToCsvTransformer extends SimpleMediator {
         final char valueSeparator = valueSeparatorOptional.orElse(Constants.DEFAULT_CSV_SEPARATOR);
         final boolean skipHeader = getBooleanParam(mc, ParameterKey.SKIP_HEADER);
         final Optional<Integer> dataRowsToSkip = getIntegerParam(mc, ParameterKey.DATA_ROWS_TO_SKIP);
-        final Optional<String> columnsToSkip = getStringParam(mc, ParameterKey.COLUMNS_TO_SKIP);
-        final Optional<Integer> orderByColumn = getIntegerParam(mc, ParameterKey.ORDER_BY_COLUMN); // todo :: add support for column names
+        final Optional<String> columnsToSkipQuery = getStringParam(mc, ParameterKey.COLUMNS_TO_SKIP);
+        final Optional<String> orderByColumnQuery = getStringParam(mc, ParameterKey.ORDER_BY_COLUMN);
         final OrderingType columnOrdering = getEnumParam(mc, ParameterKey.SORT_COLUMNS_BY_ORDERING, OrderingType.class, OrderingType.ASCENDING);
         final Optional<String> customHeader = getStringParam(mc, ParameterKey.CUSTOM_HEADER);
         final Optional<Character> customValueSeparator = getCharParam(mc, ParameterKey.CUSTOM_VALUE_SEPARATOR);
@@ -41,11 +41,11 @@ public class CsvToCsvTransformer extends SimpleMediator {
 
         Stream<String[]> csvArrayStream = mc.getCsvArrayStream(linesToSkip, valueSeparator);
 
-        if (orderByColumn.isPresent()) {
-            csvArrayStream = reorder(orderByColumn.get(), csvArrayStream, columnOrdering);
+        if (orderByColumnQuery.isPresent()) {
+            csvArrayStream = reorder(resolveColumnIndex(orderByColumnQuery.get(), header), csvArrayStream, columnOrdering);
         }
-        if (columnsToSkip.isPresent()) {
-            csvArrayStream = CsvTransformer.skipColumns(payloadInfo.getNumberOfColumns(), columnsToSkip.get(), valueSeparator, csvArrayStream);
+        if (columnsToSkipQuery.isPresent()) {
+            csvArrayStream = CsvTransformer.skipColumns(payloadInfo.getNumberOfColumns(), columnsToSkipQuery.get(), csvArrayStream, header);
         }
 
         String[] resultHeader = null;
@@ -58,8 +58,8 @@ public class CsvToCsvTransformer extends SimpleMediator {
         } else if (customHeader.isPresent()) {
             resultHeader = getCustomHeader(customHeader.get());
         }
-        if (columnsToSkip.isPresent() && resultHeader != null) {
-            resultHeader = skipColumnsSingleRow(payloadInfo.getNumberOfColumns(), columnsToSkip.get(), valueSeparator, payloadInfo.getFirstRow());
+        if (columnsToSkipQuery.isPresent() && resultHeader != null) {
+            resultHeader = skipColumnsSingleRow(payloadInfo.getNumberOfColumns(), columnsToSkipQuery.get(), payloadInfo.getFirstRow(), header);
         }
 
         csvArrayStream.collect(mc.collectToCsv(resultHeader, customValueSeparator.orElse(Constants.DEFAULT_CSV_SEPARATOR)));
@@ -71,26 +71,18 @@ public class CsvToCsvTransformer extends SimpleMediator {
     }
 
     private Stream<String[]> reorder(int orderByColumn, Stream<String[]> csvArrayStream, OrderingType orderingType) {
-        int sortByColumnIndex = getOrderByColumnIndex(orderByColumn);
-        csvArrayStream = csvArrayStream.sorted((row1, row2) -> {
-            String val1 = getRowValue(row1, sortByColumnIndex);
-            String val2 = getRowValue(row2, sortByColumnIndex);
-            int comparisonResult = val1.compareTo(val2);
-            if (orderingType == OrderingType.DESCENDING) {
-                comparisonResult = -comparisonResult;
-            }
-            return comparisonResult;
-        });
-        return csvArrayStream;
-    }
-
-
-    private int getOrderByColumnIndex(int orderByColumn) {
-        int index = orderByColumn - 1;
-        if (index < 0) {
-            throw new SynapseException("sort by column value should be greater than 0");
+        if (orderByColumn >= 0) {
+            csvArrayStream = csvArrayStream.sorted((row1, row2) -> {
+                String val1 = getRowValue(row1, orderByColumn);
+                String val2 = getRowValue(row2, orderByColumn);
+                int comparisonResult = val1.compareTo(val2);
+                if (orderingType == OrderingType.DESCENDING) {
+                    comparisonResult = -comparisonResult;
+                }
+                return comparisonResult;
+            });
         }
-        return index;
+        return csvArrayStream;
     }
 
     private String getRowValue(String[] row, int index) {
@@ -101,4 +93,6 @@ public class CsvToCsvTransformer extends SimpleMediator {
             return row[index];
         }
     }
+
+
 }

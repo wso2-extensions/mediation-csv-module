@@ -35,9 +35,9 @@ abstract class AbstractCsvToAnyTransformer extends SimpleMediator {
         String[] header = CsvTransformer.getHeader(csvPayloadInfo, headerAvailability);
         Stream<String[]> csvArrayStream = mc.getCsvArrayStream(linesToSkip, valueSeparator);
         if (columnsToSkipQuery.isPresent()) {
-            csvArrayStream = skipColumns(csvPayloadInfo.getNumberOfColumns(), columnsToSkipQuery.get(), valueSeparator, csvArrayStream);
+            csvArrayStream = skipColumns(csvPayloadInfo.getNumberOfColumns(), columnsToSkipQuery.get(), csvArrayStream, header);
             if (headerAvailability == HeaderAvailability.PRESENT) {
-                header = skipColumnsSingleRow(csvPayloadInfo.getNumberOfColumns(), columnsToSkipQuery.get(), valueSeparator, csvPayloadInfo.getFirstRow());
+                header = skipColumnsSingleRow(csvPayloadInfo.getNumberOfColumns(), columnsToSkipQuery.get(), csvPayloadInfo.getFirstRow(), header);
             }
         }
         if (headerAvailability == HeaderAvailability.PRESENT && !skipHeader) {

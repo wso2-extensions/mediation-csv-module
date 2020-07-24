@@ -1,6 +1,6 @@
 {
   "connectorName": "CSV",
-  "operationName": "XmlToCsv",
+  "operationName": "xmlToCsv",
   "title": "XML to CSV",
   "help": "<h1>Xml to CSV</h1> <b>Convert a XML payload to CSV</b>",
   "elements": [
@@ -28,12 +28,12 @@
                 {
                   "type": "attribute",
                   "value": {
-                    "name": "header",
-                    "displayName": "Tag Names",
+                    "name": "customHeader",
+                    "displayName": "CSV Header",
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
                     "required": "false",
-                    "helpTip": "Comma separated strings to use as XML tag names"
+                    "helpTip": "Comma separated strings to set as the CSV header"
                   }
                 }
               ]

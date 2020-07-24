@@ -22,7 +22,6 @@ public class ParameterKey {
 
     public static final String LINES_TO_SKIP = "linesToSkip";
     public static final String DATA_TYPES = "dataTypes";
-
     public static final String IS_HEADER_PRESENT = "headerPresent";
     public static final String VALUE_SEPARATOR = "valueSeparator";
     public static final String CUSTOM_VALUE_SEPARATOR = "customValueSeparator";

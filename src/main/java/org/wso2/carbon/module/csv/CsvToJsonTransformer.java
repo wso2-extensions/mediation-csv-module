@@ -40,7 +40,7 @@ public class CsvToJsonTransformer extends AbstractCsvToAnyTransformer {
         final EmptyCsvValueType treatEmptyCsvValueAs = getEnumParam(mc, ParameterKey.CSV_EMPTY_VALUES, EmptyCsvValueType.class, EmptyCsvValueType.NULL);
         final Optional<String> jsonKeysQuery = getStringParam(mc, ParameterKey.JSON_KEYS);
         final Optional<String> dataTypesQuery = getStringParam(mc, ParameterKey.DATA_TYPES);
-        final Optional<String> rootJsonKeyQuery = getStringParam(mc, ParameterKey.ROOT_JSON_KEY); // todo:: implement this
+        final Optional<String> rootJsonKeyQuery = getStringParam(mc, ParameterKey.ROOT_JSON_KEY);
 
 
         String[] jsonKeys = generateObjectKeys(jsonKeysQuery.orElse(""), header);
@@ -58,7 +58,7 @@ public class CsvToJsonTransformer extends AbstractCsvToAnyTransformer {
 
                     return jsonObject;
                 })
-                .collect(mc.collectToJsonArray());
+                .collect(rootJsonKeyQuery.map(mc::collectToJsonArray).orElseGet(mc::collectToJsonArray));
     }
 
     private JsonPrimitive getCellValue(String[] row, int index, EmptyCsvValueType emptyCsvValueType, String[] dataTypes) {

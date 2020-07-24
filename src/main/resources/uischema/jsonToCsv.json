@@ -1,6 +1,6 @@
 {
   "connectorName": "CSV",
-  "operationName": "JsonToCsv",
+  "operationName": "jsonToCsv",
   "title": "JSON to CSV",
   "help": "<h1>JSON to CSV</h1> <b>Convert JSON payload to CSV</b>",
   "elements": [
@@ -28,7 +28,7 @@
                 {
                   "type": "attribute",
                   "value": {
-                    "name": "header",
+                    "name": "customHeader",
                     "displayName": "CSV Header",
                     "inputType": "stringOrExpression",
                     "defaultValue": "",

@@ -351,6 +351,94 @@ class CsvToCsvTransformerTest {
     }
 
     @Test
+    void testMediate_OrderByColumnNameWithHeader_correctCsvShouldSet() {
+
+        final List<String[]> csvPayload = new ArrayList<>();
+        csvPayload.add(new String[]{"a", "b", "c"});
+        csvPayload.add(new String[]{"1", "3", "3"});
+        csvPayload.add(new String[]{"2", "2", "4"});
+
+        final CsvCollector csvCollector = new CsvCollector(mc, csvPayload.get(0), Constants.DEFAULT_CSV_SEPARATOR);
+
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.ORDER_BY_COLUMN)).thenReturn("\"b\"");
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.IS_HEADER_PRESENT)).thenReturn("Present");
+        when(mc.getCsvArrayStream(1, Constants.DEFAULT_CSV_SEPARATOR)).thenReturn(csvPayload.subList(1, 3).stream());
+        when(mc.getCsvPayloadInfo(Constants.DEFAULT_CSV_SEPARATOR)).thenReturn(new CsvPayloadInfo(csvPayload.get(0), 3, csvPayload));
+        when(mc.collectToCsv(csvPayload.get(0), Constants.DEFAULT_CSV_SEPARATOR)).thenReturn(csvCollector);
+        ArgumentCaptor<String> payloadSetArgumentCaptor = ArgumentCaptor.forClass(String.class);
+
+        CsvToCsvTransformer csvToCsvTransformer = new CsvToCsvTransformer();
+        csvToCsvTransformer.mediate(mc);
+
+        verify(mc).setTextPayload(payloadSetArgumentCaptor.capture());
+        String setPayload = payloadSetArgumentCaptor.getValue();
+
+        final String expectedPayload = "a,b,c\n" +
+                "2,2,4\n" +
+                "1,3,3\n";
+        Assertions.assertEquals(expectedPayload, setPayload);
+    }
+
+    @Test
+    void testMediate_OrderByInvalidColumnNameWithHeader_sameCsvShouldSet() {
+
+        final List<String[]> csvPayload = new ArrayList<>();
+        csvPayload.add(new String[]{"a", "b", "c"});
+        csvPayload.add(new String[]{"1", "3", "3"});
+        csvPayload.add(new String[]{"2", "2", "4"});
+
+        final CsvCollector csvCollector = new CsvCollector(mc, csvPayload.get(0), Constants.DEFAULT_CSV_SEPARATOR);
+
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.ORDER_BY_COLUMN)).thenReturn("\"bbbb\"");
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.IS_HEADER_PRESENT)).thenReturn("Present");
+        when(mc.getCsvArrayStream(1, Constants.DEFAULT_CSV_SEPARATOR)).thenReturn(csvPayload.subList(1, 3).stream());
+        when(mc.getCsvPayloadInfo(Constants.DEFAULT_CSV_SEPARATOR)).thenReturn(new CsvPayloadInfo(csvPayload.get(0), 3, csvPayload));
+        when(mc.collectToCsv(csvPayload.get(0), Constants.DEFAULT_CSV_SEPARATOR)).thenReturn(csvCollector);
+        ArgumentCaptor<String> payloadSetArgumentCaptor = ArgumentCaptor.forClass(String.class);
+
+        CsvToCsvTransformer csvToCsvTransformer = new CsvToCsvTransformer();
+        csvToCsvTransformer.mediate(mc);
+
+        verify(mc).setTextPayload(payloadSetArgumentCaptor.capture());
+        String setPayload = payloadSetArgumentCaptor.getValue();
+
+        final String expectedPayload = "a,b,c\n" +
+                "1,3,3\n" +
+                "2,2,4\n";
+        Assertions.assertEquals(expectedPayload, setPayload);
+    }
+
+
+    @Test
+    void testMediate_OrderByColumnNameIntegerNameWithHeader_correctCsvShouldSet() {
+
+        final List<String[]> csvPayload = new ArrayList<>();
+        csvPayload.add(new String[]{"2", "1", "3"});
+        csvPayload.add(new String[]{"1", "3", "3"});
+        csvPayload.add(new String[]{"2", "2", "4"});
+
+        final CsvCollector csvCollector = new CsvCollector(mc, null, Constants.DEFAULT_CSV_SEPARATOR);
+
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.ORDER_BY_COLUMN)).thenReturn("\"1\"");
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.IS_HEADER_PRESENT)).thenReturn("Present");
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.SKIP_HEADER)).thenReturn("true");
+        when(mc.getCsvArrayStream(1, Constants.DEFAULT_CSV_SEPARATOR)).thenReturn(csvPayload.subList(1, 3).stream());
+        when(mc.getCsvPayloadInfo(Constants.DEFAULT_CSV_SEPARATOR)).thenReturn(new CsvPayloadInfo(csvPayload.get(0), 3, csvPayload));
+        when(mc.collectToCsv(null, Constants.DEFAULT_CSV_SEPARATOR)).thenReturn(csvCollector);
+        ArgumentCaptor<String> payloadSetArgumentCaptor = ArgumentCaptor.forClass(String.class);
+
+        CsvToCsvTransformer csvToCsvTransformer = new CsvToCsvTransformer();
+        csvToCsvTransformer.mediate(mc);
+
+        verify(mc).setTextPayload(payloadSetArgumentCaptor.capture());
+        String setPayload = payloadSetArgumentCaptor.getValue();
+
+        final String expectedPayload = "2,2,4\n" +
+                "1,3,3\n";
+        Assertions.assertEquals(expectedPayload, setPayload);
+    }
+
+    @Test
     void testMediate_skipDataRows_correctCsvShouldSet() {
         final List<String[]> csvPayload = new ArrayList<>();
         csvPayload.add(new String[]{"1", "2", "3"});
@@ -589,6 +677,118 @@ class CsvToCsvTransformerTest {
 
         final String expectedPayload = "1,3\n" +
                 "2,4\n";
+        Assertions.assertEquals(expectedPayload, setPayload);
+    }
+
+    @Test
+    void testMediate_skipColumnsWithHeaderWithHeaderNames_correctCsvShouldSet() {
+        final List<String[]> csvPayload = new ArrayList<>();
+        csvPayload.add(new String[]{"a", "b", "c"});
+        csvPayload.add(new String[]{"1", "3", "3"});
+        csvPayload.add(new String[]{"2", "2", "4"});
+
+        final CsvCollector csvCollector = new CsvCollector(mc, new String[]{"a", "c"}, Constants.DEFAULT_CSV_SEPARATOR);
+
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.COLUMNS_TO_SKIP)).thenReturn("\"b\"");
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.IS_HEADER_PRESENT)).thenReturn("Present");
+        lenient().when(mc.getCsvArrayStream(1, Constants.DEFAULT_CSV_SEPARATOR)).thenReturn(csvPayload.subList(1, 3).stream());
+        when(mc.getCsvPayloadInfo(Constants.DEFAULT_CSV_SEPARATOR)).thenReturn(new CsvPayloadInfo(csvPayload.get(0), 3, csvPayload));
+        when(mc.collectToCsv(new String[]{"a", "c"}, Constants.DEFAULT_CSV_SEPARATOR)).thenReturn(csvCollector);
+        ArgumentCaptor<String> payloadSetArgumentCaptor = ArgumentCaptor.forClass(String.class);
+
+        CsvToCsvTransformer csvToCsvTransformer = new CsvToCsvTransformer();
+        csvToCsvTransformer.mediate(mc);
+
+        verify(mc).setTextPayload(payloadSetArgumentCaptor.capture());
+        String setPayload = payloadSetArgumentCaptor.getValue();
+
+        final String expectedPayload = "a,c\n" +
+                "1,3\n" +
+                "2,4\n";
+        Assertions.assertEquals(expectedPayload, setPayload);
+    }
+
+    @Test
+    void testMediate_skipColumnsWithHeaderComplexQuery_correctCsvShouldSet() {
+        final List<String[]> csvPayload = new ArrayList<>();
+        csvPayload.add(new String[]{"a", "b", "c", "d", "e", "f", "g", "h"});
+        csvPayload.add(new String[]{"1", "2", "3", "4", "5", "6", "7", "8"});
+        csvPayload.add(new String[]{"1", "2", "3", "4", "5", "6", "7", "8"});
+
+        final CsvCollector csvCollector = new CsvCollector(mc, new String[]{"b", "e", "f", "h"}, Constants.DEFAULT_CSV_SEPARATOR);
+
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.COLUMNS_TO_SKIP)).thenReturn("\"a\":\"d\",!2,\"g\"");
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.IS_HEADER_PRESENT)).thenReturn("Present");
+        lenient().when(mc.getCsvArrayStream(1, Constants.DEFAULT_CSV_SEPARATOR)).thenReturn(csvPayload.subList(1, 3).stream());
+        when(mc.getCsvPayloadInfo(Constants.DEFAULT_CSV_SEPARATOR)).thenReturn(new CsvPayloadInfo(csvPayload.get(0), 8, csvPayload));
+        when(mc.collectToCsv(new String[]{"b", "e", "f", "h"}, Constants.DEFAULT_CSV_SEPARATOR)).thenReturn(csvCollector);
+        ArgumentCaptor<String> payloadSetArgumentCaptor = ArgumentCaptor.forClass(String.class);
+
+        CsvToCsvTransformer csvToCsvTransformer = new CsvToCsvTransformer();
+        csvToCsvTransformer.mediate(mc);
+
+        verify(mc).setTextPayload(payloadSetArgumentCaptor.capture());
+        String setPayload = payloadSetArgumentCaptor.getValue();
+
+        final String expectedPayload = "b,e,f,h\n" +
+                "2,5,6,8\n" +
+                "2,5,6,8\n";
+        Assertions.assertEquals(expectedPayload, setPayload);
+    }
+
+    @Test
+    void testMediate_skipColumnsWithHeaderInvalidHeaderName_sameCsvShouldSet() {
+        final List<String[]> csvPayload = new ArrayList<>();
+        csvPayload.add(new String[]{"a", "b", "c"});
+        csvPayload.add(new String[]{"1", "3", "3"});
+        csvPayload.add(new String[]{"2", "2", "4"});
+
+        final CsvCollector csvCollector = new CsvCollector(mc, csvPayload.get(0), Constants.DEFAULT_CSV_SEPARATOR);
+
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.COLUMNS_TO_SKIP)).thenReturn("\"bb\"");
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.IS_HEADER_PRESENT)).thenReturn("Present");
+        lenient().when(mc.getCsvArrayStream(1, Constants.DEFAULT_CSV_SEPARATOR)).thenReturn(csvPayload.subList(1, 3).stream());
+        when(mc.getCsvPayloadInfo(Constants.DEFAULT_CSV_SEPARATOR)).thenReturn(new CsvPayloadInfo(csvPayload.get(0), 3, csvPayload));
+        when(mc.collectToCsv(csvPayload.get(0), Constants.DEFAULT_CSV_SEPARATOR)).thenReturn(csvCollector);
+        ArgumentCaptor<String> payloadSetArgumentCaptor = ArgumentCaptor.forClass(String.class);
+
+        CsvToCsvTransformer csvToCsvTransformer = new CsvToCsvTransformer();
+        csvToCsvTransformer.mediate(mc);
+
+        verify(mc).setTextPayload(payloadSetArgumentCaptor.capture());
+        String setPayload = payloadSetArgumentCaptor.getValue();
+
+        final String expectedPayload = "a,b,c\n" +
+                "1,3,3\n" +
+                "2,2,4\n";
+        Assertions.assertEquals(expectedPayload, setPayload);
+    }
+
+    @Test
+    void testMediate_skipColumnsWithHeaderComplexQueryInvalidColumnName_sameCsvShouldSet() {
+        final List<String[]> csvPayload = new ArrayList<>();
+        csvPayload.add(new String[]{"a", "b", "c", "d", "e", "f", "g", "h"});
+        csvPayload.add(new String[]{"1", "2", "3", "4", "5", "6", "7", "8"});
+        csvPayload.add(new String[]{"1", "2", "3", "4", "5", "6", "7", "8"});
+
+        final CsvCollector csvCollector = new CsvCollector(mc, csvPayload.get(0), Constants.DEFAULT_CSV_SEPARATOR);
+
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.COLUMNS_TO_SKIP)).thenReturn("\"a\":\"d\",!2,\"gg\"");
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.IS_HEADER_PRESENT)).thenReturn("Present");
+        lenient().when(mc.getCsvArrayStream(1, Constants.DEFAULT_CSV_SEPARATOR)).thenReturn(csvPayload.subList(1, 3).stream());
+        when(mc.getCsvPayloadInfo(Constants.DEFAULT_CSV_SEPARATOR)).thenReturn(new CsvPayloadInfo(csvPayload.get(0), 8, csvPayload));
+        when(mc.collectToCsv(csvPayload.get(0), Constants.DEFAULT_CSV_SEPARATOR)).thenReturn(csvCollector);
+        ArgumentCaptor<String> payloadSetArgumentCaptor = ArgumentCaptor.forClass(String.class);
+
+        CsvToCsvTransformer csvToCsvTransformer = new CsvToCsvTransformer();
+        csvToCsvTransformer.mediate(mc);
+
+        verify(mc).setTextPayload(payloadSetArgumentCaptor.capture());
+        String setPayload = payloadSetArgumentCaptor.getValue();
+
+        final String expectedPayload = "a,b,c,d,e,f,g,h\n" +
+                "1,2,3,4,5,6,7,8\n" +
+                "1,2,3,4,5,6,7,8\n";
         Assertions.assertEquals(expectedPayload, setPayload);
     }
 
