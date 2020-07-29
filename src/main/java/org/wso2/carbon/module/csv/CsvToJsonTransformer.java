@@ -22,16 +22,19 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import org.apache.commons.lang.StringUtils;
 import org.wso2.carbon.module.core.SimpleMessageContext;
-import org.wso2.carbon.module.csv.constants.Constants;
-import org.wso2.carbon.module.csv.constants.ParameterKey;
-import org.wso2.carbon.module.csv.enums.EmptyCsvValueType;
-import org.wso2.carbon.module.csv.enums.JsonDataType;
+import org.wso2.carbon.module.csv.constant.EmptyCsvValueType;
+import org.wso2.carbon.module.csv.constant.JsonDataType;
+import org.wso2.carbon.module.csv.constant.ParameterKey;
+import org.wso2.carbon.module.csv.model.JsonDataTypesSchema;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static org.wso2.carbon.module.csv.util.PropertyReader.getEnumParam;
-import static org.wso2.carbon.module.csv.util.PropertyReader.getStringParam;
+import static org.wso2.carbon.module.csv.util.CsvTransformer.resolveColumnIndex;
+import static org.wso2.carbon.module.csv.util.PropertyReader.*;
 
 public class CsvToJsonTransformer extends AbstractCsvToAnyTransformer {
 
@@ -39,19 +42,20 @@ public class CsvToJsonTransformer extends AbstractCsvToAnyTransformer {
     void mediate(SimpleMessageContext mc, Stream<String[]> csvArrayStream, String[] header) {
         final EmptyCsvValueType treatEmptyCsvValueAs = getEnumParam(mc, ParameterKey.CSV_EMPTY_VALUES, EmptyCsvValueType.class, EmptyCsvValueType.NULL);
         final Optional<String> jsonKeysQuery = getStringParam(mc, ParameterKey.JSON_KEYS);
-        final Optional<String> dataTypesQuery = getStringParam(mc, ParameterKey.DATA_TYPES);
+        final List<JsonDataTypesSchema> dataTypesSchemaList = getJsonArrayParam(mc, ParameterKey.DATA_TYPES, JsonDataTypesSchema.class);
         final Optional<String> rootJsonKeyQuery = getStringParam(mc, ParameterKey.ROOT_JSON_KEY);
 
 
         String[] jsonKeys = generateObjectKeys(jsonKeysQuery.orElse(""), header);
-        String[] dataTypes = getDataTypes(dataTypesQuery.orElse(""));
+        Map<Integer, String> dataTypesMap = getDataTypes(dataTypesSchemaList, header);
 
         csvArrayStream
                 .map(row -> {
                     JsonObject jsonObject = new JsonObject();
 
                     for (int i = 0; i < row.length; i++) {
-                        JsonPrimitive value = getCellValue(row, i, treatEmptyCsvValueAs, dataTypes);
+                        String dataTypeString = dataTypesMap.getOrDefault(i, JsonDataType.STRING.toString());
+                        JsonPrimitive value = getCellValue(row, i, treatEmptyCsvValueAs, dataTypeString);
                         String key = getObjectKey(jsonKeys, i);
                         jsonObject.add(key, value);
                     }
@@ -61,13 +65,13 @@ public class CsvToJsonTransformer extends AbstractCsvToAnyTransformer {
                 .collect(rootJsonKeyQuery.map(mc::collectToJsonArray).orElseGet(mc::collectToJsonArray));
     }
 
-    private JsonPrimitive getCellValue(String[] row, int index, EmptyCsvValueType emptyCsvValueType, String[] dataTypes) {
+    private JsonPrimitive getCellValue(String[] row, int index, EmptyCsvValueType emptyCsvValueType, String dataTypeString) {
 
         JsonPrimitive cellValue = null;
         String cellValueString = row[index];
 
         if (StringUtils.isNotBlank(cellValueString)) {
-            cellValue = convertCellType(cellValueString, dataTypes, index);
+            cellValue = convertCellType(cellValueString, dataTypeString);
         } else if (emptyCsvValueType == EmptyCsvValueType.EMPTY) {
             cellValue = new JsonPrimitive("");
         }
@@ -75,11 +79,10 @@ public class CsvToJsonTransformer extends AbstractCsvToAnyTransformer {
         return cellValue;
     }
 
-    private JsonPrimitive convertCellType(String cellValueString, String[] dataTypes, int index) {
+    private JsonPrimitive convertCellType(String cellValueString, String dataTypeString) {
 
-        if (dataTypes != null) {
+        if (dataTypeString != null) {
             try {
-                String dataTypeString = dataTypes[index];
                 JsonDataType dataType = JsonDataType.valueOf(dataTypeString.trim().toUpperCase());
                 switch (dataType) {
                     case NUMBER:
@@ -88,6 +91,7 @@ public class CsvToJsonTransformer extends AbstractCsvToAnyTransformer {
                         return new JsonPrimitive(Integer.parseInt(cellValueString));
                     case BOOLEAN:
                         return new JsonPrimitive(Boolean.parseBoolean(cellValueString));
+                    case STRING:
                     default:
                         return new JsonPrimitive(cellValueString);
                 }
@@ -101,15 +105,19 @@ public class CsvToJsonTransformer extends AbstractCsvToAnyTransformer {
 
     }
 
-    private String[] getDataTypes(String dataTypesQuery) {
+    private Map<Integer, String> getDataTypes(List<JsonDataTypesSchema> dataTypesSchemaList, String[] header) {
+        Map<Integer, String> dataTypeMap = new HashMap<>();
 
-        String[] dataTypes = new String[]{};
-
-        if (StringUtils.isNotBlank(dataTypesQuery)) {
-            dataTypes = dataTypesQuery.split(Constants.DEFAULT_EXPRESSION_SPLITTER);
+        for (JsonDataTypesSchema jsonDataTypesSchema : dataTypesSchemaList) {
+            String columnIdentifierQuery = jsonDataTypesSchema.getColumn();
+            int columnIndex = resolveColumnIndex(columnIdentifierQuery, header);
+            if (columnIndex >= 0) {
+                String columnDataTypeValue = jsonDataTypesSchema.getDataType();
+                dataTypeMap.put(columnIndex, columnDataTypeValue);
+            }
         }
 
-        return dataTypes;
+        return dataTypeMap;
     }
 }
 

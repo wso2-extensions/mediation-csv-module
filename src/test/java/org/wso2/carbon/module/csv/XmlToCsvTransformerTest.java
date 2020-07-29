@@ -10,7 +10,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.wso2.carbon.module.core.SimpleMessageContext;
 import org.wso2.carbon.module.core.collectors.CsvCollector;
-import org.wso2.carbon.module.csv.constants.ParameterKey;
+import org.wso2.carbon.module.csv.constant.ParameterKey;
 
 import javax.xml.stream.XMLStreamException;
 import java.util.stream.Stream;

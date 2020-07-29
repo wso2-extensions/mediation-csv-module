@@ -17,7 +17,7 @@
   ~ under the License.
   -->
 <connector>
-    <component name="CSV" package="org.wso2.carbon.module.csv" type="Module">
+    <component name="CSV" package="org.wso2.carbon.module.csv">
         <dependency component="csvToCsv"/>
         <dependency component="csvToJson"/>
         <dependency component="csvToXml"/>
@@ -26,4 +26,5 @@
         <description>WSO2 CSV Module</description>
     </component>
     <icon>icon/icon-small.gif</icon>
+    <type>module</type>
 </connector>

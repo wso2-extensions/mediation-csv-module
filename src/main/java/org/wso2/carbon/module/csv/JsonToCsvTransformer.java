@@ -24,7 +24,7 @@ import com.google.gson.JsonObject;
 import org.apache.commons.lang.StringUtils;
 import org.wso2.carbon.module.core.SimpleMediator;
 import org.wso2.carbon.module.core.SimpleMessageContext;
-import org.wso2.carbon.module.csv.constants.ParameterKey;
+import org.wso2.carbon.module.csv.constant.ParameterKey;
 
 import java.util.ArrayList;
 import java.util.List;

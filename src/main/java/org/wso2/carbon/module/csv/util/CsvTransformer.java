@@ -5,7 +5,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.module.core.exceptions.SimpleMessageContextException;
 import org.wso2.carbon.module.core.models.CsvPayloadInfo;
-import org.wso2.carbon.module.csv.enums.HeaderAvailability;
+import org.wso2.carbon.module.csv.constant.HeaderAvailability;
 import org.wso2.carbon.module.csv.util.parser.Parser;
 import org.wso2.carbon.module.csv.util.parser.Tokenizer;
 import org.wso2.carbon.module.csv.util.parser.model.Token;

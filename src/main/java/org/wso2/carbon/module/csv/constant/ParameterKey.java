@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.wso2.carbon.module.csv.constants;
+package org.wso2.carbon.module.csv.constant;
 
 public class ParameterKey {
 

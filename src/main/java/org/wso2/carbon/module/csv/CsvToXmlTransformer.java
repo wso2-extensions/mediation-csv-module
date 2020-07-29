@@ -22,8 +22,8 @@ import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.wso2.carbon.module.core.SimpleMessageContext;
-import org.wso2.carbon.module.csv.constants.Constants;
-import org.wso2.carbon.module.csv.constants.ParameterKey;
+import org.wso2.carbon.module.csv.constant.Constants;
+import org.wso2.carbon.module.csv.constant.ParameterKey;
 
 import javax.xml.namespace.QName;
 import java.util.Optional;

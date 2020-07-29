@@ -16,10 +16,11 @@
  * under the License.
  */
 
-package org.wso2.carbon.module.csv.enums;
+package org.wso2.carbon.module.csv.constant;
 
 public enum JsonDataType {
     BOOLEAN,
     INTEGER,
     NUMBER,
+    STRING
 }

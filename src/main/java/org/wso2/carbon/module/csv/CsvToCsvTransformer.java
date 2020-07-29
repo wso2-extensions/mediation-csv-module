@@ -3,10 +3,10 @@ package org.wso2.carbon.module.csv;
 import org.wso2.carbon.module.core.SimpleMediator;
 import org.wso2.carbon.module.core.SimpleMessageContext;
 import org.wso2.carbon.module.core.models.CsvPayloadInfo;
-import org.wso2.carbon.module.csv.constants.Constants;
-import org.wso2.carbon.module.csv.constants.ParameterKey;
-import org.wso2.carbon.module.csv.enums.HeaderAvailability;
-import org.wso2.carbon.module.csv.enums.OrderingType;
+import org.wso2.carbon.module.csv.constant.Constants;
+import org.wso2.carbon.module.csv.constant.HeaderAvailability;
+import org.wso2.carbon.module.csv.constant.OrderingType;
+import org.wso2.carbon.module.csv.constant.ParameterKey;
 import org.wso2.carbon.module.csv.util.CsvTransformer;
 
 import java.util.Optional;

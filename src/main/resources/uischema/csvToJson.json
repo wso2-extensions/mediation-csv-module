@@ -67,7 +67,7 @@
                     "inputType": "booleanOrExpression",
                     "defaultValue": false,
                     "required": "false",
-                    "helpTip": "Should the header row be skipped from the content ? Default is Absent"
+                    "helpTip": "Skip header from the content. Default is False"
                   }
                 },
                 {
@@ -123,7 +123,7 @@
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
                     "required": "false",
-                    "helpTip": "Comma separated keys to generated JSON object. Using the CSV header or auto generated keys if not specified"
+                    "helpTip": "Comma separated keys to use in the JSON object. Using the CSV header or auto generated keys if not specified"
                   }
                 },
                 {
@@ -145,7 +145,7 @@
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
                     "required": "false",
-                    "helpTip": "Specify data types as comma separated values. Supporting: string,integer,number,boolean"
+                    "helpTip": "Key for embedding JSON object. Leave blank to get the original result"
                   }
                 }
               ]

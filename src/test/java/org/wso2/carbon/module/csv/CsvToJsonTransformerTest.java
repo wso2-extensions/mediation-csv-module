@@ -10,8 +10,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.wso2.carbon.module.core.SimpleMessageContext;
 import org.wso2.carbon.module.core.collectors.JsonArrayCollector;
 import org.wso2.carbon.module.core.models.CsvPayloadInfo;
-import org.wso2.carbon.module.csv.constants.Constants;
-import org.wso2.carbon.module.csv.constants.ParameterKey;
+import org.wso2.carbon.module.csv.constant.Constants;
+import org.wso2.carbon.module.csv.constant.ParameterKey;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -585,7 +585,20 @@ class CsvToJsonTransformerTest {
 
         lenient().when(mc.lookupTemplateParameter(ParameterKey.IS_HEADER_PRESENT)).thenReturn("Present");
         lenient().when(mc.lookupTemplateParameter(ParameterKey.SKIP_HEADER)).thenReturn("true");
-        lenient().when(mc.lookupTemplateParameter(ParameterKey.DATA_TYPES)).thenReturn("integer,number,string");
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.DATA_TYPES)).thenReturn("[\n" +
+                "  {\n" +
+                "    \"key\": \"\\\"a\\\"\",\n" +
+                "    \"value\": \"integer\"\n" +
+                "  },\n" +
+                "  {\n" +
+                "    \"key\": \"2\",\n" +
+                "    \"value\": \"number\"\n" +
+                "  },\n" +
+                "  {\n" +
+                "    \"key\": \"\\\"c\\\"\",\n" +
+                "    \"value\": \"string\"\n" +
+                "  }\n" +
+                "]");
         when(mc.getCsvArrayStream(1, Constants.DEFAULT_CSV_SEPARATOR)).thenReturn(csvPayload.subList(1, 3).stream());
         when(mc.getCsvPayloadInfo(Constants.DEFAULT_CSV_SEPARATOR)).thenReturn(new CsvPayloadInfo(csvPayload.get(0), 3, csvPayload));
         when(mc.collectToJsonArray()).thenReturn(jsonArrayCollector);
@@ -606,6 +619,46 @@ class CsvToJsonTransformerTest {
     }
 
     @Test
+    void testMediate_dataTypesGivenNoHeader_correctJsonShouldSet() {
+        final List<String[]> csvPayload = new ArrayList<>();
+        csvPayload.add(new String[]{"a", "b", "c"});
+        csvPayload.add(new String[]{"1", "2", "3"});
+        csvPayload.add(new String[]{"2", "3", "4"});
+
+        final JsonArrayCollector jsonArrayCollector = new JsonArrayCollector(mc, null);
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.DATA_TYPES)).thenReturn("[\n" +
+                "  {\n" +
+                "    \"key\": \"\\\"a\\\"\",\n" +
+                "    \"value\": \"integer\"\n" +
+                "  },\n" +
+                "  {\n" +
+                "    \"key\": \"2\",\n" +
+                "    \"value\": \"number\"\n" +
+                "  },\n" +
+                "  {\n" +
+                "    \"key\": \"\\\"c\\\"\",\n" +
+                "    \"value\": \"string\"\n" +
+                "  }\n" +
+                "]");
+        when(mc.getCsvArrayStream(0, Constants.DEFAULT_CSV_SEPARATOR)).thenReturn(csvPayload.stream());
+        when(mc.collectToJsonArray()).thenReturn(jsonArrayCollector);
+
+        ArgumentCaptor<JsonElement> payloadSetArgumentCaptor = ArgumentCaptor.forClass(JsonElement.class);
+
+        CsvToJsonTransformer csvToJsonTransformer = new CsvToJsonTransformer();
+        csvToJsonTransformer.mediate(mc);
+
+        verify(mc).setJsonPayload(payloadSetArgumentCaptor.capture());
+        JsonElement jsonElement = payloadSetArgumentCaptor.getValue();
+
+        final String expected = "[{\"key-1\":\"a\",\"key-2\":\"b\",\"key-3\":\"c\"},{\"key-1\":\"1\",\"key-2\":2.0,\"key-3\":\"3\"},{\"key-1\":\"2\",\"key-2\":3.0,\"key-3\":\"4\"}]";
+
+        String resultJson = jsonElement.toString();
+
+        Assertions.assertEquals(expected, resultJson);
+    }
+
+    @Test
     void testMediate_dataTypesGivenHeaderNotSkipping_correctJsonShouldSet() {
         final List<String[]> csvPayload = new ArrayList<>();
         csvPayload.add(new String[]{"a", "b", "c"});
@@ -616,7 +669,20 @@ class CsvToJsonTransformerTest {
 
         lenient().when(mc.lookupTemplateParameter(ParameterKey.IS_HEADER_PRESENT)).thenReturn("Present");
         lenient().when(mc.lookupTemplateParameter(ParameterKey.SKIP_HEADER)).thenReturn("false");
-        lenient().when(mc.lookupTemplateParameter(ParameterKey.DATA_TYPES)).thenReturn("integer,number,string");
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.DATA_TYPES)).thenReturn("[\n" +
+                "  {\n" +
+                "    \"key\": \"\\\"a\\\"\",\n" +
+                "    \"value\": \"integer\"\n" +
+                "  },\n" +
+                "  {\n" +
+                "    \"key\": \"\\\"b\\\"\",\n" +
+                "    \"value\": \"number\"\n" +
+                "  },\n" +
+                "  {\n" +
+                "    \"key\": \"\\\"c\\\"\",\n" +
+                "    \"value\": \"string\"\n" +
+                "  }\n" +
+                "]");
         when(mc.getCsvArrayStream(1, Constants.DEFAULT_CSV_SEPARATOR)).thenReturn(csvPayload.subList(1, 3).stream());
         when(mc.getCsvPayloadInfo(Constants.DEFAULT_CSV_SEPARATOR)).thenReturn(new CsvPayloadInfo(csvPayload.get(0), 3, csvPayload));
         when(mc.collectToJsonArray()).thenReturn(jsonArrayCollector);
@@ -647,7 +713,20 @@ class CsvToJsonTransformerTest {
 
         lenient().when(mc.lookupTemplateParameter(ParameterKey.IS_HEADER_PRESENT)).thenReturn("Present");
         lenient().when(mc.lookupTemplateParameter(ParameterKey.SKIP_HEADER)).thenReturn("true");
-        lenient().when(mc.lookupTemplateParameter(ParameterKey.DATA_TYPES)).thenReturn("integer,number,string");
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.DATA_TYPES)).thenReturn("[\n" +
+                "  {\n" +
+                "    \"key\": \"\\\"a\\\"\",\n" +
+                "    \"value\": \"integer\"\n" +
+                "  },\n" +
+                "  {\n" +
+                "    \"key\": \"\\\"b\\\"\",\n" +
+                "    \"value\": \"number\"\n" +
+                "  },\n" +
+                "  {\n" +
+                "    \"key\": \"\\\"c\\\"\",\n" +
+                "    \"value\": \"string\"\n" +
+                "  }\n" +
+                "]");
         when(mc.getCsvPayloadInfo(Constants.DEFAULT_CSV_SEPARATOR)).thenReturn(new CsvPayloadInfo(csvPayload.get(0), 3, csvPayload));
         when(mc.getCsvArrayStream(1, Constants.DEFAULT_CSV_SEPARATOR)).thenReturn(csvPayload.subList(1, 3).stream());
         when(mc.collectToJsonArray()).thenReturn(jsonArrayCollector);

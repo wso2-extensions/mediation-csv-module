@@ -18,69 +18,23 @@
 
 package org.wso2.carbon.module.csv.util;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import org.apache.commons.lang.StringUtils;
 import org.wso2.carbon.module.core.SimpleMessageContext;
 import org.wso2.carbon.module.core.exceptions.SimpleMessageContextException;
-import org.wso2.carbon.module.csv.constants.ParameterKey;
 
+import java.lang.reflect.Type;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.IntStream;
 
 public class PropertyReader {
 
+    private static final Gson gson = new Gson();
+
     private PropertyReader() {
-
-    }
-
-    public static int getNumberOfLinesToSkip(SimpleMessageContext mc, int defaultValue) {
-        int linesToSkip = defaultValue;
-
-        String linesToSkipString = (String) mc.lookupTemplateParameter(ParameterKey.LINES_TO_SKIP);
-        if (!StringUtils.isBlank(linesToSkipString)) {
-            try {
-                linesToSkip = Integer.parseInt(linesToSkipString);
-            } catch (NumberFormatException e) {
-                throw new SimpleMessageContextException("Invalid value for parameter: " + ParameterKey.LINES_TO_SKIP);
-            }
-        }
-
-        return linesToSkip;
-    }
-
-    public static int getNumberOfLinesToSkip(SimpleMessageContext mc) {
-        return getNumberOfLinesToSkip(mc, 0);
-    }
-
-    public static String[] getHeader(SimpleMessageContext mc, boolean useHeaderAsKey) {
-        String[] header;
-
-        if (useHeaderAsKey) {
-            List<String[]> csvPayload = mc.getCsvPayload(0);
-            if (!csvPayload.isEmpty()) {
-                header = csvPayload.get(0);
-            } else {
-                throw new SimpleMessageContextException("Invalid csv content");
-            }
-        } else {
-            String headerToAppend = (String) mc.lookupTemplateParameter(ParameterKey.CUSTOM_HEADER);
-            if (!StringUtils.isBlank(headerToAppend)) {
-                header = headerToAppend.split(",");
-            } else {
-                List<String[]> csvPayload = mc.getCsvPayload(0);
-                if (!csvPayload.isEmpty()) {
-                    int numberOfColumns = csvPayload.get(0).length;
-                    header = IntStream.range(1, numberOfColumns + 1)
-                            .mapToObj(index -> "key-" + index)
-                            .map(Object::toString)
-                            .toArray(String[]::new);
-                } else {
-                    throw new SimpleMessageContextException("Invalid csv content");
-                }
-            }
-        }
-
-        return header;
     }
 
     public static Optional<String> getStringParam(SimpleMessageContext mc, String parameterKey) {
@@ -132,4 +86,22 @@ public class PropertyReader {
         }
     }
 
+    public static <E> List<E> getJsonArrayParam(SimpleMessageContext mc, String parameterKey, Class<E> type) {
+        List<E> result;
+
+        Optional<String> stringParamOptional = getStringParam(mc, parameterKey);
+        Type resultListType = TypeToken.getParameterized(List.class, type).getType();
+        if (stringParamOptional.isPresent()) {
+            String paramString = stringParamOptional.get();
+            try {
+                result = gson.fromJson(paramString, resultListType);
+            } catch (JsonSyntaxException e) {
+                throw new SimpleMessageContextException(String.format("Invalid parameter value for %s", parameterKey), e);
+            }
+        } else {
+            result = Collections.emptyList();
+        }
+
+        return result;
+    }
 }
