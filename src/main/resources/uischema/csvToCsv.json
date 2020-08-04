@@ -67,7 +67,12 @@
                     "inputType": "booleanOrExpression",
                     "defaultValue": false,
                     "required": "false",
-                    "helpTip": "Skip header from the content. Default is False"
+                    "helpTip": "Skip header from the content. Default is False",
+                    "enableCondition": [
+                      {
+                        "headerPresent": "Present"
+                      }
+                    ]
                   }
                 },
                 {

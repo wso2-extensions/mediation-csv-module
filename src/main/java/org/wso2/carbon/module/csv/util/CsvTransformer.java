@@ -52,10 +52,7 @@ public class CsvTransformer {
             csvArrayStream = csvArrayStream
                     .map(Arrays::asList)
                     .map(LinkedList::new)
-                    .map(row -> {
-
-                        return skipColumns(skippingColumns.get(), row);
-                    });
+                    .map(row -> skipColumns(skippingColumns.get(), row));
         }
         return csvArrayStream;
     }

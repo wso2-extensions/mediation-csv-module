@@ -29,7 +29,6 @@ public class ParameterKey {
     public static final String DATA_ROWS_TO_SKIP = "dataRowsToSkip";
     public static final String COLUMNS_TO_SKIP = "columnsToSkip";
     public static final String CUSTOM_HEADER = "customHeader";
-    public static final String SORT_COLUMNS_BY = "sortColumnsBy";
     public static final String SORT_COLUMNS_BY_ORDERING = "columnOrdering";
     public static final String ORDER_BY_COLUMN = "orderByColumn";
     public static final String CSV_EMPTY_VALUES = "csvEmptyValues";
@@ -39,7 +38,7 @@ public class ParameterKey {
     public static final String ROOT_ELEMENT_TAG_NAME = "rootElementTag";
     public static final String ROOT_ELEMENT_NAMESPACE = "rootElementNamespace";
     public static final String ROOT_ELEMENT_NAMESPACE_URI = "rootElementNamespaceURI";
-    public static final String GROUP_ELEMENT_TAG_NAME = "groupElementName";
+    public static final String GROUP_ELEMENT_TAG_NAME = "groupElementTag";
     public static final String GROUP_ELEMENT_NAMESPACE = "groupElementNamespace";
     public static final String GROUP_ELEMENT_NAMESPACE_URI = "groupElementNamespaceURI";
 

@@ -67,7 +67,12 @@
                     "inputType": "booleanOrExpression",
                     "defaultValue": false,
                     "required": "false",
-                    "helpTip": "Skip header from the content. Default is False"
+                    "helpTip": "Skip header from the content. Default is False",
+                    "enableCondition": [
+                      {
+                        "headerPresent": "Present"
+                      }
+                    ]
                   }
                 },
                 {
@@ -101,80 +106,85 @@
               "groupName": "XML Output",
               "elements": [
                 {
-                  "type": "attribute",
+                  "type": "attributeGroup",
                   "value": {
-                    "name": "tagNames",
-                    "displayName": "Tag Names",
-                    "inputType": "stringOrExpression",
-                    "defaultValue": "",
-                    "required": "false",
-                    "helpTip": "Custom tag names to result tags. Use comma separated strings"
+                    "groupName": "Root Element",
+                    "elements": [
+                      {
+                        "type": "attribute",
+                        "value": {
+                          "name": "rootElementTag",
+                          "displayName": "Tag",
+                          "inputType": "stringOrExpression",
+                          "defaultValue": "",
+                          "required": "false",
+                          "helpTip": "Tag name of the root XML element"
+                        }
+                      },
+                      {
+                        "type": "attribute",
+                        "value": {
+                          "name": "rootElementNamespace",
+                          "displayName": "Namespace",
+                          "inputType": "stringOrExpression",
+                          "defaultValue": "",
+                          "required": "false",
+                          "helpTip": "Namespace URI for root XML element"
+                        }
+                      },
+                      {
+                        "type": "attribute",
+                        "value": {
+                          "name": "rootElementNamespaceURI",
+                          "displayName": "Namespace URI",
+                          "inputType": "stringOrExpression",
+                          "defaultValue": "",
+                          "required": "false",
+                          "helpTip": "Namespace prefix for root XML element"
+                        }
+                      }
+                    ]
                   }
                 },
                 {
-                  "type": "attribute",
+                  "type": "attributeGroup",
                   "value": {
-                    "name": "rootElementTag",
-                    "displayName": "Root Element Tag",
-                    "inputType": "stringOrExpression",
-                    "defaultValue": "",
-                    "required": "false",
-                    "helpTip": "Tag name of the root XML element"
-                  }
-                },
-                {
-                  "type": "attribute",
-                  "value": {
-                    "name": "rootElementNamespace",
-                    "displayName": "Root Element Namespace",
-                    "inputType": "stringOrExpression",
-                    "defaultValue": "",
-                    "required": "false",
-                    "helpTip": "Namespace URI for root XML element"
-                  }
-                },
-                {
-                  "type": "attribute",
-                  "value": {
-                    "name": "rootElementNamespaceURI",
-                    "displayName": "Root Element Namespace URI",
-                    "inputType": "stringOrExpression",
-                    "defaultValue": "",
-                    "required": "false",
-                    "helpTip": "Namespace prefix for root XML element"
-                  }
-                },
-                {
-                  "type": "attribute",
-                  "value": {
-                    "name": "groupElementName",
-                    "displayName": "Group Element Tag",
-                    "inputType": "stringOrExpression",
-                    "defaultValue": "",
-                    "required": "false",
-                    "helpTip": "Name of the group xml elements"
-                  }
-                },
-                {
-                  "type": "attribute",
-                  "value": {
-                    "name": "groupElementNamespace",
-                    "displayName": "Group Element Namespace",
-                    "inputType": "stringOrExpression",
-                    "defaultValue": "",
-                    "required": "false",
-                    "helpTip": "Namespace URI for group XML element"
-                  }
-                },
-                {
-                  "type": "attribute",
-                  "value": {
-                    "name": "groupElementNamespaceURI",
-                    "displayName": "Group Element Namespace URI",
-                    "inputType": "stringOrExpression",
-                    "defaultValue": "",
-                    "required": "false",
-                    "helpTip": "Namespace prefix group XML element"
+                    "groupName": "Group Element",
+                    "elements": [
+                      {
+                        "type": "attribute",
+                        "value": {
+                          "name": "groupElementName",
+                          "displayName": "Tag",
+                          "inputType": "stringOrExpression",
+                          "defaultValue": "",
+                          "required": "false",
+                          "helpTip": "Name of the group xml elements"
+                        }
+                      },
+                      {
+                        "type": "attribute",
+                        "value": {
+                          "name": "groupElementNamespace",
+                          "displayName": "Namespace",
+                          "inputType": "stringOrExpression",
+                          "defaultValue": "",
+                          "required": "false",
+                          "helpTip": "Namespace URI for group XML element"
+                        }
+                      },
+                      {
+                        "type": "attribute",
+                        "value": {
+                          "name": "groupElementNamespaceURI",
+                          "displayName": "Namespace URI",
+                          "inputType": "stringOrExpression",
+                          "defaultValue": "",
+                          "required": "false",
+                          "helpTip": "Namespace prefix group XML element"
+                        }
+                      }
+                    ]
                   }
                 }
               ]
