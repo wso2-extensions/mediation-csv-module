@@ -26,15 +26,18 @@ public abstract class SequenceExpressionNode
     protected LinkedList<Term> terms;
 
     public SequenceExpressionNode() {
+
         this.terms = new LinkedList<>();
     }
 
     public SequenceExpressionNode(ExpressionNode a) {
+
         this.terms = new LinkedList<>();
         this.terms.add(new Term(a));
     }
 
     public void add(ExpressionNode a) {
+
         this.terms.add(new Term(a));
     }
 }

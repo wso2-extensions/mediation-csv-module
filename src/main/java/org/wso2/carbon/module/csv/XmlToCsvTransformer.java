@@ -32,6 +32,7 @@ public class XmlToCsvTransformer extends SimpleMediator {
 
     @Override
     public void mediate(SimpleMessageContext mc) {
+
         String[] header = getHeader(mc);
 
         mc.getXmlChildElementsStream()
@@ -50,6 +51,7 @@ public class XmlToCsvTransformer extends SimpleMediator {
     }
 
     private String[] getHeader(SimpleMessageContext mc) {
+
         String[] header;
 
         String headerToAppend = (String) mc.lookupTemplateParameter(ParameterKey.CUSTOM_HEADER);

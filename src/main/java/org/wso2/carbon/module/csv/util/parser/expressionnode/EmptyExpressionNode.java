@@ -25,11 +25,13 @@ public class EmptyExpressionNode implements ExpressionNode {
 
     @Override
     public int getType() {
+
         return EMPTY_NODE;
     }
 
     @Override
     public List<Integer> getValue() {
+
         return Collections.emptyList();
     }
 

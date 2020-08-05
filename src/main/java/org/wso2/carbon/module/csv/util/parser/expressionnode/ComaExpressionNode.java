@@ -25,10 +25,12 @@ public class ComaExpressionNode
         extends SequenceExpressionNode {
 
     public ComaExpressionNode() {
+
         super();
     }
 
     public ComaExpressionNode(ExpressionNode... expressionNodes) {
+
         if (expressionNodes != null) {
             for (ExpressionNode expressionNode : expressionNodes) {
                 add(expressionNode);
@@ -37,14 +39,17 @@ public class ComaExpressionNode
     }
 
     public ComaExpressionNode(ExpressionNode a) {
+
         super(a);
     }
 
     public int getType() {
+
         return COMA_NODE;
     }
 
     public List<Integer> getValue() {
+
         List<Integer> value = new ArrayList<>();
         for (Term t : terms) {
             value.addAll(t.getExpression().getValue());

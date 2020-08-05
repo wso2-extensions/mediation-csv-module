@@ -35,6 +35,7 @@ public class JsonToCsvTransformer extends SimpleMediator {
 
     @Override
     public void mediate(SimpleMessageContext mc) {
+
         String[] header = getHeader(mc);
 
         mc.getJsonArrayStream()
@@ -52,6 +53,7 @@ public class JsonToCsvTransformer extends SimpleMediator {
     }
 
     private String[] getHeader(SimpleMessageContext mc) {
+
         String[] header = null;
 
         String headerToAppend = (String) mc.lookupTemplateParameter(ParameterKey.CUSTOM_HEADER);

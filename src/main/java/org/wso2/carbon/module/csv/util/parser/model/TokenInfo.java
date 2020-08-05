@@ -26,6 +26,7 @@ public class TokenInfo {
     public final int token;
 
     public TokenInfo(Pattern regex, int token) {
+
         super();
         this.regex = regex;
         this.token = token;

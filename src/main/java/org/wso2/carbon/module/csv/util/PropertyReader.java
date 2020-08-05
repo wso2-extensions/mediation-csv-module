@@ -35,9 +35,11 @@ public class PropertyReader {
     private static final Gson gson = new Gson();
 
     private PropertyReader() {
+
     }
 
     public static Optional<String> getStringParam(SimpleMessageContext mc, String parameterKey) {
+
         String parameter = (String) mc.lookupTemplateParameter(parameterKey);
         if (StringUtils.isNotBlank(parameter)) {
             return Optional.of(parameter);
@@ -47,11 +49,13 @@ public class PropertyReader {
     }
 
     public static Optional<Character> getCharParam(SimpleMessageContext mc, String parameterKey) {
+
         Optional<String> parameterValue = getStringParam(mc, parameterKey);
         return parameterValue.map(s -> s.charAt(0));
     }
 
     public static Optional<Integer> getIntegerParam(SimpleMessageContext mc, String parameterKey) {
+
         Optional<String> parameterValue = getStringParam(mc, parameterKey);
 
         return parameterValue.map(s -> {
@@ -64,6 +68,7 @@ public class PropertyReader {
     }
 
     public static boolean getBooleanParam(SimpleMessageContext mc, String parameterKey) {
+
         boolean skipHeader = false;
 
         String parameter = (String) mc.lookupTemplateParameter(parameterKey);
@@ -73,13 +78,16 @@ public class PropertyReader {
         return skipHeader;
     }
 
-    public static <E extends Enum<E>> E getEnumParam(SimpleMessageContext mc, String parameterKey, Class<E> enumType, E defaultValue) {
+    public static <E extends Enum<E>> E getEnumParam(SimpleMessageContext mc, String parameterKey, Class<E> enumType,
+                                                     E defaultValue) {
+
         Optional<String> parameterValue = getStringParam(mc, parameterKey);
         if (parameterValue.isPresent()) {
             try {
                 return Enum.valueOf(enumType, parameterValue.get().toUpperCase());
             } catch (Exception e) {
-                throw new SimpleMessageContextException(String.format("Invalid parameter value for %s : %s", parameterKey, parameterValue.get()));
+                throw new SimpleMessageContextException(
+                        String.format("Invalid parameter value for %s : %s", parameterKey, parameterValue.get()));
             }
         } else {
             return defaultValue;
@@ -87,6 +95,7 @@ public class PropertyReader {
     }
 
     public static <E> List<E> getJsonArrayParam(SimpleMessageContext mc, String parameterKey, Class<E> type) {
+
         List<E> result;
 
         Optional<String> stringParamOptional = getStringParam(mc, parameterKey);
@@ -96,7 +105,8 @@ public class PropertyReader {
             try {
                 result = gson.fromJson(paramString, resultListType);
             } catch (JsonSyntaxException e) {
-                throw new SimpleMessageContextException(String.format("Invalid parameter value for %s", parameterKey), e);
+                throw new SimpleMessageContextException(String.format("Invalid parameter value for %s", parameterKey),
+                        e);
             }
         } else {
             result = Collections.emptyList();

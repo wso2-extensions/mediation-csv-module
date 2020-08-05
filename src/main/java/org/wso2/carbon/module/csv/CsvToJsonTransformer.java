@@ -34,17 +34,21 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import static org.wso2.carbon.module.csv.util.CsvTransformer.resolveColumnIndex;
-import static org.wso2.carbon.module.csv.util.PropertyReader.*;
+import static org.wso2.carbon.module.csv.util.PropertyReader.getEnumParam;
+import static org.wso2.carbon.module.csv.util.PropertyReader.getJsonArrayParam;
+import static org.wso2.carbon.module.csv.util.PropertyReader.getStringParam;
 
 public class CsvToJsonTransformer extends AbstractCsvToAnyTransformer {
 
     @Override
     void mediate(SimpleMessageContext mc, Stream<String[]> csvArrayStream, String[] header) {
-        final EmptyCsvValueType treatEmptyCsvValueAs = getEnumParam(mc, ParameterKey.CSV_EMPTY_VALUES, EmptyCsvValueType.class, EmptyCsvValueType.NULL);
-        final Optional<String> jsonKeysQuery = getStringParam(mc, ParameterKey.JSON_KEYS);
-        final List<JsonDataTypesSchema> dataTypesSchemaList = getJsonArrayParam(mc, ParameterKey.DATA_TYPES, JsonDataTypesSchema.class);
-        final Optional<String> rootJsonKeyQuery = getStringParam(mc, ParameterKey.ROOT_JSON_KEY);
 
+        final EmptyCsvValueType treatEmptyCsvValueAs =
+                getEnumParam(mc, ParameterKey.CSV_EMPTY_VALUES, EmptyCsvValueType.class, EmptyCsvValueType.NULL);
+        final Optional<String> jsonKeysQuery = getStringParam(mc, ParameterKey.JSON_KEYS);
+        final List<JsonDataTypesSchema> dataTypesSchemaList =
+                getJsonArrayParam(mc, ParameterKey.DATA_TYPES, JsonDataTypesSchema.class);
+        final Optional<String> rootJsonKeyQuery = getStringParam(mc, ParameterKey.ROOT_JSON_KEY);
 
         String[] jsonKeys = generateObjectKeys(jsonKeysQuery.orElse(""), header);
         Map<Integer, String> dataTypesMap = getDataTypes(dataTypesSchemaList, header);
@@ -65,7 +69,8 @@ public class CsvToJsonTransformer extends AbstractCsvToAnyTransformer {
                 .collect(rootJsonKeyQuery.map(mc::collectToJsonArray).orElseGet(mc::collectToJsonArray));
     }
 
-    private JsonPrimitive getCellValue(String[] row, int index, EmptyCsvValueType emptyCsvValueType, String dataTypeString) {
+    private JsonPrimitive getCellValue(String[] row, int index, EmptyCsvValueType emptyCsvValueType,
+                                       String dataTypeString) {
 
         JsonPrimitive cellValue = null;
         String cellValueString = row[index];
@@ -106,6 +111,7 @@ public class CsvToJsonTransformer extends AbstractCsvToAnyTransformer {
     }
 
     private Map<Integer, String> getDataTypes(List<JsonDataTypesSchema> dataTypesSchemaList, String[] header) {
+
         Map<Integer, String> dataTypeMap = new HashMap<>();
 
         for (JsonDataTypesSchema jsonDataTypesSchema : dataTypesSchemaList) {

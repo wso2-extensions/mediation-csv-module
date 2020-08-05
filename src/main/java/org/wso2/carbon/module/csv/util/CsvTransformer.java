@@ -1,3 +1,21 @@
+/*
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 package org.wso2.carbon.module.csv.util;
 
 import org.apache.commons.lang.StringUtils;
@@ -10,7 +28,11 @@ import org.wso2.carbon.module.csv.util.parser.Parser;
 import org.wso2.carbon.module.csv.util.parser.Tokenizer;
 import org.wso2.carbon.module.csv.util.parser.model.Token;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -21,9 +43,11 @@ public class CsvTransformer {
     private static final Pattern doubleQuotedTextPattern = Pattern.compile("\"([^\"]+)\"");
 
     private CsvTransformer() {
+
     }
 
     public static String[] getHeader(CsvPayloadInfo payloadInfo, HeaderAvailability headerAvailability) {
+
         String[] header = new String[]{};
 
         if (headerAvailability == HeaderAvailability.PRESENT) {
@@ -38,6 +62,7 @@ public class CsvTransformer {
     }
 
     public static int getLinesToSkip(HeaderAvailability headerAvailability, int dateRowsToSkip) {
+
         int linesToSkip = dateRowsToSkip;
         if (headerAvailability == HeaderAvailability.PRESENT) {
             linesToSkip++;
@@ -46,7 +71,9 @@ public class CsvTransformer {
         return linesToSkip;
     }
 
-    public static Stream<String[]> skipColumns(int columnCount, String skipColumnsQuery, Stream<String[]> csvArrayStream, String[] header) {
+    public static Stream<String[]> skipColumns(int columnCount, String skipColumnsQuery,
+                                               Stream<String[]> csvArrayStream, String[] header) {
+
         Optional<int[]> skippingColumns = getSkippingColumns(columnCount, skipColumnsQuery, header);
         if (skippingColumns.isPresent()) {
             csvArrayStream = csvArrayStream
@@ -58,6 +85,7 @@ public class CsvTransformer {
     }
 
     private static String[] skipColumns(int[] skippingColumns, List<String> row) {
+
         int[] currentSkippingColumns = skippingColumns.clone();
 
         for (int i = 0; i < currentSkippingColumns.length; i++) {
@@ -78,11 +106,13 @@ public class CsvTransformer {
     }
 
     public static String[] skipColumnsSingleRow(int columnCount, String columnsToSkip, String[] row, String[] header) {
+
         Optional<int[]> skippingColumns = getSkippingColumns(columnCount, columnsToSkip, header);
         return skippingColumns.map(ints -> skipColumns(ints, new ArrayList<>(Arrays.asList(row)))).orElse(row);
     }
 
     private static Optional<int[]> getSkippingColumns(int columnCount, String skipColumnsQuery, String[] header) {
+
         Optional<int[]> skippingColumns;
 
         if (StringUtils.isNotBlank(skipColumnsQuery)) {
@@ -101,6 +131,7 @@ public class CsvTransformer {
     }
 
     private static int[] parseExpression(String skippingColumnsQuery, int columnCount, String[] header) {
+
         skippingColumnsQuery = preProcessExpression(skippingColumnsQuery, header);
         Tokenizer tokenizer = new Tokenizer();
         Parser parser = new Parser();
@@ -112,6 +143,7 @@ public class CsvTransformer {
     }
 
     private static String preProcessExpression(String query, String[] header) {
+
         String queryClone = query;
         Matcher matcher = doubleQuotedTextPattern.matcher(query);
         while (matcher.find()) {
@@ -130,6 +162,7 @@ public class CsvTransformer {
     }
 
     public static int resolveColumnIndex(String query, String[] header) {
+
         int columnIndex = -1;
         if (header.length == 0) {
             columnIndex = extractColumnIndex(query) - 1;
@@ -145,6 +178,7 @@ public class CsvTransformer {
     }
 
     private static int getMatchingColumnIndex(String[] header, String match) {
+
         int columnIndex = -1;
         String columnName = match.replaceAll("\"", "");
         for (int i = 0; i < header.length; i++) {
@@ -157,6 +191,7 @@ public class CsvTransformer {
     }
 
     private static int extractColumnIndex(String intQuery) {
+
         try {
             return Integer.parseInt(intQuery);
         } catch (NumberFormatException e) {

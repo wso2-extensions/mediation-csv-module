@@ -1,3 +1,21 @@
+/*
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 package org.wso2.carbon.module.csv;
 
 import org.apache.commons.lang.StringUtils;
@@ -14,13 +32,19 @@ import java.util.stream.Stream;
 
 import static org.wso2.carbon.module.csv.util.CsvTransformer.skipColumns;
 import static org.wso2.carbon.module.csv.util.CsvTransformer.skipColumnsSingleRow;
-import static org.wso2.carbon.module.csv.util.PropertyReader.*;
+import static org.wso2.carbon.module.csv.util.PropertyReader.getBooleanParam;
+import static org.wso2.carbon.module.csv.util.PropertyReader.getCharParam;
+import static org.wso2.carbon.module.csv.util.PropertyReader.getEnumParam;
+import static org.wso2.carbon.module.csv.util.PropertyReader.getIntegerParam;
+import static org.wso2.carbon.module.csv.util.PropertyReader.getStringParam;
 
 abstract class AbstractCsvToAnyTransformer extends SimpleMediator {
 
     @Override
     public void mediate(SimpleMessageContext mc) {
-        final HeaderAvailability headerAvailability = getEnumParam(mc, ParameterKey.IS_HEADER_PRESENT, HeaderAvailability.class, HeaderAvailability.ABSENT);
+
+        final HeaderAvailability headerAvailability =
+                getEnumParam(mc, ParameterKey.IS_HEADER_PRESENT, HeaderAvailability.class, HeaderAvailability.ABSENT);
         final Optional<Character> valueSeparatorOptional = getCharParam(mc, ParameterKey.VALUE_SEPARATOR);
         final char valueSeparator = valueSeparatorOptional.orElse(Constants.DEFAULT_CSV_SEPARATOR);
         final boolean skipHeader = getBooleanParam(mc, ParameterKey.SKIP_HEADER);
@@ -35,9 +59,11 @@ abstract class AbstractCsvToAnyTransformer extends SimpleMediator {
         String[] header = CsvTransformer.getHeader(csvPayloadInfo, headerAvailability);
         Stream<String[]> csvArrayStream = mc.getCsvArrayStream(linesToSkip, valueSeparator);
         if (columnsToSkipQuery.isPresent()) {
-            csvArrayStream = skipColumns(csvPayloadInfo.getNumberOfColumns(), columnsToSkipQuery.get(), csvArrayStream, header);
+            csvArrayStream =
+                    skipColumns(csvPayloadInfo.getNumberOfColumns(), columnsToSkipQuery.get(), csvArrayStream, header);
             if (headerAvailability == HeaderAvailability.PRESENT) {
-                header = skipColumnsSingleRow(csvPayloadInfo.getNumberOfColumns(), columnsToSkipQuery.get(), csvPayloadInfo.getFirstRow(), header);
+                header = skipColumnsSingleRow(csvPayloadInfo.getNumberOfColumns(), columnsToSkipQuery.get(),
+                        csvPayloadInfo.getFirstRow(), header);
             }
         }
         if (headerAvailability == HeaderAvailability.PRESENT && !skipHeader) {
@@ -48,6 +74,7 @@ abstract class AbstractCsvToAnyTransformer extends SimpleMediator {
     }
 
     String[] generateObjectKeys(String objectKeysQuery, String[] csvHeader) {
+
         String[] objectKeys;
         if (StringUtils.isNotBlank(objectKeysQuery)) {
             objectKeys = objectKeysQuery.split(Constants.DEFAULT_EXPRESSION_SPLITTER);
@@ -58,6 +85,7 @@ abstract class AbstractCsvToAnyTransformer extends SimpleMediator {
     }
 
     String getObjectKey(String[] header, int index) {
+
         String headerValue;
         if (index < header.length) {
             headerValue = header[index];

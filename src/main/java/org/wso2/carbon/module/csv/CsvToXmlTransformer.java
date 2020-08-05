@@ -25,9 +25,10 @@ import org.wso2.carbon.module.core.SimpleMessageContext;
 import org.wso2.carbon.module.csv.constant.Constants;
 import org.wso2.carbon.module.csv.constant.ParameterKey;
 
-import javax.xml.namespace.QName;
 import java.util.Optional;
 import java.util.stream.Stream;
+
+import javax.xml.namespace.QName;
 
 import static org.wso2.carbon.module.csv.util.PropertyReader.getStringParam;
 
@@ -35,15 +36,18 @@ public class CsvToXmlTransformer extends AbstractCsvToAnyTransformer {
 
     @Override
     void mediate(SimpleMessageContext mc, Stream<String[]> csvArrayStream, String[] header) {
+
         final Optional<String> tagNamesQuery = getStringParam(mc, ParameterKey.XML_TAG_NAMES);
         final Optional<String> rootElementTagNameQuery = getStringParam(mc, ParameterKey.ROOT_ELEMENT_TAG_NAME);
         final String rootElementTagName = rootElementTagNameQuery.orElse(Constants.DEFAULT_XML_ROOT_ELEMENT_NAME);
         final Optional<String> rootElementNamespaceQuery = getStringParam(mc, ParameterKey.ROOT_ELEMENT_NAMESPACE);
-        final Optional<String> rootElementNamespaceUriQuery = getStringParam(mc, ParameterKey.ROOT_ELEMENT_NAMESPACE_URI);
+        final Optional<String> rootElementNamespaceUriQuery =
+                getStringParam(mc, ParameterKey.ROOT_ELEMENT_NAMESPACE_URI);
         final Optional<String> groupElementTagNameQuery = getStringParam(mc, ParameterKey.GROUP_ELEMENT_TAG_NAME);
         final String groupElementTagName = groupElementTagNameQuery.orElse(Constants.DEFAULT_XML_GROUP_ELEMENT_NAME);
         final Optional<String> groupElementNamespaceQuery = getStringParam(mc, ParameterKey.GROUP_ELEMENT_NAMESPACE);
-        final Optional<String> groupElementNamespaceUriQuery = getStringParam(mc, ParameterKey.GROUP_ELEMENT_NAMESPACE_URI);
+        final Optional<String> groupElementNamespaceUriQuery =
+                getStringParam(mc, ParameterKey.GROUP_ELEMENT_NAMESPACE_URI);
 
         String[] tagNames = generateObjectKeys(tagNamesQuery.orElse(""), header);
 
@@ -56,7 +60,8 @@ public class CsvToXmlTransformer extends AbstractCsvToAnyTransformer {
             rootElement = fac.createOMElement(new QName(rootElementNamespaceUriQuery.get(), rootElementTagName));
         } else {
             rootElement =
-                    fac.createOMElement(new QName(rootElementNamespaceUriQuery.get(), rootElementTagName, rootElementNamespaceQuery.get()));
+                    fac.createOMElement(new QName(rootElementNamespaceUriQuery.get(), rootElementTagName,
+                            rootElementNamespaceQuery.get()));
         }
 
         OMElement groupElement;
@@ -66,7 +71,8 @@ public class CsvToXmlTransformer extends AbstractCsvToAnyTransformer {
             groupElement = fac.createOMElement(new QName(groupElementNamespaceUriQuery.get(), groupElementTagName));
         } else {
             groupElement =
-                    fac.createOMElement(new QName(groupElementNamespaceUriQuery.get(), groupElementTagName, groupElementNamespaceQuery.get()));
+                    fac.createOMElement(new QName(groupElementNamespaceUriQuery.get(), groupElementTagName,
+                            groupElementNamespaceQuery.get()));
         }
 
         csvArrayStream
