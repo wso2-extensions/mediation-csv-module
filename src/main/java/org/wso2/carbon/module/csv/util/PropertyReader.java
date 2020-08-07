@@ -18,7 +18,9 @@
 
 package org.wso2.carbon.module.csv.util;
 
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import org.apache.commons.lang.StringUtils;
@@ -32,7 +34,9 @@ import java.util.Optional;
 
 public class PropertyReader {
 
-    private static final Gson gson = new Gson();
+    private static final Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+            .setPrettyPrinting()
+            .create();
 
     private PropertyReader() {
 

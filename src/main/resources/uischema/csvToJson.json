@@ -136,8 +136,24 @@
                   "value": {
                     "name": "dataTypes",
                     "displayName": "Data Types",
-                    "inputType": "stringOrExpression",
+                    "inputType": "keyValueTable",
                     "defaultValue": "",
+                    "columns": [
+                      {
+                        "name": "Column",
+                        "type": "text"
+                      },
+                      {
+                        "name": "Type",
+                        "type": "combo",
+                        "allowedValues": [
+                          "String",
+                          "Boolean",
+                          "Integer",
+                          "Number"
+                        ]
+                      }
+                    ],
                     "required": "false",
                     "helpTip": "Specify data types as comma separated values. Supporting: string,integer,number,boolean"
                   }

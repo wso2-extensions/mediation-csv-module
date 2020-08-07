@@ -654,16 +654,16 @@ class CsvToJsonTransformerTest {
         lenient().when(mc.lookupTemplateParameter(ParameterKey.SKIP_HEADER)).thenReturn("true");
         lenient().when(mc.lookupTemplateParameter(ParameterKey.DATA_TYPES)).thenReturn("[\n" +
                 "  {\n" +
-                "    \"key\": \"\\\"a\\\"\",\n" +
-                "    \"value\": \"integer\"\n" +
+                "    \"Column\": \"\\\"a\\\"\",\n" +
+                "    \"Type\": \"integer\"\n" +
                 "  },\n" +
                 "  {\n" +
-                "    \"key\": \"2\",\n" +
-                "    \"value\": \"number\"\n" +
+                "    \"Column\": \"2\",\n" +
+                "    \"Type\": \"number\"\n" +
                 "  },\n" +
                 "  {\n" +
-                "    \"key\": \"\\\"c\\\"\",\n" +
-                "    \"value\": \"string\"\n" +
+                "    \"Column\": \"\\\"c\\\"\",\n" +
+                "    \"Type\": \"string\"\n" +
                 "  }\n" +
                 "]");
         when(mc.getCsvArrayStream(1, Constants.DEFAULT_CSV_SEPARATOR)).thenReturn(csvPayload.subList(1, 3).stream());
@@ -697,16 +697,16 @@ class CsvToJsonTransformerTest {
         final JsonArrayCollector jsonArrayCollector = new JsonArrayCollector(mc, null);
         lenient().when(mc.lookupTemplateParameter(ParameterKey.DATA_TYPES)).thenReturn("[\n" +
                 "  {\n" +
-                "    \"key\": \"\\\"a\\\"\",\n" +
-                "    \"value\": \"integer\"\n" +
+                "    \"Column\": \"\\\"a\\\"\",\n" +
+                "    \"Type\": \"integer\"\n" +
                 "  },\n" +
                 "  {\n" +
-                "    \"key\": \"2\",\n" +
-                "    \"value\": \"number\"\n" +
+                "    \"Column\": \"2\",\n" +
+                "    \"Type\": \"number\"\n" +
                 "  },\n" +
                 "  {\n" +
-                "    \"key\": \"\\\"c\\\"\",\n" +
-                "    \"value\": \"string\"\n" +
+                "    \"Column\": \"\\\"c\\\"\",\n" +
+                "    \"Type\": \"string\"\n" +
                 "  }\n" +
                 "]");
         when(mc.getCsvArrayStream(0, Constants.DEFAULT_CSV_SEPARATOR)).thenReturn(csvPayload.stream());
@@ -742,16 +742,16 @@ class CsvToJsonTransformerTest {
         lenient().when(mc.lookupTemplateParameter(ParameterKey.SKIP_HEADER)).thenReturn("false");
         lenient().when(mc.lookupTemplateParameter(ParameterKey.DATA_TYPES)).thenReturn("[\n" +
                 "  {\n" +
-                "    \"key\": \"\\\"a\\\"\",\n" +
-                "    \"value\": \"integer\"\n" +
+                "    \"Column\": \"\\\"a\\\"\",\n" +
+                "    \"Type\": \"integer\"\n" +
                 "  },\n" +
                 "  {\n" +
-                "    \"key\": \"\\\"b\\\"\",\n" +
-                "    \"value\": \"number\"\n" +
+                "    \"Column\": \"\\\"b\\\"\",\n" +
+                "    \"Type\": \"number\"\n" +
                 "  },\n" +
                 "  {\n" +
-                "    \"key\": \"\\\"c\\\"\",\n" +
-                "    \"value\": \"string\"\n" +
+                "    \"Column\": \"\\\"c\\\"\",\n" +
+                "    \"Type\": \"string\"\n" +
                 "  }\n" +
                 "]");
         when(mc.getCsvArrayStream(1, Constants.DEFAULT_CSV_SEPARATOR)).thenReturn(csvPayload.subList(1, 3).stream());
@@ -789,16 +789,16 @@ class CsvToJsonTransformerTest {
         lenient().when(mc.lookupTemplateParameter(ParameterKey.SKIP_HEADER)).thenReturn("true");
         lenient().when(mc.lookupTemplateParameter(ParameterKey.DATA_TYPES)).thenReturn("[\n" +
                 "  {\n" +
-                "    \"key\": \"\\\"a\\\"\",\n" +
-                "    \"value\": \"integer\"\n" +
+                "    \"Column\": \"\\\"a\\\"\",\n" +
+                "    \"Type\": \"integer\"\n" +
                 "  },\n" +
                 "  {\n" +
-                "    \"key\": \"\\\"b\\\"\",\n" +
-                "    \"value\": \"number\"\n" +
+                "    \"Column\": \"\\\"b\\\"\",\n" +
+                "    \"Type\": \"number\"\n" +
                 "  },\n" +
                 "  {\n" +
-                "    \"key\": \"\\\"c\\\"\",\n" +
-                "    \"value\": \"string\"\n" +
+                "    \"Column\": \"\\\"c\\\"\",\n" +
+                "    \"Type\": \"string\"\n" +
                 "  }\n" +
                 "]");
         when(mc.getCsvPayloadInfo(Constants.DEFAULT_CSV_SEPARATOR))

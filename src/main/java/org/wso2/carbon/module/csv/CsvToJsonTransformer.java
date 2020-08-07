@@ -118,7 +118,7 @@ public class CsvToJsonTransformer extends AbstractCsvToAnyTransformer {
             String columnIdentifierQuery = jsonDataTypesSchema.getColumn();
             int columnIndex = resolveColumnIndex(columnIdentifierQuery, header);
             if (columnIndex >= 0) {
-                String columnDataTypeValue = jsonDataTypesSchema.getDataType();
+                String columnDataTypeValue = jsonDataTypesSchema.getType();
                 dataTypeMap.put(columnIndex, columnDataTypeValue);
             }
         }

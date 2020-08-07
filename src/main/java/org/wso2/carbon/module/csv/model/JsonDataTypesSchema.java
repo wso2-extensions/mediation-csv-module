@@ -18,23 +18,19 @@
 
 package org.wso2.carbon.module.csv.model;
 
-import com.google.gson.annotations.SerializedName;
-
 public class JsonDataTypesSchema {
 
-    @SerializedName("key")
     private String column;
-    @SerializedName("value")
-    private String dataType;
+    private String type;
 
     public JsonDataTypesSchema() {
 
     }
 
-    public JsonDataTypesSchema(String column, String dataType) {
+    public JsonDataTypesSchema(String column, String type) {
 
         this.column = column;
-        this.dataType = dataType;
+        this.type = type;
     }
 
     public String getColumn() {
@@ -47,13 +43,13 @@ public class JsonDataTypesSchema {
         this.column = column;
     }
 
-    public String getDataType() {
+    public String getType() {
 
-        return dataType;
+        return type;
     }
 
-    public void setDataType(String dataType) {
+    public void setType(String type) {
 
-        this.dataType = dataType;
+        this.type = type;
     }
 }
