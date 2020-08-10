@@ -109,7 +109,13 @@
                       "Ascending",
                       "Descending"
                     ],
-                    "helpTip": "Order columns ascending or descending. Default is ascending"
+                    "helpTip": "Order columns ascending or descending. Default is ascending",
+                    "enableCondition": [
+                      "NOT",
+                      {
+                        "orderByColumn": ""
+                      }
+                    ]
                   }
                 },
                 {
