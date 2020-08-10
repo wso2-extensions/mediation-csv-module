@@ -140,11 +140,19 @@
                     "defaultValue": "",
                     "columns": [
                       {
-                        "name": "Column",
+                        "name": "Column Name Or Index",
                         "type": "text"
                       },
                       {
-                        "name": "Type",
+                        "name": "Is Column Name",
+                        "type": "combo",
+                        "allowedValues": [
+                          "Yes",
+                          "No"
+                        ]
+                      },
+                      {
+                        "name": "Data Type",
                         "type": "combo",
                         "allowedValues": [
                           "String",

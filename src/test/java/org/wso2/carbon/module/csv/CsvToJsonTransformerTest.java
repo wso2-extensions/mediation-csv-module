@@ -654,16 +654,19 @@ class CsvToJsonTransformerTest {
         lenient().when(mc.lookupTemplateParameter(ParameterKey.SKIP_HEADER)).thenReturn("true");
         lenient().when(mc.lookupTemplateParameter(ParameterKey.DATA_TYPES)).thenReturn("[\n" +
                 "  {\n" +
-                "    \"Column\": \"\\\"a\\\"\",\n" +
-                "    \"Type\": \"integer\"\n" +
+                "    \"Column Name Or Index\": \"a\",\n" +
+                "    \"Is Column Name\": \"Yes\",\n" +
+                "    \"Data Type\": \"integer\"\n" +
                 "  },\n" +
                 "  {\n" +
-                "    \"Column\": \"2\",\n" +
-                "    \"Type\": \"number\"\n" +
+                "    \"Column Name Or Index\": \"2\",\n" +
+                "    \"Is Column Name\": \"No\",\n" +
+                "    \"Data Type\": \"Number\"\n" +
                 "  },\n" +
                 "  {\n" +
-                "    \"Column\": \"\\\"c\\\"\",\n" +
-                "    \"Type\": \"string\"\n" +
+                "    \"Column Name Or Index\": \"c\",\n" +
+                "    \"Is Column Name\": \"Yes\",\n" +
+                "    \"Data Type\": \"String\"\n" +
                 "  }\n" +
                 "]");
         when(mc.getCsvArrayStream(1, Constants.DEFAULT_CSV_SEPARATOR)).thenReturn(csvPayload.subList(1, 3).stream());
@@ -697,16 +700,19 @@ class CsvToJsonTransformerTest {
         final JsonArrayCollector jsonArrayCollector = new JsonArrayCollector(mc, null);
         lenient().when(mc.lookupTemplateParameter(ParameterKey.DATA_TYPES)).thenReturn("[\n" +
                 "  {\n" +
-                "    \"Column\": \"\\\"a\\\"\",\n" +
-                "    \"Type\": \"integer\"\n" +
+                "    \"Column Name Or Index\": \"a\",\n" +
+                "    \"Is Column Name\": \"True\",\n" +
+                "    \"Data Type\": \"integer\"\n" +
                 "  },\n" +
                 "  {\n" +
-                "    \"Column\": \"2\",\n" +
-                "    \"Type\": \"number\"\n" +
+                "    \"Column Name Or Index\": \"2\",\n" +
+                "    \"Is Column Name\": \"False\",\n" +
+                "    \"Data Type\": \"number\"\n" +
                 "  },\n" +
                 "  {\n" +
-                "    \"Column\": \"\\\"c\\\"\",\n" +
-                "    \"Type\": \"string\"\n" +
+                "    \"Column Name Or Index\": \"c\",\n" +
+                "    \"Is Column Name\": \"True\",\n" +
+                "    \"Data Type\": \"string\"\n" +
                 "  }\n" +
                 "]");
         when(mc.getCsvArrayStream(0, Constants.DEFAULT_CSV_SEPARATOR)).thenReturn(csvPayload.stream());
@@ -742,16 +748,19 @@ class CsvToJsonTransformerTest {
         lenient().when(mc.lookupTemplateParameter(ParameterKey.SKIP_HEADER)).thenReturn("false");
         lenient().when(mc.lookupTemplateParameter(ParameterKey.DATA_TYPES)).thenReturn("[\n" +
                 "  {\n" +
-                "    \"Column\": \"\\\"a\\\"\",\n" +
-                "    \"Type\": \"integer\"\n" +
+                "    \"Column Name Or Index\": \"a\",\n" +
+                "    \"Is Column Name\": \"Yes\",\n" +
+                "    \"Data Type\": \"integer\"\n" +
                 "  },\n" +
                 "  {\n" +
-                "    \"Column\": \"\\\"b\\\"\",\n" +
-                "    \"Type\": \"number\"\n" +
+                "    \"Column Name Or Index\": \"b\",\n" +
+                "    \"Is Column Name\": \"Yes\",\n" +
+                "    \"Data Type\": \"number\"\n" +
                 "  },\n" +
                 "  {\n" +
-                "    \"Column\": \"\\\"c\\\"\",\n" +
-                "    \"Type\": \"string\"\n" +
+                "    \"Column Name Or Index\": \"c\",\n" +
+                "    \"Is Column Name\": \"Yes\",\n" +
+                "    \"Data Type\": \"string\"\n" +
                 "  }\n" +
                 "]");
         when(mc.getCsvArrayStream(1, Constants.DEFAULT_CSV_SEPARATOR)).thenReturn(csvPayload.subList(1, 3).stream());
@@ -789,16 +798,16 @@ class CsvToJsonTransformerTest {
         lenient().when(mc.lookupTemplateParameter(ParameterKey.SKIP_HEADER)).thenReturn("true");
         lenient().when(mc.lookupTemplateParameter(ParameterKey.DATA_TYPES)).thenReturn("[\n" +
                 "  {\n" +
-                "    \"Column\": \"\\\"a\\\"\",\n" +
-                "    \"Type\": \"integer\"\n" +
+                "    \"Column Name Or Index\": \"\\\"a\\\"\",\n" +
+                "    \"Data Type\": \"integer\"\n" +
                 "  },\n" +
                 "  {\n" +
-                "    \"Column\": \"\\\"b\\\"\",\n" +
-                "    \"Type\": \"number\"\n" +
+                "    \"Column Name Or Index\": \"\\\"b\\\"\",\n" +
+                "    \"Data Type\": \"number\"\n" +
                 "  },\n" +
                 "  {\n" +
-                "    \"Column\": \"\\\"c\\\"\",\n" +
-                "    \"Type\": \"string\"\n" +
+                "    \"Column Name Or Index\": \"\\\"c\\\"\",\n" +
+                "    \"Data Type\": \"string\"\n" +
                 "  }\n" +
                 "]");
         when(mc.getCsvPayloadInfo(Constants.DEFAULT_CSV_SEPARATOR))

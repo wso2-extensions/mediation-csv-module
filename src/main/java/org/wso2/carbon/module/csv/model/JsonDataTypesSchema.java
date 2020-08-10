@@ -20,36 +20,48 @@ package org.wso2.carbon.module.csv.model;
 
 public class JsonDataTypesSchema {
 
-    private String column;
-    private String type;
+    private String columnNameOrIndex;
+    private String isColumnName;
+    private String dataType;
 
     public JsonDataTypesSchema() {
 
     }
 
-    public JsonDataTypesSchema(String column, String type) {
+    public JsonDataTypesSchema(String columnNameOrIndex, String isColumnName, String dataType) {
 
-        this.column = column;
-        this.type = type;
+        this.columnNameOrIndex = columnNameOrIndex;
+        this.isColumnName = isColumnName;
+        this.dataType = dataType;
     }
 
-    public String getColumn() {
+    public String getColumnNameOrIndex() {
 
-        return column;
+        return columnNameOrIndex;
     }
 
-    public void setColumn(String column) {
+    public void setColumnNameOrIndex(String columnNameOrIndex) {
 
-        this.column = column;
+        this.columnNameOrIndex = columnNameOrIndex;
     }
 
-    public String getType() {
+    public String getDataType() {
 
-        return type;
+        return dataType;
     }
 
-    public void setType(String type) {
+    public void setDataType(String dataType) {
 
-        this.type = type;
+        this.dataType = dataType;
+    }
+
+    public String getIsColumnName() {
+
+        return isColumnName;
+    }
+
+    public void setIsColumnName(String isColumnName) {
+
+        this.isColumnName = isColumnName;
     }
 }

@@ -34,9 +34,10 @@ import java.util.Optional;
 
 public class PropertyReader {
 
-    private static final Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
-            .setPrettyPrinting()
-            .create();
+    private static final Gson gson =
+            new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE_WITH_SPACES)
+                    .setPrettyPrinting()
+                    .create();
 
     private PropertyReader() {
 
