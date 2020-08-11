@@ -18,6 +18,9 @@
 
 package org.wso2.carbon.module.csv.constant;
 
+/**
+ * Keys used in the parameters
+ */
 public class ParameterKey {
 
     public static final String LINES_TO_SKIP = "linesToSkip";

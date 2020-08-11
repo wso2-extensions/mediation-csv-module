@@ -52,10 +52,8 @@ public class CsvToJsonTransformer extends AbstractCsvToAnyTransformer {
         final List<JsonDataTypesSchema> dataTypesSchemaList =
                 getJsonArrayParam(mc, ParameterKey.DATA_TYPES, JsonDataTypesSchema.class);
         final Optional<String> rootJsonKeyQuery = getStringParam(mc, ParameterKey.ROOT_JSON_KEY);
-
         String[] jsonKeys = generateObjectKeys(jsonKeysQuery.orElse(""), header);
         Map<Integer, String> dataTypesMap = getDataTypes(dataTypesSchemaList, header);
-
         csvArrayStream
                 .map(row -> {
                     JsonObject jsonObject = new JsonObject();
@@ -82,7 +80,6 @@ public class CsvToJsonTransformer extends AbstractCsvToAnyTransformer {
      */
     private JsonPrimitive getCellValue(String[] row, int index, EmptyCsvValueType emptyCsvValueType,
                                        String dataTypeString) {
-
         JsonPrimitive cellValue = null;
         String cellValueString = row[index];
 
@@ -91,7 +88,6 @@ public class CsvToJsonTransformer extends AbstractCsvToAnyTransformer {
         } else if (emptyCsvValueType == EmptyCsvValueType.EMPTY) {
             cellValue = new JsonPrimitive("");
         }
-
         return cellValue;
     }
 
@@ -102,7 +98,6 @@ public class CsvToJsonTransformer extends AbstractCsvToAnyTransformer {
      * @return JsonPrimitive with the given value.
      */
     private JsonPrimitive convertCellType(String cellValueString, String dataTypeString) {
-
         if (dataTypeString != null) {
             try {
                 JsonDataType dataType = JsonDataType.valueOf(dataTypeString.trim().toUpperCase());
@@ -122,7 +117,6 @@ public class CsvToJsonTransformer extends AbstractCsvToAnyTransformer {
                 log.error("Error converting csv data to given json type : ", e);
             }
         }
-
         return new JsonPrimitive(cellValueString);
     }
 
@@ -133,9 +127,7 @@ public class CsvToJsonTransformer extends AbstractCsvToAnyTransformer {
      * @return Map representing the data types.
      */
     private Map<Integer, String> getDataTypes(List<JsonDataTypesSchema> dataTypesSchemaList, String[] header) {
-
         Map<Integer, String> dataTypeMap = new HashMap<>();
-
         for (JsonDataTypesSchema jsonDataTypesSchema : dataTypesSchemaList) {
             String columnIdentifierQuery = jsonDataTypesSchema.getColumnNameOrIndex();
             String isColumnName = jsonDataTypesSchema.getIsColumnName();
@@ -148,7 +140,6 @@ public class CsvToJsonTransformer extends AbstractCsvToAnyTransformer {
                 dataTypeMap.put(columnIndex, columnDataTypeValue);
             }
         }
-
         return dataTypeMap;
     }
 }

@@ -39,18 +39,15 @@ public class XmlToCsvTransformer extends SimpleMediator {
     public void mediate(SimpleMessageContext mc) {
 
         String[] header = getHeader(mc);
-
         mc.getXmlChildElementsStream()
                 .map(omElement -> {
                     List<String> csvEntry = new ArrayList<>();
-
                     Iterator<OMElement> childElementsIterator = omElement.getChildElements();
                     while (childElementsIterator.hasNext()) {
                         OMElement childElement = childElementsIterator.next();
                         String childText = childElement.getText();
                         csvEntry.add(childText);
                     }
-
                     return csvEntry.toArray(new String[0]);
                 }).collect(mc.collectToCsv(header));
     }
@@ -61,28 +58,22 @@ public class XmlToCsvTransformer extends SimpleMediator {
      * @return Header to use as the CSV header.
      */
     private String[] getHeader(SimpleMessageContext mc) {
-
         String[] header;
-
         String headerToAppend = (String) mc.lookupTemplateParameter(ParameterKey.CUSTOM_HEADER);
         if (!StringUtils.isBlank(headerToAppend)) {
             header = headerToAppend.split(DEFAULT_EXPRESSION_SPLITTER);
         } else {
-
             OMElement rootXmlElement = mc.getRootXmlElement();
             OMElement firstElement = rootXmlElement.getFirstElement();
             Iterator<OMElement> childElementsIterator = firstElement.getChildElements();
-
             List<String> headerList = new ArrayList<>();
             while (childElementsIterator.hasNext()) {
                 OMElement childElement = childElementsIterator.next();
                 String keyName = childElement.getQName().getLocalPart();
                 headerList.add(keyName);
             }
-
             header = headerList.toArray(new String[0]);
         }
-
         return header;
     }
 }

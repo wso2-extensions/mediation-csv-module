@@ -116,13 +116,11 @@ public class CsvTransformer {
     private static String[] skipColumns(int[] skippingColumns, List<String> row) {
 
         int[] currentSkippingColumns = skippingColumns.clone();
-
         for (int i = 0; i < currentSkippingColumns.length; i++) {
 
             for (int j = i; j < currentSkippingColumns.length; j++) {
                 currentSkippingColumns[j]--;
             }
-
             int currentIndex = currentSkippingColumns[i];
             if (currentIndex >= 0 && currentIndex < row.size()) {
                 row.remove(currentIndex);
@@ -130,7 +128,6 @@ public class CsvTransformer {
                 log.debug("Invalid index to remove");
             }
         }
-
         return row.toArray(new String[]{});
     }
 

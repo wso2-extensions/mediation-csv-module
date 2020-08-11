@@ -63,7 +63,7 @@
                   "type": "attribute",
                   "value": {
                     "name": "skipHeader",
-                    "displayName": "Skip headers",
+                    "displayName": "Skip Headers",
                     "inputType": "booleanOrExpression",
                     "defaultValue": false,
                     "required": "false",
@@ -90,7 +90,7 @@
                   "type": "attribute",
                   "value": {
                     "name": "orderByColumn",
-                    "displayName": "Order by column",
+                    "displayName": "Order by Column",
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
                     "required": "false",

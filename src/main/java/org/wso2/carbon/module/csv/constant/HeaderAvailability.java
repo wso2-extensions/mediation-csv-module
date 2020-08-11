@@ -18,6 +18,9 @@
 
 package org.wso2.carbon.module.csv.constant;
 
+/**
+ * Values supported by header availability property
+ */
 public enum HeaderAvailability {
     PRESENT,
     ABSENT

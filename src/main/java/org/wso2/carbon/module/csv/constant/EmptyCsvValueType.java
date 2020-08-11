@@ -18,6 +18,9 @@
 
 package org.wso2.carbon.module.csv.constant;
 
+/**
+ * Csv empty values conversion support values.
+ */
 public enum EmptyCsvValueType {
     NULL,
     EMPTY

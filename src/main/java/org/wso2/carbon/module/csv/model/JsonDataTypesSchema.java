@@ -39,32 +39,26 @@ public class JsonDataTypesSchema {
     }
 
     public String getColumnNameOrIndex() {
-
         return columnNameOrIndex;
     }
 
     public void setColumnNameOrIndex(String columnNameOrIndex) {
-
         this.columnNameOrIndex = columnNameOrIndex;
     }
 
     public String getDataType() {
-
         return dataType;
     }
 
     public void setDataType(String dataType) {
-
         this.dataType = dataType;
     }
 
     public String getIsColumnName() {
-
         return isColumnName;
     }
 
     public void setIsColumnName(String isColumnName) {
-
         this.isColumnName = isColumnName;
     }
 }

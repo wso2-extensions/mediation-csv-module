@@ -58,7 +58,6 @@ public class PropertyReader {
         if (StringUtils.isNotBlank(parameter)) {
             return Optional.of(parameter);
         }
-
         return Optional.empty();
     }
 
@@ -83,7 +82,6 @@ public class PropertyReader {
     public static Optional<Integer> getIntegerParam(SimpleMessageContext mc, String parameterKey) {
 
         Optional<String> parameterValue = getStringParam(mc, parameterKey);
-
         return parameterValue.map(s -> {
             try {
                 return Integer.parseInt(s);
@@ -102,7 +100,6 @@ public class PropertyReader {
     public static boolean getBooleanParam(SimpleMessageContext mc, String parameterKey) {
 
         boolean skipHeader = false;
-
         String parameter = (String) mc.lookupTemplateParameter(parameterKey);
         if (StringUtils.isNotBlank(parameter)) {
             skipHeader = Boolean.parseBoolean(parameter);
@@ -146,7 +143,6 @@ public class PropertyReader {
     public static <E> List<E> getJsonArrayParam(SimpleMessageContext mc, String parameterKey, Class<E> type) {
 
         List<E> result;
-
         Optional<String> stringParamOptional = getStringParam(mc, parameterKey);
         Type resultListType = TypeToken.getParameterized(List.class, type).getType();
         if (stringParamOptional.isPresent()) {
@@ -160,7 +156,6 @@ public class PropertyReader {
         } else {
             result = Collections.emptyList();
         }
-
         return result;
     }
 }

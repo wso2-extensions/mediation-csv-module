@@ -18,6 +18,9 @@
 
 package org.wso2.carbon.module.csv.constant;
 
+/**
+ * Data types supported by Json
+ */
 public enum JsonDataType {
     BOOLEAN,
     INTEGER,

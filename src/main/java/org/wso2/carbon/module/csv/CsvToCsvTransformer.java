@@ -65,9 +65,7 @@ public class CsvToCsvTransformer extends SimpleMediator {
         }
         String[] header = CsvTransformer.getHeader(payloadInfo, headerAvailability);
         int linesToSkip = CsvTransformer.getLinesToSkip(headerAvailability, dataRowsToSkip.orElse(0));
-
         Stream<String[]> csvArrayStream = mc.getCsvArrayStream(linesToSkip, valueSeparator);
-
         if (orderByColumnQuery.isPresent()) {
             csvArrayStream =
                     reorder(resolveColumnIndex(orderByColumnQuery.get(), header), csvArrayStream, columnOrdering);
@@ -115,7 +113,6 @@ public class CsvToCsvTransformer extends SimpleMediator {
      * @return Ordered CSV array stream.
      */
     private Stream<String[]> reorder(int orderByColumn, Stream<String[]> csvArrayStream, OrderingType orderingType) {
-
         if (orderByColumn >= 0) {
             csvArrayStream = csvArrayStream.sorted((row1, row2) -> {
                 String val1 = getCellValue(row1, orderByColumn);
@@ -137,7 +134,6 @@ public class CsvToCsvTransformer extends SimpleMediator {
      * @return Value of the given cell.
      */
     private String getCellValue(String[] row, int index) {
-
         final int rowLength = row.length;
         if (index >= rowLength) {
             return "";

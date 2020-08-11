@@ -39,7 +39,6 @@ public class CsvToXmlTransformer extends AbstractCsvToAnyTransformer {
 
     @Override
     void mediate(SimpleMessageContext mc, Stream<String[]> csvArrayStream, String[] header) {
-
         final Optional<String> tagNamesQuery = getStringParam(mc, ParameterKey.XML_TAG_NAMES);
         final Optional<String> rootElementTagNameQuery = getStringParam(mc, ParameterKey.ROOT_ELEMENT_TAG_NAME);
         final String rootElementTagName = rootElementTagNameQuery.orElse(Constants.DEFAULT_XML_ROOT_ELEMENT_NAME);
@@ -53,9 +52,7 @@ public class CsvToXmlTransformer extends AbstractCsvToAnyTransformer {
                 getStringParam(mc, ParameterKey.GROUP_ELEMENT_NAMESPACE_URI);
 
         String[] tagNames = generateObjectKeys(tagNamesQuery.orElse(""), header);
-
         final OMFactory fac = OMAbstractFactory.getOMFactory();
-
         OMElement rootElement;
         if (!rootElementNamespaceUriQuery.isPresent()) {
             rootElement = fac.createOMElement(new QName(rootElementTagName));
@@ -66,7 +63,6 @@ public class CsvToXmlTransformer extends AbstractCsvToAnyTransformer {
                     fac.createOMElement(new QName(rootElementNamespaceUriQuery.get(), rootElementTagName,
                             rootElementNamespaceQuery.get()));
         }
-
         OMElement groupElement;
         if (!groupElementNamespaceUriQuery.isPresent()) {
             groupElement = fac.createOMElement(new QName(groupElementTagName));
@@ -89,7 +85,6 @@ public class CsvToXmlTransformer extends AbstractCsvToAnyTransformer {
                     }
                     rootElement.addChild(childElement);
                 });
-
         mc.replaceRootXmlElement(rootElement);
     }
 

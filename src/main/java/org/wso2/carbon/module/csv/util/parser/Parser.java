@@ -51,10 +51,8 @@ public class Parser {
 
         ExpressionNode expressionNode = parse(tokens, maxValue);
         List<Integer> values = expressionNode.getValue();
-
         int size = values.size();
         List<Integer> result = new ArrayList<>();
-
         for (int i = 0; i < size; i++) {
             int val = values.get(i);
             if (val > 0) {
@@ -78,15 +76,11 @@ public class Parser {
 
         this.tokens = new LinkedList<>(tokens);
         this.maxValue = maxValue;
-
         lookahead = this.tokens.getFirst();
-
         ExpressionNode expression = expression();
-
         if (lookahead.tokenType != Token.EPSILON) {
             throw new ParserException(lookahead.sequence);
         }
-
         return expression;
 
     }
@@ -138,7 +132,6 @@ public class Parser {
             if (lookahead.tokenType != Token.CLOSE_BRACKET) {
                 throw new ParserException("need closing bracket");
             }
-
             nextToken();
             return resultNode;
         } else {
@@ -156,7 +149,6 @@ public class Parser {
         } else {
             resultNode = expressionNotRange(value);
         }
-
         return resultNode;
     }
 
@@ -167,7 +159,6 @@ public class Parser {
             nextToken();
             ExpressionNode expressionNode = expression();
             resultNode = new ComaExpressionNode(value, expressionNode);
-
         } else if (lookahead.tokenType == Token.EPSILON || lookahead.tokenType == Token.CLOSE_BRACKET) {
             return value;
         } else {

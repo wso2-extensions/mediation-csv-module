@@ -54,7 +54,6 @@ abstract class AbstractCsvToAnyTransformer extends SimpleMediator {
         final boolean skipHeader = getBooleanParam(mc, ParameterKey.SKIP_HEADER);
         final Optional<Integer> dataRowsToSkip = getIntegerParam(mc, ParameterKey.DATA_ROWS_TO_SKIP);
         final Optional<String> columnsToSkipQuery = getStringParam(mc, ParameterKey.COLUMNS_TO_SKIP);
-
         CsvPayloadInfo csvPayloadInfo = new CsvPayloadInfo();
         if (headerAvailability == HeaderAvailability.PRESENT) {
             csvPayloadInfo = mc.getCsvPayloadInfo(valueSeparator);
@@ -73,7 +72,6 @@ abstract class AbstractCsvToAnyTransformer extends SimpleMediator {
         if (headerAvailability == HeaderAvailability.PRESENT && !skipHeader) {
             csvArrayStream = Stream.concat(Stream.<String[]>of(header), csvArrayStream);
         }
-
         mediate(mc, csvArrayStream, header);
     }
 

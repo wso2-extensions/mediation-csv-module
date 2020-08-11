@@ -68,20 +68,16 @@ public class Tokenizer {
 
         while (!s.equals("")) {
             boolean match = false;
-
             for (TokenInfo info : tokenInfos) {
                 Matcher m = info.regex.matcher(s);
                 if (m.find()) {
                     match = true;
-
                     String tok = m.group().trim();
                     tokens.add(new Token(info.token, tok));
-
                     s = m.replaceFirst("");
                     break;
                 }
             }
-
             if (!match) {
                 throw new ParserException(s);
             }

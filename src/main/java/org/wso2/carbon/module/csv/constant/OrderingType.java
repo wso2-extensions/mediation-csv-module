@@ -18,6 +18,9 @@
 
 package org.wso2.carbon.module.csv.constant;
 
+/**
+ * Type of ordering available
+ */
 public enum OrderingType {
     ASCENDING,
     DESCENDING
