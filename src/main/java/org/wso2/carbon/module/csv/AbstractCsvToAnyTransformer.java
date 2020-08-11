@@ -38,6 +38,10 @@ import static org.wso2.carbon.module.csv.util.PropertyReader.getEnumParam;
 import static org.wso2.carbon.module.csv.util.PropertyReader.getIntegerParam;
 import static org.wso2.carbon.module.csv.util.PropertyReader.getStringParam;
 
+/**
+ * Abstract transformer with basic CSV transformation logics. Any transformer used to transform CSV to another data
+ * type can use this to get the basic CSV transformation functionalities.
+ */
 abstract class AbstractCsvToAnyTransformer extends SimpleMediator {
 
     @Override
@@ -73,6 +77,13 @@ abstract class AbstractCsvToAnyTransformer extends SimpleMediator {
         mediate(mc, csvArrayStream, header);
     }
 
+    /**
+     * Generate final header to use by considering the CSV header and the header query if present
+     * @param objectKeysQuery @Nullable String representing the header to replace. This String should be split
+     *                        using the default splitter.
+     * @param csvHeader Header of the CSV content
+     * @return Final result of the header that need to use in transformation
+     */
     String[] generateObjectKeys(String objectKeysQuery, String[] csvHeader) {
 
         String[] objectKeys;
@@ -84,6 +95,13 @@ abstract class AbstractCsvToAnyTransformer extends SimpleMediator {
         return objectKeys;
     }
 
+    /**
+     * Return the key to use for the element represents by the given index. If no appropriate value found in the
+     * given header then, returns an auto generated value.
+     * @param header CSV header values
+     * @param index Index of the value in CSV row array.
+     * @return Key value to use for the given value.
+     */
     String getObjectKey(String[] header, int index) {
 
         String headerValue;
@@ -95,5 +113,11 @@ abstract class AbstractCsvToAnyTransformer extends SimpleMediator {
         return headerValue;
     }
 
+    /**
+     * mediate method to be extended by child classes to get the pre-processed CSV content.
+     * @param mc SimpleMessageContext
+     * @param csvArrayStream Pre-processed CSV content as Stream of CSV content.
+     * @param header Header for the CSV payload. If no header specified, then gives an empty array.
+     */
     abstract void mediate(SimpleMessageContext mc, Stream<String[]> csvArrayStream, String[] header);
 }

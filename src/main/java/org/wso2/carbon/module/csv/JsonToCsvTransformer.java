@@ -31,6 +31,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static org.wso2.carbon.module.csv.constant.Constants.DEFAULT_EXPRESSION_SPLITTER;
+
+/**
+ * Transformer to transform JSON content to a CSV content.
+ */
 public class JsonToCsvTransformer extends SimpleMediator {
 
     @Override
@@ -52,15 +57,19 @@ public class JsonToCsvTransformer extends SimpleMediator {
                 .collect(mc.collectToCsv(header));
     }
 
+    /**
+     * Returns the header to use as the CSV header.
+     * @param mc SimpleMessageContext to use.
+     * @return Header to use as the CSV header.
+     */
     private String[] getHeader(SimpleMessageContext mc) {
 
         String[] header = null;
 
         String headerToAppend = (String) mc.lookupTemplateParameter(ParameterKey.CUSTOM_HEADER);
         if (!StringUtils.isBlank(headerToAppend)) {
-            header = headerToAppend.split(",");
+            header = headerToAppend.split(DEFAULT_EXPRESSION_SPLITTER);
         } else {
-
             JsonElement jsonPayload = mc.getJsonElement();
             if (jsonPayload.isJsonArray()) {
                 JsonArray jsonArray = jsonPayload.getAsJsonArray();

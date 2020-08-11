@@ -28,6 +28,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import static org.wso2.carbon.module.csv.constant.Constants.DEFAULT_EXPRESSION_SPLITTER;
+
+/**
+ * Transformer to transform an XML content to a CSV content.
+ */
 public class XmlToCsvTransformer extends SimpleMediator {
 
     @Override
@@ -50,13 +55,18 @@ public class XmlToCsvTransformer extends SimpleMediator {
                 }).collect(mc.collectToCsv(header));
     }
 
+    /**
+     * Returns the header to use as the CSV header.
+     * @param mc SimpleMessageContext to use.
+     * @return Header to use as the CSV header.
+     */
     private String[] getHeader(SimpleMessageContext mc) {
 
         String[] header;
 
         String headerToAppend = (String) mc.lookupTemplateParameter(ParameterKey.CUSTOM_HEADER);
         if (!StringUtils.isBlank(headerToAppend)) {
-            header = headerToAppend.split(",");
+            header = headerToAppend.split(DEFAULT_EXPRESSION_SPLITTER);
         } else {
 
             OMElement rootXmlElement = mc.getRootXmlElement();

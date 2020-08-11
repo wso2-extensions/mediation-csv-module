@@ -32,6 +32,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Common methods to use to read properties.
+ */
 public class PropertyReader {
 
     private static final Gson gson =
@@ -43,6 +46,12 @@ public class PropertyReader {
 
     }
 
+    /**
+     * Read a String parameter
+     * @param mc SimpleMessageContext.
+     * @param parameterKey Key of the parameter.
+     * @return Optional String of the parameter value.
+     */
     public static Optional<String> getStringParam(SimpleMessageContext mc, String parameterKey) {
 
         String parameter = (String) mc.lookupTemplateParameter(parameterKey);
@@ -53,12 +62,24 @@ public class PropertyReader {
         return Optional.empty();
     }
 
+    /**
+     * Read a Character parameter.
+     * @param mc SimpleMessageContext.
+     * @param parameterKey Key of the parameter.
+     * @return Optional Character of the parameter value.
+     */
     public static Optional<Character> getCharParam(SimpleMessageContext mc, String parameterKey) {
 
         Optional<String> parameterValue = getStringParam(mc, parameterKey);
         return parameterValue.map(s -> s.charAt(0));
     }
 
+    /**
+     * Read an Integer parameter.
+     * @param mc SimpleMessageContext.
+     * @param parameterKey Key of the parameter.
+     * @return Optional Integer of the parameter value.
+     */
     public static Optional<Integer> getIntegerParam(SimpleMessageContext mc, String parameterKey) {
 
         Optional<String> parameterValue = getStringParam(mc, parameterKey);
@@ -72,6 +93,12 @@ public class PropertyReader {
         });
     }
 
+    /**
+     * Read a boolean parameter.
+     * @param mc SimpleMessageContext.
+     * @param parameterKey Key of the parameter.
+     * @return Boolean of the parameter value.
+     */
     public static boolean getBooleanParam(SimpleMessageContext mc, String parameterKey) {
 
         boolean skipHeader = false;
@@ -83,6 +110,15 @@ public class PropertyReader {
         return skipHeader;
     }
 
+    /**
+     * Read an Enum parameter.
+     * @param mc SimpleMessageContext.
+     * @param parameterKey Key of the parameter.
+     * @param enumType Type of the enum.
+     * @param defaultValue Default value of the enum.
+     * @param <E> Enum type.
+     * @return Enum value for the parameter value.
+     */
     public static <E extends Enum<E>> E getEnumParam(SimpleMessageContext mc, String parameterKey, Class<E> enumType,
                                                      E defaultValue) {
 
@@ -99,6 +135,14 @@ public class PropertyReader {
         }
     }
 
+    /**
+     * Read JSON array parameter.
+     * @param mc SimpleMessageContext.
+     * @param parameterKey Key of the parameter.
+     * @param type JSON object type.
+     * @param <E> JSON Object type.
+     * @return List of JSON Objects of the parameter value.
+     */
     public static <E> List<E> getJsonArrayParam(SimpleMessageContext mc, String parameterKey, Class<E> type) {
 
         List<E> result;

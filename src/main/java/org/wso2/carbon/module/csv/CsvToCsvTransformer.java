@@ -38,6 +38,9 @@ import static org.wso2.carbon.module.csv.util.PropertyReader.getEnumParam;
 import static org.wso2.carbon.module.csv.util.PropertyReader.getIntegerParam;
 import static org.wso2.carbon.module.csv.util.PropertyReader.getStringParam;
 
+/**
+ * Transformer to transform CSV content to another CSV content.
+ */
 public class CsvToCsvTransformer extends SimpleMediator {
 
     @Override
@@ -94,17 +97,29 @@ public class CsvToCsvTransformer extends SimpleMediator {
 
     }
 
+    /**
+     * Generate header from the given custom header
+     * @param customHeader Custom header to use.
+     * @return Generated header.
+     */
     private String[] getCustomHeader(String customHeader) {
 
         return customHeader.split(Constants.DEFAULT_EXPRESSION_SPLITTER);
     }
 
+    /**
+     * Reorder the given CSV.
+     * @param orderByColumn Ordering column index.
+     * @param csvArrayStream CSV array stream.
+     * @param orderingType Ordering type.
+     * @return Ordered CSV array stream.
+     */
     private Stream<String[]> reorder(int orderByColumn, Stream<String[]> csvArrayStream, OrderingType orderingType) {
 
         if (orderByColumn >= 0) {
             csvArrayStream = csvArrayStream.sorted((row1, row2) -> {
-                String val1 = getRowValue(row1, orderByColumn);
-                String val2 = getRowValue(row2, orderByColumn);
+                String val1 = getCellValue(row1, orderByColumn);
+                String val2 = getCellValue(row2, orderByColumn);
                 int comparisonResult = val1.compareTo(val2);
                 if (orderingType == OrderingType.DESCENDING) {
                     comparisonResult = -comparisonResult;
@@ -115,7 +130,13 @@ public class CsvToCsvTransformer extends SimpleMediator {
         return csvArrayStream;
     }
 
-    private String getRowValue(String[] row, int index) {
+    /**
+     * Returns the value for the given cell. Returns empty if cell not found.
+     * @param row Row of the cell.
+     * @param index Index of the cell in the given row.
+     * @return Value of the given cell.
+     */
+    private String getCellValue(String[] row, int index) {
 
         final int rowLength = row.length;
         if (index >= rowLength) {

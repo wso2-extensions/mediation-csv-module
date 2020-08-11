@@ -38,6 +38,9 @@ import static org.wso2.carbon.module.csv.util.PropertyReader.getEnumParam;
 import static org.wso2.carbon.module.csv.util.PropertyReader.getJsonArrayParam;
 import static org.wso2.carbon.module.csv.util.PropertyReader.getStringParam;
 
+/**
+ * Transformer to transform CSV content to a JSON content.
+ */
 public class CsvToJsonTransformer extends AbstractCsvToAnyTransformer {
 
     @Override
@@ -69,6 +72,14 @@ public class CsvToJsonTransformer extends AbstractCsvToAnyTransformer {
                 .collect(rootJsonKeyQuery.map(mc::collectToJsonArray).orElseGet(mc::collectToJsonArray));
     }
 
+    /**
+     * Returns the value of the given CSV cell.
+     * @param row CSV row.
+     * @param index Index of the cell in the given row.
+     * @param emptyCsvValueType How to treat empty CSV values.
+     * @param dataTypeString Data type for JSON.
+     * @return JsonPrimitive of the JSON value for the CSV cell.
+     */
     private JsonPrimitive getCellValue(String[] row, int index, EmptyCsvValueType emptyCsvValueType,
                                        String dataTypeString) {
 
@@ -84,6 +95,12 @@ public class CsvToJsonTransformer extends AbstractCsvToAnyTransformer {
         return cellValue;
     }
 
+    /**
+     * Convert String value to appropriate JSON value.
+     * @param cellValueString Value of the cell as String.
+     * @param dataTypeString Data type to convert.
+     * @return JsonPrimitive with the given value.
+     */
     private JsonPrimitive convertCellType(String cellValueString, String dataTypeString) {
 
         if (dataTypeString != null) {
@@ -101,15 +118,20 @@ public class CsvToJsonTransformer extends AbstractCsvToAnyTransformer {
                         return new JsonPrimitive(cellValueString);
                 }
 
-            } catch (Exception e) {
-                log.debug("Error converting csv data to given json type : ", e);
+            } catch (IllegalArgumentException e) {
+                log.error("Error converting csv data to given json type : ", e);
             }
         }
 
         return new JsonPrimitive(cellValueString);
-
     }
 
+    /**
+     * Returns the map of index to data type for JSON conversion.
+     * @param dataTypesSchemaList JsonDataTypesSchema list containing the data types.
+     * @param header CSV headers.
+     * @return Map representing the data types.
+     */
     private Map<Integer, String> getDataTypes(List<JsonDataTypesSchema> dataTypesSchemaList, String[] header) {
 
         Map<Integer, String> dataTypeMap = new HashMap<>();

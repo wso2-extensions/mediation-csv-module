@@ -32,6 +32,9 @@ import javax.xml.namespace.QName;
 
 import static org.wso2.carbon.module.csv.util.PropertyReader.getStringParam;
 
+/**
+ * Transformer to transform CSV content to XML content.
+ */
 public class CsvToXmlTransformer extends AbstractCsvToAnyTransformer {
 
     @Override

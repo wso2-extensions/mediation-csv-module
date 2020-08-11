@@ -37,6 +37,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
+/**
+ * Common transformation methods for CSV payload.
+ */
 public class CsvTransformer {
 
     private static final Log log = LogFactory.getLog(CsvTransformer.class);
@@ -46,6 +49,12 @@ public class CsvTransformer {
 
     }
 
+    /**
+     * Get CSV header.
+     * @param payloadInfo CSV payload info object.
+     * @param headerAvailability Header availability.
+     * @return Generated CSV header.
+     */
     public static String[] getHeader(CsvPayloadInfo payloadInfo, HeaderAvailability headerAvailability) {
 
         String[] header = new String[]{};
@@ -61,9 +70,15 @@ public class CsvTransformer {
         return header;
     }
 
-    public static int getLinesToSkip(HeaderAvailability headerAvailability, int dateRowsToSkip) {
+    /**
+     * Return lines to skip from CSV content.
+     * @param headerAvailability Header availability.
+     * @param dataRowsToSkip Data rows to skip.
+     * @return Number of rows to skip from CSV content.
+     */
+    public static int getLinesToSkip(HeaderAvailability headerAvailability, int dataRowsToSkip) {
 
-        int linesToSkip = dateRowsToSkip;
+        int linesToSkip = dataRowsToSkip;
         if (headerAvailability == HeaderAvailability.PRESENT) {
             linesToSkip++;
         }
@@ -71,6 +86,14 @@ public class CsvTransformer {
         return linesToSkip;
     }
 
+    /**
+     * Skip columns from CSV content.
+     * @param columnCount Number of columns in the CSV content.
+     * @param skipColumnsQuery Skip columns query.
+     * @param csvArrayStream CSV array stream.
+     * @param header CSV header.
+     * @return CSV stream with skipped columns.
+     */
     public static Stream<String[]> skipColumns(int columnCount, String skipColumnsQuery,
                                                Stream<String[]> csvArrayStream, String[] header) {
 
@@ -84,6 +107,12 @@ public class CsvTransformer {
         return csvArrayStream;
     }
 
+    /**
+     * Skip columns from the given CSV row.
+     * @param skippingColumns Columns to skip.
+     * @param row List of CSV values in the row.
+     * @return Row of skipped columns.
+     */
     private static String[] skipColumns(int[] skippingColumns, List<String> row) {
 
         int[] currentSkippingColumns = skippingColumns.clone();
@@ -105,19 +134,34 @@ public class CsvTransformer {
         return row.toArray(new String[]{});
     }
 
+    /**
+     * Skip columns from the given CSV row.
+     * @param columnCount Number of columns in the CSV.
+     * @param columnsToSkip Columns to skip.
+     * @param row CSV row.
+     * @param header CSV header.
+     * @return CSV row of skipped columns.
+     */
     public static String[] skipColumnsSingleRow(int columnCount, String columnsToSkip, String[] row, String[] header) {
 
         Optional<int[]> skippingColumns = getSkippingColumns(columnCount, columnsToSkip, header);
         return skippingColumns.map(ints -> skipColumns(ints, new ArrayList<>(Arrays.asList(row)))).orElse(row);
     }
 
+    /**
+     * Return columns to skip.
+     * @param columnCount Number of columns in the CSV.
+     * @param skipColumnsQuery Skip columns query.
+     * @param header CSV header.
+     * @return Columns to skip. If no need to skip colomns, then returns an empty optional.
+     */
     private static Optional<int[]> getSkippingColumns(int columnCount, String skipColumnsQuery, String[] header) {
 
         Optional<int[]> skippingColumns;
 
         if (StringUtils.isNotBlank(skipColumnsQuery)) {
             try {
-                skippingColumns = Optional.of(parseExpression(skipColumnsQuery, columnCount, header));
+                skippingColumns = Optional.of(parseColumnExpression(skipColumnsQuery, columnCount, header));
             } catch (Exception e) {
                 log.debug("Invalid Skipping Columns query (no columns would be skipped)", e);
                 skippingColumns = Optional.empty();
@@ -130,7 +174,14 @@ public class CsvTransformer {
 
     }
 
-    private static int[] parseExpression(String skippingColumnsQuery, int columnCount, String[] header) {
+    /**
+     * Parse a column expression.
+     * @param skippingColumnsQuery Query to parse.
+     * @param columnCount Number of columns in CSV.
+     * @param header CSV header.
+     * @return Parsed column indices.
+     */
+    private static int[] parseColumnExpression(String skippingColumnsQuery, int columnCount, String[] header) {
 
         skippingColumnsQuery = preProcessExpression(skippingColumnsQuery, header);
         Tokenizer tokenizer = new Tokenizer();
@@ -142,6 +193,12 @@ public class CsvTransformer {
         return parser.parseAndGetValues(tokens, columnCount).stream().mapToInt(Integer::intValue).toArray();
     }
 
+    /**
+     * Pre-process a column expression.
+     * @param query Column expression.
+     * @param header CSV header.
+     * @return Pre-processed column expression.
+     */
     private static String preProcessExpression(String query, String[] header) {
 
         String queryClone = query;
@@ -161,6 +218,12 @@ public class CsvTransformer {
         return query;
     }
 
+    /**
+     * Get column index by the given query.
+     * @param query Column query.
+     * @param header CSV header.
+     * @return Index resolved by the given query. -1 if no column is resolved.
+     */
     public static int resolveColumnIndex(String query, String[] header) {
 
         int columnIndex = -1;
@@ -177,6 +240,12 @@ public class CsvTransformer {
         return columnIndex;
     }
 
+    /**
+     * Get column index for the given match from column query.
+     * @param header CSV header.
+     * @param match Match from the column query.
+     * @return Index of the given match.
+     */
     private static int getMatchingColumnIndex(String[] header, String match) {
 
         int columnIndex = -1;
@@ -190,6 +259,11 @@ public class CsvTransformer {
         return columnIndex;
     }
 
+    /**
+     * Extract column index from integer string.
+     * @param intQuery Integer string.
+     * @return Extract column index from integer string. If error, then returns -1.
+     */
     private static int extractColumnIndex(String intQuery) {
 
         try {

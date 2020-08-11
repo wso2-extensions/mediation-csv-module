@@ -32,12 +32,21 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Column selection expression parser.
+ */
 public class Parser {
 
     private LinkedList<Token> tokens;
     private Token lookahead;
     private int maxValue;
 
+    /**
+     * Parse and get indices.
+     * @param tokens Tokens list.
+     * @param maxValue Max column index to use.
+     * @return List of column indices resolved.
+     */
     public List<Integer> parseAndGetValues(List<Token> tokens, int maxValue) {
 
         ExpressionNode expressionNode = parse(tokens, maxValue);

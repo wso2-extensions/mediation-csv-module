@@ -18,6 +18,9 @@
 
 package org.wso2.carbon.module.csv.model;
 
+/**
+ * Schema of the JSON data type field used in the CSV to JSON transformer.
+ */
 public class JsonDataTypesSchema {
 
     private String columnNameOrIndex;

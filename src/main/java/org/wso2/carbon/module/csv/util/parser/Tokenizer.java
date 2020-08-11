@@ -27,6 +27,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Tokenizer for the given columns selector query.
+ */
 public class Tokenizer {
 
     private final LinkedList<TokenInfo> tokenInfos;
