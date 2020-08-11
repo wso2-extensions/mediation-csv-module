@@ -1,0 +1,161 @@
+{
+  "connectorName": "CSV",
+  "operationName": "csvToCsv",
+  "title": "Remove CSV Header",
+  "help": "<h1>Remove CSV Header</h1> <b>Remove headers form a CSV payload</b>",
+  "elements": [
+    {
+      "type": "attributeGroup",
+      "value": {
+        "groupName": "General",
+        "elements": [
+          {
+            "type": "attribute",
+            "value": {
+              "name": "description",
+              "displayName": "Description",
+              "inputType": "string",
+              "defaultValue": "CSV to CSV",
+              "required": "false",
+              "helpTip": "Component description"
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "CSV Input",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "headerPresent",
+                    "displayName": "Header",
+                    "inputType": "comboOrExpression",
+                    "defaultValue": "Absent",
+                    "required": "false",
+                    "comboValues": [
+                      "Present",
+                      "Absent"
+                    ],
+                    "helpTip": "Is there a header in the CSV payload ? Default is Absent"
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "valueSeparator",
+                    "displayName": "Separator",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Specify a value separator for CSV. Default is comma ( , )"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "CSV Transformation",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "skipHeader",
+                    "displayName": "Skip Headers",
+                    "inputType": "booleanOrExpression",
+                    "defaultValue": false,
+                    "required": "false",
+                    "helpTip": "Skip header from the content. Default is False",
+                    "enableCondition": [
+                      {
+                        "headerPresent": "Present"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "dataRowsToSkip",
+                    "displayName": "Skip Data Rows",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Number of data rows to skip. Default is 0"
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "orderByColumn",
+                    "displayName": "Order by Column",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Order the CSV content by the values of the given column"
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "columnOrdering",
+                    "displayName": "Sort Columns",
+                    "inputType": "comboOrExpression",
+                    "defaultValue": "Ascending",
+                    "required": "false",
+                    "comboValues": [
+                      "Ascending",
+                      "Descending"
+                    ],
+                    "helpTip": "Order columns ascending or descending. Default is ascending",
+                    "enableCondition": [
+                      "NOT",
+                      {
+                        "orderByColumn": ""
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "columnsToSkip",
+                    "displayName": "Skip Columns",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Comma separated string of column indexes to skip. Leave blank to skip no columns"
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "customHeader",
+                    "displayName": "Custom headers",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Comma separated string of header to set as CSV payload header"
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "customValueSeparator",
+                    "displayName": "Separator",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Specify a value separator for CSV output. Default is comma ( , )"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

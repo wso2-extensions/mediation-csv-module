@@ -1,0 +1,43 @@
+<!--
+  ~ Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~
+  ~ WSO2 Inc. licenses this file to you under the Apache License,
+  ~ Version 2.0 (the "License"); you may not use this file except
+  ~ in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+<template xmlns="http://ws.apache.org/ns/synapse" name="csvToCsv">
+    <parameter name="headerPresent" description="Is there a header in the CSV payload ? Default is Absent"/>
+    <parameter name="valueSeparator" description="Specify a value separator for CSV. Default is comma ( , )"/>
+    <parameter name="skipHeader" description="Should the header row be skipped from the content ? Default if false"/>
+    <parameter name="dataRowsToSkip" description="Number of data rows to skip. Default is 0"/>
+    <parameter name="orderByColumn" description="Order the CSV content by the values of the given column"/>
+    <parameter name="columnOrdering" description="Order columns ascending or descending. Default is ascending"/>
+    <parameter name="columnsToSkip"
+               description="Comma separated string of column indexes to skip. Leave blank to skip no columns"/>
+    <parameter name="customHeader" description="Comma separated string of header to set as CSV payload header"/>
+    <parameter name="customValueSeparator"
+               description="Specify a value separator for CSV output. Default is comma ( , )"/>
+    <sequence>
+
+        <property name="headerPresent"  expression="$func:headerPresent"/>
+        <property name="valueSeparator" expression="$func:valueSeparator"/>
+        <property name="skipHeader"  expression="$func:skipHeader"/>
+        <property name="dataRowsToSkip"  expression="$func:dataRowsToSkip"/>
+        <property name="columnsToSkip"  expression="$func:columnsToSkip"/>
+        <property name="customHeader"  expression="$func:customHeader"/>
+        <property name="orderByColumn"  expression="$func:orderByColumn"/>
+        <property name="columnOrdering" expression="$func:columnOrdering"/>
+        <property name="customValueSeparator" expression="$func:customValueSeparator"/>
+        <class name="org.wso2.carbon.module.csv.CsvToCsvTransformer"/>
+    </sequence>
+</template>
