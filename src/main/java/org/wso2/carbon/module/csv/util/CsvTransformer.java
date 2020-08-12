@@ -247,10 +247,12 @@ public class CsvTransformer {
 
         int columnIndex = -1;
         String columnName = match.replaceAll("\"", "");
-        for (int i = 0; i < header.length; i++) {
-            if (header[i].equalsIgnoreCase(columnName)) {
-                columnIndex = i;
-                break;
+        if (header != null) {
+            for (int i = 0; i < header.length; i++) {
+                if (header[i].equalsIgnoreCase(columnName)) {
+                    columnIndex = i;
+                    break;
+                }
             }
         }
         return columnIndex;

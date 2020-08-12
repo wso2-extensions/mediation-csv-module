@@ -85,9 +85,9 @@ public class CsvToCsvTransformer extends SimpleMediator {
         } else if (customHeader.isPresent()) {
             resultHeader = getCustomHeader(customHeader.get());
         }
-        if (columnsToSkipQuery.isPresent() && resultHeader != null) {
+        if (columnsToSkipQuery.isPresent() && resultHeader != null && !customHeader.isPresent()) {
             resultHeader = skipColumnsSingleRow(payloadInfo.getNumberOfColumns(), columnsToSkipQuery.get(),
-                    payloadInfo.getFirstRow(), header);
+                    payloadInfo.getFirstRow(), resultHeader);
         }
 
         csvArrayStream
