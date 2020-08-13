@@ -63,7 +63,7 @@
                   "type": "attribute",
                   "value": {
                     "name": "skipHeader",
-                    "displayName": "Skip headers",
+                    "displayName": "Skip Headers",
                     "inputType": "booleanOrExpression",
                     "defaultValue": false,
                     "required": "false",
@@ -124,7 +124,7 @@
                   "type": "attribute",
                   "value": {
                     "name": "jsonKeys",
-                    "displayName": "JSON keys",
+                    "displayName": "JSON Keys",
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
                     "required": "false",

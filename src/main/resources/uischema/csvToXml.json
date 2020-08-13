@@ -63,7 +63,7 @@
                   "type": "attribute",
                   "value": {
                     "name": "skipHeader",
-                    "displayName": "Skip headers",
+                    "displayName": "Skip Headers",
                     "inputType": "booleanOrExpression",
                     "defaultValue": false,
                     "required": "false",

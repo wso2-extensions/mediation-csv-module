@@ -1,10 +1,10 @@
-# CSV to CSV Transformation
+# CSV to XML Transformation
 
 [[Overview]](#overview)  [[Operation details]](#operation-details)  [[Sample configuration]](#sample-configuration)
 
 ### Overview 
 
-To transform a CSV payload to another CSV payload in a different format you can use csvToCsv operation.
+You can use the csvToXml operation to transform a CSV payload in to an XML payload.
 
 ### Operation details
 
@@ -16,34 +16,27 @@ The Default value is **Absent**.
 The separator to use in the CSV input. Default is the `,` (comma).
 * skipHeader (Skip Headers): Skip the header row or not in the output CSV. 
 This accepts **true** or **false** as values. The Default is false. This property is available only if the
- `headerPresent` 
-property is set to `Present`.
+ `headerPresent` property is set to `Present`.
+* columnsToSkip (Skip Columns): 
+Specify columns to skip from the CSV payload. You can specify columns as comma-separated values. 
+This supports more complex queries also, you can find full specifications here.
 * dataRowsToSkip (Skip Data Rows): 
 Number of data rows to skip. The Default is 0. 
     * If `headerPresent` is `Present` then data rows are the rows excluding the first row. 
     * If `headerPresent` is `Absent` then data rows are the rows starting from the first row.
-* orderByColumn (Order by Column): 
-Order the CSV content by values of the given column. 
-If you want to specify the column by column index, 
-provide the index of the column (Indexes are starting from 1). To specify the column by column name, give the column
- name withing double quotes (eg: "name"). 
- Specifying the column by column name works only if value of the `headerPresent` property is `Present`.
-* columnOrdering (Sort Columns): 
-This option is enable if the `orderByColumn` has a value. 
-This option accepts **Ascending** and **Descending** as values. 
-This property determines whether the CSV should be ordered astoundingly or descending according to the given column. 
-The default value is `Ascending`.
-* columnsToSkip (Skip Columns): 
-Specify columns to skip from the CSV payload. You can specify the columns as comma-separated values. 
-This supports more complex queries also, you can find full specifications here.
-* customHeader (Custom Header): Set a custom header to the output CSV payload. If this property not specified, the
-  header for the output CSV is determined as follows,
-    * If value of the `headerPresent` is `Absent` , output CSV would not have a header.
-    * If value of the `headerPresent` is `Present` and `skipHeader` is set as `true`, output CSV would not have a
-     header.
-    * If `headerPresent` is `Present` and `skipHeader` is set as `false`, output CSV would have the header of
-     the input CSV.  
-* customValueSeparator (Separator): Values separator to use in the output CSV. Default is `,` (comma)
+* Root Element Group: 
+You can use the properties under this group to config the root XML element of the output XML payload. 
+You can find following properties under the root element group.
+    * rootElementTag (Tag): Name of the XML tag of the root element.
+    * rootElementNamespace (Namespace): Namespace of the root element.
+    * rootElementNamespaceURI (Namespace URI): Namespace URI of the root element.
+* Group Element Group
+The properties under this group is for configuring the group elements of the output XML payload.
+You can find following properties under the group element group.
+    * groupElementName (Tag): Name of the XML tag of the group element.
+    * groupElementNamespace (Namespace): Namespace of the group element.
+    * groupElementNamespaceURI (Namespace URI): Namespace URI of the group element.
+    
 
 ### Sample configuration
 
