@@ -27,22 +27,21 @@ Number of data rows to skip. The Default is 0.
 * Root Element Group: 
 You can use the properties under this group to config the root XML element of the output XML payload. 
 You can find following properties under the root element group.
-    * rootElementTag (Tag): Name of the XML tag of the root element.
+    * rootElementTag (Tag): Name of the XML tag of the root element. Default value is `root`.
     * rootElementNamespace (Namespace): Namespace of the root element.
     * rootElementNamespaceURI (Namespace URI): Namespace URI of the root element.
 * Group Element Group
 The properties under this group is for configuring the group elements of the output XML payload.
 You can find following properties under the group element group.
-    * groupElementName (Tag): Name of the XML tag of the group element.
+    * groupElementName (Tag): Name of the XML tag of the group element. Default value is `group`.
     * groupElementNamespace (Namespace): Namespace of the group element.
     * groupElementNamespaceURI (Namespace URI): Namespace URI of the group element.
-    
 
 ### Sample configuration
 
 **Sample request**
 
-Following is a sample CSV request that can be handled by the csvToCsv operation.
+Following is a sample CSV request that can be handled by the csvToXml operation.
 
 ```text
 id,name,email,phone_number
@@ -54,26 +53,47 @@ id,name,email,phone_number
 ```
 **Sample Configuration**
 
-Given below is a sample configuration for the csvToCsv operation.
+Given below is a sample configuration for the csvToXml operation.
 ```xml
-<CSV.csvToCsv>
+<CSV.csvToXml>
     <headerPresent>Present</headerPresent>
     <skipHeader>true</skipHeader>
-    <dataRowsToSkip>1</dataRowsToSkip>
-    <orderByColumn>2</orderByColumn>
-    <columnOrdering>Ascending</columnOrdering>
     <columnsToSkip>"phone_number"</columnsToSkip>
-    <customHeader>index,name,email</customHeader>
-</CSV.csvToCsv>
+    <tagNames>index,name,email</tagNames>
+    <rootElementTag>results</rootElementTag>
+    <groupElementTag>result</groupElementTag>
+</CSV.csvToXml>
 ```
 **Sample response**
 
 Following is a sample response from the operation.
 
-```text
-index,name,email
-2,Brody Dowthwaite,bdowthwaite1@delicious.com
-3,Catlin Drought,cdrought2@etsy.com
-4,Kissiah Douglass,kdouglass3@squarespace.com
-5,Robinette Udey,rudey4@nytimes.com
+```xml
+<results>
+    <result>
+        <index>1</index>
+        <name>De witt Hambidge</name>
+        <email>dwitt0@newsvine.com</email>
+    </result>
+    <result>
+        <index>2</index>
+        <name>Brody Dowthwaite</name>
+        <email>bdowthwaite1@delicious.com</email>
+    </result>
+    <result>
+        <index>3</index>
+        <name>Catlin Drought</name>
+        <email>cdrought2@etsy.com</email>
+    </result>
+    <result>
+        <index>4</index>
+        <name>Kissiah Douglass</name>
+        <email>kdouglass3@squarespace.com</email>
+    </result>
+    <result>
+        <index>5</index>
+        <name>Robinette Udey</name>
+        <email>rudey4@nytimes.com</email>
+    </result>
+</results>
 ```

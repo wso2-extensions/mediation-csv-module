@@ -106,6 +106,17 @@
               "groupName": "XML Output",
               "elements": [
                 {
+                  "type": "attribute",
+                  "value": {
+                    "name": "tagNames",
+                    "displayName": "Tag Names",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Comma separated string of tag names for result XML"
+                  }
+                },
+                {
                   "type": "attributeGroup",
                   "value": {
                     "groupName": "Root Element",
@@ -154,7 +165,7 @@
                       {
                         "type": "attribute",
                         "value": {
-                          "name": "groupElementName",
+                          "name": "groupElementTag",
                           "displayName": "Tag",
                           "inputType": "stringOrExpression",
                           "defaultValue": "",
