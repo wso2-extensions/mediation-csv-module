@@ -10,15 +10,14 @@ You can use the xmlToCsv operation to transform an XML payload in to an CSV payl
 
 **Properties**
 * customHeader (CSV Header): 
-Set a custom header to the output CSV payload. If this property is not specified, 
-Key values of the input would be used as the output CSV headers.
+Set a custom header to the output CSV payload. If this property is not specified, Key values of the input would be used as the output CSV headers.
     
 
 ### Sample configuration
 
 **Sample request**
 
-Following is a sample CSV request that can be handled by the csvToCsv operation.
+Following is a sample XML request that can be handled by the xmlToCsv operation.
 
 ```xml
 <root>
@@ -56,7 +55,7 @@ Following is a sample CSV request that can be handled by the csvToCsv operation.
 ```
 **Sample Configuration**
 
-Given below is a sample configuration for the csvToCsv operation.
+Given below is a sample configuration for the xmlToCsv operation.
 ```xml
 <CSV.xmlToCsv>
     <customHeader>index,name,email,number</customHeader>

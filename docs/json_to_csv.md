@@ -10,15 +10,15 @@ You can use the jsonToCsv operation to transform a JSON payload in to an CSV pay
 
 **Properties**
 * customHeader (CSV Header): 
-Set a custom header to the output CSV payload. If this property is not specified, 
-Key values of the input would be used as the output CSV headers.
+Set a custom header to the output CSV payload. If this property is not specified, Key values of the input would be
+ used as the output CSV headers.
     
 
 ### Sample configuration
 
 **Sample request**
 
-Following is a sample CSV request that can be handled by the csvToCsv operation.
+Following is a sample JSON request that can be handled by the jsonToCsv operation.
 
 ```json
 [
@@ -56,7 +56,7 @@ Following is a sample CSV request that can be handled by the csvToCsv operation.
 ```
 **Sample Configuration**
 
-Given below is a sample configuration for the csvToCsv operation.
+Given below is a sample configuration for the jsonToCsv operation.
 ```xml
 <CSV.jsonToCsv>
     <customHeader>index,name,email,number</customHeader>
