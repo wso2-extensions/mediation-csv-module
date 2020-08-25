@@ -63,7 +63,7 @@
                   "type": "attribute",
                   "value": {
                     "name": "skipHeader",
-                    "displayName": "Skip headers",
+                    "displayName": "Skip Headers",
                     "inputType": "booleanOrExpression",
                     "defaultValue": false,
                     "required": "false",
@@ -105,6 +105,17 @@
             "value": {
               "groupName": "XML Output",
               "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "tagNames",
+                    "displayName": "Tag Names",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Comma separated string of tag names for result XML"
+                  }
+                },
                 {
                   "type": "attributeGroup",
                   "value": {
@@ -154,7 +165,7 @@
                       {
                         "type": "attribute",
                         "value": {
-                          "name": "groupElementName",
+                          "name": "groupElementTag",
                           "displayName": "Tag",
                           "inputType": "stringOrExpression",
                           "defaultValue": "",

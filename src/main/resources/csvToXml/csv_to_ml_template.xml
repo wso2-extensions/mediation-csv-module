@@ -27,7 +27,7 @@
     <parameter name="rootElementTag" description="Tag name of the root XML element"/>
     <parameter name="rootElementNamespace" description="Namespace URI for root XML element"/>
     <parameter name="rootElementNamespaceURI" description="Namespace prefix for root XML element"/>
-    <parameter name="groupElementName" description="Name of the group xml elements"/>
+    <parameter name="groupElementTag" description="Name of the group xml elements"/>
     <parameter name="groupElementNamespace" description="Namespace URI for group XML element"/>
     <parameter name="groupElementNamespaceURI" description="Namespace prefix group root XML element"/>
     <sequence>
@@ -40,7 +40,7 @@
         <property name="rootElementTag" expression="$func:rootElementTag"/>
         <property name="rootElementNamespace" expression="$func:rootElementNamespace"/>
         <property name="rootElementNamespaceURI" expression="$func:rootElementNamespaceURI"/>
-        <property name="groupElementName" expression="$func:groupElementName"/>
+        <property name="groupElementTag" expression="$func:groupElementTag"/>
         <property name="groupElementNamespace" expression="$func:groupElementNamespace"/>
         <property name="groupElementNamespaceURI" expression="$func:groupElementNamespaceURI"/>
         <class name="org.wso2.carbon.module.csv.CsvToXmlTransformer"/>
