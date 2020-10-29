@@ -8,8 +8,9 @@ The CSV Module contains methods need to modify and transform a CSV payloads.
 - CSV to JSON transformation 
 - CSV to XML transformation 
 - JSON to CSV transformation
-- JSON to XML transformation
+- XML to CSV transformation
 
+For more details about all the features of the CSV Module, refer the [doc](/docs/doc.md) page.
 
 ## Building from the source
 
