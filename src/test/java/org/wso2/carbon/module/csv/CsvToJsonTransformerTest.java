@@ -242,6 +242,8 @@ class CsvToJsonTransformerTest {
 
         lenient().when(mc.lookupTemplateParameter(ParameterKey.COLUMNS_TO_SKIP)).thenReturn("1,2");
         when(mc.getCsvArrayStream(0, Constants.DEFAULT_CSV_SEPARATOR)).thenReturn(csvPayload.stream());
+        when(mc.getCsvPayloadInfo(Constants.DEFAULT_CSV_SEPARATOR))
+                .thenReturn(new CsvPayloadInfo(csvPayload.get(0), 3, csvPayload));
         when(mc.collectToJsonArray()).thenReturn(jsonArrayCollector);
 
         ArgumentCaptor<JsonElement> payloadSetArgumentCaptor = ArgumentCaptor.forClass(JsonElement.class);
