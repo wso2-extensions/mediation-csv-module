@@ -22,7 +22,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.wso2.carbon.module</groupId>
     <artifactId>mediation-csv-module</artifactId>
-    <version>1.0.2-SNAPSHOT</version>
+    <version>1.0.2</version>
     <packaging>jar</packaging>
     <name>WSO2 Carbon - Connector For csvConnector</name>
     <url>http://wso2.org</url>
