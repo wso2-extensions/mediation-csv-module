@@ -215,6 +215,8 @@ class CsvToXmlTransformerTest {
         csvPayload.add(new String[]{"2", "3", "4"});
 
         lenient().when(mc.lookupTemplateParameter(ParameterKey.COLUMNS_TO_SKIP)).thenReturn("1,2");
+        when(mc.getCsvPayloadInfo(Constants.DEFAULT_CSV_SEPARATOR))
+                .thenReturn(new CsvPayloadInfo(csvPayload.get(0), 3, csvPayload));
         when(mc.getCsvArrayStream(0, Constants.DEFAULT_CSV_SEPARATOR)).thenReturn(csvPayload.stream());
 
         ArgumentCaptor<OMElement> resultPayloadCaptor = ArgumentCaptor.forClass(OMElement.class);
