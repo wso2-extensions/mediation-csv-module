@@ -70,7 +70,18 @@ public class PropertyReader {
     public static Optional<Character> getCharParam(SimpleMessageContext mc, String parameterKey) {
 
         Optional<String> parameterValue = getStringParam(mc, parameterKey);
-        return parameterValue.map(s -> s.charAt(0));
+        return parameterValue.map(PropertyReader::replaceWhitespaces);
+    }
+
+    private static Character replaceWhitespaces(String text) {
+
+        if (text.equals("tab")) {
+            return 9;
+        } else if (text.equals("space")) {
+            return 32;
+        } else {
+            return text.charAt(0);
+        }
     }
 
     /**

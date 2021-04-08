@@ -13,7 +13,8 @@ You can use the csvToJson operation to transform a CSV payload in to a JSON payl
 Specify whether the CSV input has a header row. This accepts **Absent** or **Present** as values. The Default value
  is **Absent**.   
 * valueSeparator (Separator):   
-Specify the separator to use in the CSV input. Default is the `,` (comma).  
+Specify the separator to use in the CSV input. Default is the `,` (comma).  To use tab as the separator, use the
+  value `tab` to this property. To use space, use the value `space`. 
 This property accepts **true** or **false** as values. The Default is false. This is available only if the value of
  the `headerPresent` property is set to `Present`.
 * columnsToSkip (Skip Columns):   
