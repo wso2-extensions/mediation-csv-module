@@ -20,6 +20,7 @@ package org.wso2.carbon.module.csv;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import org.apache.commons.lang.StringUtils;
 import org.wso2.carbon.module.core.SimpleMediator;
@@ -48,7 +49,11 @@ public class JsonToCsvTransformer extends SimpleMediator {
                     List<String> csvEntry = new ArrayList<>();
                     Set<Map.Entry<String, JsonElement>> entries = obj.entrySet();
                     for (Map.Entry<String, JsonElement> elementEntry : entries) {
-                        csvEntry.add(elementEntry.getValue().getAsString());
+                        if (elementEntry.getValue() instanceof JsonNull) {
+                            csvEntry.add("");
+                        } else {
+                            csvEntry.add(elementEntry.getValue().getAsString());
+                        }
                     }
 
                     return csvEntry.toArray(new String[]{});
