@@ -36,8 +36,7 @@ import java.util.stream.StreamSupport;
 import javax.xml.stream.XMLStreamException;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class XmlToCsvTransformerTest {
@@ -71,10 +70,11 @@ class XmlToCsvTransformerTest {
         Stream<OMElement> childElementStream = StreamSupport.stream(iterable.spliterator(), false);
         final CsvCollector csvCollector = new CsvCollector(mc, null);
 
-        when(mc.lookupTemplateParameter(ParameterKey.CUSTOM_HEADER)).thenReturn("");
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.CUSTOM_HEADER)).thenReturn("");
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.SUPPRESS_ESCAPE_CHARACTERS)).thenReturn("false");
         when(mc.getRootXmlElement()).thenReturn(xmlPayload.cloneOMElement());
         when(mc.getXmlChildElementsStream()).thenReturn(childElementStream);
-        when(mc.collectToCsv(any())).thenReturn(csvCollector);
+        when(mc.collectToCsv(new String[]{"id", "firstName", "lastName"}, false)).thenReturn(csvCollector);
 
         ArgumentCaptor<String> payloadSetArgumentCaptor = ArgumentCaptor.forClass(String.class);
 
@@ -122,9 +122,10 @@ class XmlToCsvTransformerTest {
         Stream<OMElement> childElementStream = StreamSupport.stream(iterable.spliterator(), false);
         final CsvCollector csvCollector = new CsvCollector(mc, headerArray);
 
-        when(mc.lookupTemplateParameter(ParameterKey.CUSTOM_HEADER)).thenReturn(header);
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.CUSTOM_HEADER)).thenReturn(header);
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.SUPPRESS_ESCAPE_CHARACTERS)).thenReturn("false");
         when(mc.getXmlChildElementsStream()).thenReturn(childElementStream);
-        when(mc.collectToCsv(any())).thenReturn(csvCollector);
+        when(mc.collectToCsv(headerArray, false)).thenReturn(csvCollector);
 
         ArgumentCaptor<String> payloadSetArgumentCaptor = ArgumentCaptor.forClass(String.class);
 

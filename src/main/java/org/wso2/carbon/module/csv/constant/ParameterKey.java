@@ -45,6 +45,8 @@ public class ParameterKey {
     public static final String GROUP_ELEMENT_NAMESPACE = "groupElementNamespace";
     public static final String GROUP_ELEMENT_NAMESPACE_URI = "groupElementNamespaceURI";
 
+    public static final String SUPPRESS_ESCAPE_CHARACTERS = "suppressEscaping";
+
     private ParameterKey() {
 
     }

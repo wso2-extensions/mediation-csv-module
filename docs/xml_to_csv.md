@@ -11,7 +11,7 @@ You can use the xmlToCsv operation to transform an XML payload in to an CSV payl
 **Properties**
 * customHeader (CSV Header): 
 Set a custom header to the output CSV payload. If this property is not specified, Key values of the input would be used as the output CSV headers.
-    
+* suppressEscaping (Suppress Escaping): Specify whether to suppress all escaping in the output Csv payload. Default is false. (ie. Escape characters will be present)    
 
 ### Sample configuration
 

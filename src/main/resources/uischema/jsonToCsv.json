@@ -35,6 +35,17 @@
                     "required": "false",
                     "helpTip": "Comma separated strings to set as the CSV header"
                   }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "suppressEscaping",
+                    "displayName": "Suppress Escaping",
+                    "inputType": "booleanOrExpression",
+                    "defaultValue": "false",
+                    "required": "false",
+                    "helpTip": "Specify whether to suppress all escaping in the output Csv payload. Default is false. (ie. Escape characters will be present)"
+                  }
                 }
               ]
             }

@@ -58,6 +58,7 @@ public class CsvToCsvTransformer extends SimpleMediator {
                 getEnumParam(mc, ParameterKey.SORT_COLUMNS_BY_ORDERING, OrderingType.class, OrderingType.ASCENDING);
         final Optional<String> customHeader = getStringParam(mc, ParameterKey.CUSTOM_HEADER);
         final Optional<Character> customValueSeparator = getCharParam(mc, ParameterKey.CUSTOM_VALUE_SEPARATOR);
+        final boolean suppressEscapeCharacters = getBooleanParam(mc, ParameterKey.SUPPRESS_ESCAPE_CHARACTERS);
 
         CsvPayloadInfo payloadInfo = new CsvPayloadInfo();
         if (headerAvailability == HeaderAvailability.PRESENT || customHeader.isPresent()) {
@@ -89,10 +90,8 @@ public class CsvToCsvTransformer extends SimpleMediator {
             resultHeader = skipColumnsSingleRow(payloadInfo.getNumberOfColumns(), columnsToSkipQuery.get(),
                     payloadInfo.getFirstRow(), resultHeader);
         }
-
         csvArrayStream
-                .collect(mc.collectToCsv(resultHeader, customValueSeparator.orElse(Constants.DEFAULT_CSV_SEPARATOR)));
-
+                .collect(mc.collectToCsv(resultHeader, customValueSeparator.orElse(Constants.DEFAULT_CSV_SEPARATOR), suppressEscapeCharacters));
     }
 
     /**
