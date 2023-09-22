@@ -42,6 +42,7 @@ Specify columns to skip from the CSV payload. You can specify the columns as com
   * If `headerPresent` is `Present` and `skipHeader` is set as `false`, output CSV would have the header of the input
    CSV.    
 * customValueSeparator (Separator): Values separator to use in the output CSV. Default is `,` (comma)  
+* suppressEscaping (Suppress Escaping): Specify whether to suppress all escaping in the output Csv payload. Default is false. (ie. Escape characters will be present)
   
 ### Sample configuration  
   

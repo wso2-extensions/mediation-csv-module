@@ -17,8 +17,10 @@
   -->
 <template xmlns="http://ws.apache.org/ns/synapse" name="xmlToCsv">
     <parameter name="customHeader" description="Comma separated string of header for Csv payload."/>
+    <parameter name="suppressEscaping" description="Whether to suppress Escape Characters in the output Csv payload"/>
     <sequence>
         <property name="customHeader" expression="$func:customHeader"/>
+        <property name="suppressEscaping" expression="$func:suppressEscaping"/>
         <class name="org.wso2.carbon.module.csv.XmlToCsvTransformer"/>
     </sequence>
 </template>

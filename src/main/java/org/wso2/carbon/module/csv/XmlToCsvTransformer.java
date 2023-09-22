@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import static org.wso2.carbon.module.csv.constant.Constants.DEFAULT_EXPRESSION_SPLITTER;
+import static org.wso2.carbon.module.csv.util.PropertyReader.getBooleanParam;
 
 /**
  * Transformer to transform an XML content to a CSV content.
@@ -37,7 +38,7 @@ public class XmlToCsvTransformer extends SimpleMediator {
 
     @Override
     public void mediate(SimpleMessageContext mc) {
-
+        final boolean suppressEscapeCharacter = getBooleanParam(mc, ParameterKey.SUPPRESS_ESCAPE_CHARACTERS);
         String[] header = getHeader(mc);
         mc.getXmlChildElementsStream()
                 .map(omElement -> {
@@ -49,7 +50,7 @@ public class XmlToCsvTransformer extends SimpleMediator {
                         csvEntry.add(childText);
                     }
                     return csvEntry.toArray(new String[0]);
-                }).collect(mc.collectToCsv(header));
+                }).collect(mc.collectToCsv(header, suppressEscapeCharacter));
     }
 
     /**

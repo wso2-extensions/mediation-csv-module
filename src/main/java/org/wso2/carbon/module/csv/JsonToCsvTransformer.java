@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static org.wso2.carbon.module.csv.constant.Constants.DEFAULT_EXPRESSION_SPLITTER;
+import static org.wso2.carbon.module.csv.util.PropertyReader.getBooleanParam;
 
 /**
  * Transformer to transform JSON content to a CSV content.
@@ -41,6 +42,7 @@ public class JsonToCsvTransformer extends SimpleMediator {
 
     @Override
     public void mediate(SimpleMessageContext mc) {
+        final boolean suppressEscapeCharacters = getBooleanParam(mc, ParameterKey.SUPPRESS_ESCAPE_CHARACTERS);
 
         String[] header = getHeader(mc);
         mc.getJsonArrayStream()
@@ -58,7 +60,7 @@ public class JsonToCsvTransformer extends SimpleMediator {
 
                     return csvEntry.toArray(new String[]{});
                 })
-                .collect(mc.collectToCsv(header));
+                .collect(mc.collectToCsv(header, suppressEscapeCharacters));
     }
 
     /**

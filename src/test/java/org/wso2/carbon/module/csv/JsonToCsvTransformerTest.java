@@ -33,9 +33,10 @@ import org.wso2.carbon.module.csv.constant.ParameterKey;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+
 
 @ExtendWith(MockitoExtension.class)
 class JsonToCsvTransformerTest {
@@ -70,10 +71,11 @@ class JsonToCsvTransformerTest {
                 StreamSupport.stream(payloadJsonElement.getAsJsonArray().spliterator(), false);
         final CsvCollector csvCollector = new CsvCollector(mc, null);
 
-        when(mc.lookupTemplateParameter(ParameterKey.CUSTOM_HEADER)).thenReturn("");
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.CUSTOM_HEADER)).thenReturn("");
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.SUPPRESS_ESCAPE_CHARACTERS)).thenReturn("false");
         when(mc.getJsonElement()).thenReturn(payloadJsonElement);
         when(mc.getJsonArrayStream()).thenReturn(payloadJsonStream);
-        when(mc.collectToCsv(any())).thenReturn(csvCollector);
+        when(mc.collectToCsv(new String[]{"id", "firstName", "lastName"}, false)).thenReturn(csvCollector);
 
         ArgumentCaptor<String> payloadSetArgumentCaptor = ArgumentCaptor.forClass(String.class);
 
@@ -121,9 +123,10 @@ class JsonToCsvTransformerTest {
                 StreamSupport.stream(payloadJsonElement.getAsJsonArray().spliterator(), false);
         final CsvCollector csvCollector = new CsvCollector(mc, headerArray);
 
-        when(mc.lookupTemplateParameter(ParameterKey.CUSTOM_HEADER)).thenReturn(header);
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.CUSTOM_HEADER)).thenReturn(header);
+        lenient().when(mc.lookupTemplateParameter(ParameterKey.SUPPRESS_ESCAPE_CHARACTERS)).thenReturn("false");
         when(mc.getJsonArrayStream()).thenReturn(payloadJsonStream);
-        when(mc.collectToCsv(headerArray)).thenReturn(csvCollector);
+        when(mc.collectToCsv(headerArray, false)).thenReturn(csvCollector);
 
         ArgumentCaptor<String> payloadSetArgumentCaptor = ArgumentCaptor.forClass(String.class);
 
