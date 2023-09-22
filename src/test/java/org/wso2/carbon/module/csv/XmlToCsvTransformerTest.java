@@ -35,8 +35,9 @@ import java.util.stream.StreamSupport;
 
 import javax.xml.stream.XMLStreamException;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class XmlToCsvTransformerTest {
