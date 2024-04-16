@@ -1,0 +1,13 @@
+{
+    "name": "CSV Module",
+    "owner": "WSO2",
+    "category": "Developer Tools",
+    "documentationUrl": "https://github.com/wso2-extensions/mediation-csv-module/tree/master/docs",
+    "description": "CSV Module provides the capability to transform CSV payloads into JSON and XML and provides tools to transform CSV payload format.",
+    "status": "Active",
+    "labels": [
+        "CSV",
+        "Data-Transformation"
+    ],
+    "releases": []
+}
