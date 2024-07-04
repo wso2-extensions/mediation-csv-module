@@ -9,5 +9,13 @@
         "CSV",
         "Data-Transformation"
     ],
-    "releases": []
+    "releases": [
+        {
+            "tagName": "v1.0.5",
+            "products": [
+                "EI 7.1.0"
+            ],
+            "isHidden": false
+        }
+    ]
 }
