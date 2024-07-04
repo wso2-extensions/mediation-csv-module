@@ -6,8 +6,15 @@
     "description": "CSV Module provides the capability to transform CSV payloads into JSON and XML and provides tools to transform CSV payload format.",
     "status": "Active",
     "labels": [
-        "CSV",
-        "Data-Transformation"
+        "connector"
     ],
-    "releases": []
+    "releases": [
+        {
+            "tag_name": "v1.0.5",
+            "products": [
+                "\"EI 7.1.0\""
+            ],
+            "isHidden": false
+        }
+    ]
 }
