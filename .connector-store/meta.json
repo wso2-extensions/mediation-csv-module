@@ -6,14 +6,16 @@
     "description": "CSV Module provides the capability to transform CSV payloads into JSON and XML and provides tools to transform CSV payload format.",
     "status": "Active",
     "labels": [
-        "CSV",
-        "Data-Transformation"
+        "module"
     ],
     "releases": [
         {
             "tagName": "v1.0.5",
             "products": [
-                "MI 4.x.x"
+                "MI 4.3.0",
+                "MI 4.2.0",
+                "MI 4.1.0",
+                "MI 4.0.0"
             ],
             "isHidden": false
         }
