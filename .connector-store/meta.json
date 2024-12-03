@@ -8,7 +8,7 @@
     "mavenArtifactId": "mediation-csv-module",
     "description": "CSV Module provides the capability to transform CSV payloads into JSON and XML and provides tools to transform CSV payload format.",
     "status": "Active",
-    "connectorRank": 3,
+    "rank": 3,
     "type": "Connector",
     "labels": [
         "module"
