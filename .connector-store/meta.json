@@ -1,5 +1,5 @@
 {
-    "name": "CSV Module",
+    "name": "CSV",
     "owner": "WSO2",
     "product": "MI",
     "category": "Developer Tools",
@@ -14,6 +14,44 @@
         "module"
     ],
     "releases": [
+        {
+            "tagName": "v1.0.6",
+            "products": [
+                "MI 4.3.0",
+                "MI 4.2.0",
+                "MI 4.1.0",
+                "MI 4.0.0"
+            ],
+            "operations": [
+                {
+                    "name":"csvToCsv",
+                    "description":"Transform a CSV payload",
+                    "isHidden":false
+                },
+                {
+                    "name":"csvToJson",
+                    "description":"Convert CSV to Json",
+                    "isHidden":false
+                },
+                {
+                    "name":"csvToXml",
+                    "description":"Convert CSV to XML",
+                    "isHidden":false
+                },
+                {
+                    "name":"jsonToCsv",
+                    "description":"Convert Json to CSV",
+                    "isHidden":false
+                },
+                {
+                    "name":"xmlToCsv",
+                    "description":"Transform XML to CSV",
+                    "isHidden":false
+                }
+            ],
+            "connections": [],
+            "isHidden": false
+        },
         {
             "tagName": "v1.0.5",
             "products": [

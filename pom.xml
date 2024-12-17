@@ -22,7 +22,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.wso2.integration.module</groupId>
     <artifactId>mi-module-csv</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.6-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>WSO2 Carbon - Connector For csvConnector</name>
     <url>http://wso2.org</url>
@@ -231,6 +231,12 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    <scm>
+        <connection>scm:git:https://github.com/wso2-extensions/mediation-csv-module</connection>
+        <url>https://github.com/wso2-extensions/mediation-csv-module.git</url>
+        <developerConnection>scm:git:https://github.com/wso2-extensions/mediation-csv-module</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
     <build>
         <plugins>
           <plugin>
@@ -377,7 +383,7 @@
         <repository>
             <id>wso2-nexus</id>
             <name>WSO2 internal Repository</name>
-            <url>http://maven.wso2.org/nexus/content/groups/wso2-public/</url>
+            <url>https://maven.wso2.org/nexus/content/groups/wso2-public/</url>
             <releases>
                 <enabled>true</enabled>
                 <updatePolicy>daily</updatePolicy>
@@ -387,7 +393,7 @@
         <repository>
             <id>wso2.releases</id>
             <name>WSO2 internal Repository</name>
-            <url>http://maven.wso2.org/nexus/content/repositories/releases/</url>
+            <url>https://maven.wso2.org/nexus/content/repositories/releases/</url>
             <releases>
                 <enabled>true</enabled>
                 <updatePolicy>daily</updatePolicy>
@@ -397,7 +403,7 @@
         <repository>
             <id>wso2.snapshots</id>
             <name>Apache Snapshot Repository</name>
-            <url>http://maven.wso2.org/nexus/content/repositories/snapshots/</url>
+            <url>https://maven.wso2.org/nexus/content/repositories/snapshots/</url>
             <snapshots>
                 <enabled>true</enabled>
                 <updatePolicy>daily</updatePolicy>
