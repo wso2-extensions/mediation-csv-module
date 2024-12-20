@@ -61,11 +61,8 @@ public class CsvToJsonTransformer extends AbstractCsvToAnyTransformer {
         for (int i = 0; i < jsonKeys.length; i++) {
             String key = jsonKeys[i];
             int count = keyOccurrences.getOrDefault(key, 0);
-            if (count > 0) {
-                key = key + "_" + count;
-            }
-            keyOccurrences.put(jsonKeys[i], count + 1);
-            uniqueJsonKeys[i] = key;
+            uniqueJsonKeys[i] = count > 0 ? key + "_" + count : key;
+            keyOccurrences.put(key, count + 1);
         }
         csvArrayStream
                 .map(row -> {
