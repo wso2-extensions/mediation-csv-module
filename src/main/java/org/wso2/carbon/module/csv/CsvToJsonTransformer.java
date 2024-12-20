@@ -54,6 +54,16 @@ public class CsvToJsonTransformer extends AbstractCsvToAnyTransformer {
         final Optional<String> rootJsonKeyQuery = getStringParam(mc, ParameterKey.ROOT_JSON_KEY);
         String[] jsonKeys = generateObjectKeys(jsonKeysQuery.orElse(""), header);
         Map<Integer, String> dataTypesMap = getDataTypes(dataTypesSchemaList, header);
+        // Ensure unique keys by tracking occurrences
+        Map<String, Integer> keyOccurrences = new HashMap<>();
+        String[] uniqueJsonKeys = new String[jsonKeys.length];
+
+        for (int i = 0; i < jsonKeys.length; i++) {
+            String key = jsonKeys[i];
+            int count = keyOccurrences.getOrDefault(key, 0);
+            uniqueJsonKeys[i] = count > 0 ? key + "_" + count : key;
+            keyOccurrences.put(key, count + 1);
+        }
         csvArrayStream
                 .map(row -> {
                     JsonObject jsonObject = new JsonObject();
@@ -61,7 +71,7 @@ public class CsvToJsonTransformer extends AbstractCsvToAnyTransformer {
                     for (int i = 0; i < row.length; i++) {
                         String dataTypeString = dataTypesMap.getOrDefault(i, JsonDataType.STRING.toString());
                         JsonPrimitive value = getCellValue(row, i, treatEmptyCsvValueAs, dataTypeString);
-                        String key = getObjectKey(jsonKeys, i);
+                        String key = getObjectKey(uniqueJsonKeys, i);
                         jsonObject.add(key, value);
                     }
 
