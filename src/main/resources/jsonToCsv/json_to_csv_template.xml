@@ -18,8 +18,10 @@
 <template xmlns="http://ws.apache.org/ns/synapse" name="jsonToCsv">
     <parameter name="customHeader" description="Comma separated string of header for Csv payload"/>
     <parameter name="suppressEscaping" description="Whether to suppress Escape Characters in the output Csv payload"/>
+    <parameter name="customValueSeparator" description="Specify a value separator for CSV output. Default is comma ( , )"/>
     <sequence>
         <property name="customHeader" expression="$func:customHeader"/>
+        <property name="customValueSeparator" expression="$func:customValueSeparator"/>
         <property name="suppressEscaping" expression="$func:suppressEscaping"/>
         <class name="org.wso2.carbon.module.csv.JsonToCsvTransformer"/>
     </sequence>
