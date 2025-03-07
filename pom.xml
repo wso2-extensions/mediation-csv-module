@@ -20,7 +20,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.wso2.integration.module</groupId>
     <artifactId>mi-module-csv</artifactId>
-    <version>1.0.8-SNAPSHOT</version>
+    <version>1.0.7-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>WSO2 Carbon - Connector For csvConnector</name>
     <url>http://wso2.org</url>
@@ -415,12 +415,12 @@
         <repository>
             <id>nexus-releases</id>
             <name>WSO2 Release Distribution Repository</name>
-            <url>http://maven.wso2.org/nexus/service/local/staging/deploy/maven2/</url>
+            <url>https://maven.wso2.org/nexus/service/local/staging/deploy/maven2/</url>
         </repository>
         <snapshotRepository>
             <id>wso2.snapshots</id>
             <name>Apache Snapshot Repository</name>
-            <url>http://maven.wso2.org/nexus/content/repositories/snapshots/</url>
+            <url>https://maven.wso2.org/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 </project>
