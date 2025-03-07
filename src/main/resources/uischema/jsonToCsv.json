@@ -39,6 +39,17 @@
                 {
                   "type": "attribute",
                   "value": {
+                    "name": "customValueSeparator",
+                    "displayName": "Separator",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Specify a value separator for CSV output. Default is comma ( , )"
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
                     "name": "suppressEscaping",
                     "displayName": "Suppress Escaping",
                     "inputType": "booleanOrExpression",

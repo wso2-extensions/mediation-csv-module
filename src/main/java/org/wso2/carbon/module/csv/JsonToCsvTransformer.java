@@ -25,15 +25,18 @@ import com.google.gson.JsonObject;
 import org.apache.commons.lang.StringUtils;
 import org.wso2.carbon.module.core.SimpleMediator;
 import org.wso2.carbon.module.core.SimpleMessageContext;
+import org.wso2.carbon.module.csv.constant.Constants;
 import org.wso2.carbon.module.csv.constant.ParameterKey;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Optional;
 
 import static org.wso2.carbon.module.csv.constant.Constants.DEFAULT_EXPRESSION_SPLITTER;
 import static org.wso2.carbon.module.csv.util.PropertyReader.getBooleanParam;
+import static org.wso2.carbon.module.csv.util.PropertyReader.getCharParam;
 
 /**
  * Transformer to transform JSON content to a CSV content.
@@ -43,6 +46,7 @@ public class JsonToCsvTransformer extends SimpleMediator {
     @Override
     public void mediate(SimpleMessageContext mc) {
         final boolean suppressEscapeCharacters = getBooleanParam(mc, ParameterKey.SUPPRESS_ESCAPE_CHARACTERS);
+        final Optional<Character> customValueSeparator = getCharParam(mc, ParameterKey.CUSTOM_VALUE_SEPARATOR);
 
         String[] header = getHeader(mc);
         mc.getJsonArrayStream()
@@ -60,7 +64,7 @@ public class JsonToCsvTransformer extends SimpleMediator {
 
                     return csvEntry.toArray(new String[]{});
                 })
-                .collect(mc.collectToCsv(header, suppressEscapeCharacters));
+                .collect(mc.collectToCsv(header, customValueSeparator.orElse(Constants.DEFAULT_CSV_SEPARATOR), suppressEscapeCharacters));
     }
 
     /**
