@@ -23,18 +23,11 @@ jobs:
         with:
           token: ${{ secrets.WSO2_INTEGRATION_BOT_TOKEN }}
           fetch-depth: 0
-
-      - name: Set up JDK 11
+      - name: Set up JDK 8
         uses: joschi/setup-jdk@v2
         with:
           distribution: 'adopt'
-          java-version: 11
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-      
+          java-version: 8
       - name: Extract project version
         run: |
           VERSION=$(grep -oPm1 "(?<=<version>)[^<]+" pom.xml | sed 's/-SNAPSHOT$//')
