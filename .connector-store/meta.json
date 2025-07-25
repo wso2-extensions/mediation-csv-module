@@ -15,6 +15,406 @@
     ],
     "releases": [
         {
+            "tagName": "v3.0.0",
+            "products": [
+                "MI 4.4.0"
+            ],
+            "operations": [
+                {
+                    "name": "csvToXml",
+                    "description": "CSV to XML",
+                    "params": [
+                        {
+                            "name": "description",
+                            "type": "string",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Component description"
+                        },
+                        {
+                            "name": "headerPresent",
+                            "type": "comboOrExpression",
+                            "required": false,
+                            "defaultValue": "Absent",
+                            "description": "Is there a header in the CSV payload ? Default is Absent Supported values: Present, Absent"
+                        },
+                        {
+                            "name": "valueSeparator",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Specify a value separator for CSV. Default is comma ( , )"
+                        },
+                        {
+                            "name": "skipHeader",
+                            "type": "booleanOrExpression",
+                            "required": false,
+                            "defaultValue": "False",
+                            "description": "Skip header from the content. Default is False"
+                        },
+                        {
+                            "name": "columnsToSkip",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Comma separated string of column indexes to skip. Leave blank to skip no columns"
+                        },
+                        {
+                            "name": "dataRowsToSkip",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Number of data rows to skip. Default is 0"
+                        },
+                        {
+                            "name": "tagNames",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Comma separated string of tag names for result XML"
+                        },
+                        {
+                            "name": "rootElementTag",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Tag name of the root XML element"
+                        },
+                        {
+                            "name": "rootElementNamespace",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Namespace URI for root XML element"
+                        },
+                        {
+                            "name": "rootElementNamespaceURI",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Namespace prefix for root XML element"
+                        },
+                        {
+                            "name": "groupElementTag",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Name of the group xml elements"
+                        },
+                        {
+                            "name": "groupElementNamespace",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Namespace URI for group XML element"
+                        },
+                        {
+                            "name": "groupElementNamespaceURI",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Namespace prefix group XML element"
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Replace the Message Body in Message Context with the output of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
+                    "isHidden": false
+                },
+                {
+                    "name": "csvToJson",
+                    "description": "CSV to Json",
+                    "params": [
+                        {
+                            "name": "description",
+                            "type": "string",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Component description"
+                        },
+                        {
+                            "name": "headerPresent",
+                            "type": "comboOrExpression",
+                            "required": false,
+                            "defaultValue": "Absent",
+                            "description": "Is there a header in the CSV payload ? Default is Absent Supported values: Present, Absent"
+                        },
+                        {
+                            "name": "valueSeparator",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Specify a value separator for CSV. Default is comma ( , )"
+                        },
+                        {
+                            "name": "skipHeader",
+                            "type": "booleanOrExpression",
+                            "required": false,
+                            "defaultValue": "False",
+                            "description": "Skip header from the content. Default is False"
+                        },
+                        {
+                            "name": "columnsToSkip",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Comma separated string of column indexes to skip. Leave blank to skip no columns"
+                        },
+                        {
+                            "name": "dataRowsToSkip",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Number of data rows to skip. Default is 0"
+                        },
+                        {
+                            "name": "csvEmptyValues",
+                            "type": "comboOrExpression",
+                            "required": false,
+                            "defaultValue": "Null",
+                            "description": "Treat empty CSV values as null or empty strings. Default is to consider as null Supported values: Null, Empty"
+                        },
+                        {
+                            "name": "jsonKeys",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Comma separated keys to use in the JSON object. Using the CSV header or auto generated keys if not specified"
+                        },
+                        {
+                            "name": "dataTypes",
+                            "type": "keyValueTable",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Specify data types as comma separated values. Supporting: string,integer,number,boolean"
+                        },
+                        {
+                            "name": "rootJsonKey",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Key for embedding JSON object. Leave blank to get the original result"
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Replace the Message Body in Message Context with the output of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
+                    "isHidden": false
+                },
+                {
+                    "name": "csvToCsv",
+                    "description": "Remove CSV Header",
+                    "params": [
+                        {
+                            "name": "description",
+                            "type": "string",
+                            "required": false,
+                            "defaultValue": "CSV to CSV",
+                            "description": "Component description"
+                        },
+                        {
+                            "name": "headerPresent",
+                            "type": "comboOrExpression",
+                            "required": false,
+                            "defaultValue": "Absent",
+                            "description": "Is there a header in the CSV payload ? Default is Absent Supported values: Present, Absent"
+                        },
+                        {
+                            "name": "valueSeparator",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Specify a value separator for CSV. Default is comma ( , )"
+                        },
+                        {
+                            "name": "skipHeader",
+                            "type": "booleanOrExpression",
+                            "required": false,
+                            "defaultValue": "False",
+                            "description": "Skip header from the content. Default is False"
+                        },
+                        {
+                            "name": "dataRowsToSkip",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Number of data rows to skip. Default is 0"
+                        },
+                        {
+                            "name": "orderByColumn",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Order the CSV content by the values of the given column"
+                        },
+                        {
+                            "name": "columnOrdering",
+                            "type": "comboOrExpression",
+                            "required": false,
+                            "defaultValue": "Ascending",
+                            "description": "Order columns ascending or descending. Default is ascending Supported values: Ascending, Descending"
+                        },
+                        {
+                            "name": "columnsToSkip",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Comma separated string of column indexes to skip. Leave blank to skip no columns"
+                        },
+                        {
+                            "name": "customHeader",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Comma separated string of header to set as CSV payload header"
+                        },
+                        {
+                            "name": "customValueSeparator",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Specify a value separator for CSV output. Default is comma ( , )"
+                        },
+                        {
+                            "name": "suppressEscaping",
+                            "type": "booleanOrExpression",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Specify whether to suppress all escaping in the output Csv payload. Default is false. (ie. Escape characters will be present)"
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Replace the Message Body in Message Context with the output of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
+                    "isHidden": false
+                },
+                {
+                    "name": "jsonToCsv",
+                    "description": "JSON to CSV",
+                    "params": [
+                        {
+                            "name": "description",
+                            "type": "string",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Component description"
+                        },
+                        {
+                            "name": "customHeader",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Comma separated strings to set as the CSV header"
+                        },
+                        {
+                            "name": "customValueSeparator",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Specify a value separator for CSV output. Default is comma ( , )"
+                        },
+                        {
+                            "name": "suppressEscaping",
+                            "type": "booleanOrExpression",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Specify whether to suppress all escaping in the output Csv payload. Default is false. (ie. Escape characters will be present)"
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Replace the Message Body in Message Context with the output of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
+                    "isHidden": false
+                },
+                {
+                    "name": "xmlToCsv",
+                    "description": "XML to CSV",
+                    "params": [
+                        {
+                            "name": "description",
+                            "type": "string",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Component description"
+                        },
+                        {
+                            "name": "customHeader",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Comma separated strings to set as the CSV header"
+                        },
+                        {
+                            "name": "suppressEscaping",
+                            "type": "booleanOrExpression",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Specify whether to suppress all escaping in the output Csv payload. Default is false. (ie. Escape characters will be present)"
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Replace the Message Body in Message Context with the output of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
+                    "isHidden": false
+                }
+            ]
+        },
+        {
             "tagName": "v2.0.0",
             "products": [
                 "MI 4.4.0",
