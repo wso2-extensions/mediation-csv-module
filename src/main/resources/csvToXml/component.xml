@@ -19,6 +19,7 @@
 <component name="csvToXml" type="synapse/template">
     <subComponents>
         <component name="csvToXml">
+            <displayName>CSV to XML</displayName>
             <file>csv_to_ml_template.xml</file>
             <description>Convert CSV to XML</description>
         </component>

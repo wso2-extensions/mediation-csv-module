@@ -19,6 +19,7 @@
 <component name="csvToJson" type="synapse/template">
     <subComponents>
         <component name="csvToJson">
+            <displayName>CSV to JSON</displayName>
             <file>csv_to_json_template.xml</file>
             <description>Convert CSV to Json</description>
         </component>

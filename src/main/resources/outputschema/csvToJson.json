@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "Output Schema for csvToJson Operation",
+  "description": "Output schema for the csvToJson operation in the connector.",
+  "properties": {
+    "payload": {
+      "type": "object",
+      "description": "The main response payload from the csvToJson operation."
+    }
+  },
+  "required": [
+    "payload"
+  ],
+  "additionalProperties": false
+}

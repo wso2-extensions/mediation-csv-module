@@ -1,0 +1,13 @@
+# Connector Descriptor File
+# Specifies the dependencies and repositories required for the connector.
+
+dependencies:
+  - groupId: "org.wso2.orbit.com.opencsv"
+    artifactId: "opencsv"
+    version: "5.10.wso2v1"
+
+repositories:
+  - id: "wso2-nexus"
+    url: "https://maven.wso2.org/nexus/content/groups/wso2-public/"
+  - id: "wso2-maven2-repository"
+    url: "scp://dist.wso2.org/home/httpd/dist.wso2.org/maven2/"

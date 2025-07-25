@@ -29,6 +29,8 @@
                description="Specify data types as comma separated values. Supporting: string,integer,number,boolean"/>
     <parameter name="rootJsonKey"
                description="Specify data types as comma separated values. Supporting: string,integer,number,boolean"/>
+    <parameter name="responseVariable" description="The name of the variable to which the response should be stored."/>
+    <parameter name="overwriteBody" description="Replace the Message Body in Message Context with the response of the operation."/>
 
     <sequence>
         <property name="headerPresent" expression="$func:headerPresent"/>

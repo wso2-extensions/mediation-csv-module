@@ -30,6 +30,8 @@
     <parameter name="groupElementTag" description="Name of the group xml elements"/>
     <parameter name="groupElementNamespace" description="Namespace URI for group XML element"/>
     <parameter name="groupElementNamespaceURI" description="Namespace prefix group root XML element"/>
+    <parameter name="responseVariable" description="The name of the variable to which the response should be stored."/>
+    <parameter name="overwriteBody" description="Replace the Message Body in Message Context with the response of the operation."/>
     <sequence>
         <property name="headerPresent" expression="$func:headerPresent"/>
         <property name="valueSeparator" expression="$func:valueSeparator"/>
