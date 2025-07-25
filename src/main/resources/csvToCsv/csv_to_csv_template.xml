@@ -28,6 +28,8 @@
     <parameter name="customValueSeparator"
                description="Specify a value separator for CSV output. Default is comma ( , )"/>
     <parameter name="suppressEscaping" description="Whether to suppress Escape Characters in the output Csv payload"/>
+    <parameter name="responseVariable" description="The name of the variable to which the response should be stored."/>
+    <parameter name="overwriteBody" description="Replace the Message Body in Message Context with the response of the operation."/>
     <sequence>
 
         <property name="headerPresent"  expression="$func:headerPresent"/>
